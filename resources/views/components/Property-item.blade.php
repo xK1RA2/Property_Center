@@ -14,7 +14,7 @@
                                     </div>
                                     <div class="p-4 pb-0">
                                         <h5 class="text-primary mb-3">${{$Property->price}}</h5>
-                                        <a class="d-block h5 mb-2" href="">Golden Urban House For Sell</a>
+                                        <a class="d-block h5 mb-2" href="">{{$Property->PropertyType->name}}  For {{$Property->PropertyType->type}}</a>
                                         <p><i class="fa fa-map-marker-alt text-primary me-2"></i>{{$Property->city->name}}  {{$Property->city->state->name}}</p>
                                     </div>
                                     <div class="d-flex border-top">
