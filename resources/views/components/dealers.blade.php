@@ -1,4 +1,4 @@
-@props(['dealers', 'count'=>0 ])
+@props(['dealers' ])
 
             
                 <div class="row g-4">

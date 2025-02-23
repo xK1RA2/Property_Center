@@ -24,7 +24,7 @@ return new class extends Migration
         $table->longText('description')->nullable();
         $table->enum('status', ['Available', 'Not Available'])->default('Available'); 
         $table->timestamp('published_at')->nullable();
-        $table->timestamps();
+        $table->timestamps('deleted at')->nullable();
         $table->timestamp('deleted_at')->nullable();
        });
     }

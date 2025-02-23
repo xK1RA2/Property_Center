@@ -49,8 +49,13 @@ class User extends Authenticatable
         ];
     }
 
-    public function Property():HasMany{
-        return $this->HasMany(Property::class,'Dealer_id');
+    public function Properties(): HasMany
+    {
+        return $this->hasMany(Property::class,'Dealer_id');
+    }
+    public function favouriteProperties():BelongsToMany
+    {
+        return $this->belongsToMany(Property::class,'faivorate_Property');
     }
     public function Book_Preview():HasMany{
         return $this->HasMany(Property::class);

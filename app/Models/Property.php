@@ -14,7 +14,7 @@ use App\Models\PropertyFeatures;
 use App\Models\PropertyImage;
 use App\Models\PropertyType;
 use App\Models\State;
-
+use Carbon\Carbon;
 
 
 class Property extends Model
@@ -88,10 +88,10 @@ public function propertyType()
           }
           
           //Relation With users to get the Favourtie Property
-          public function Favourite_Property():BelongsToMany
+          public function favouriteProperties():BelongsToMany
           {
                return $this->belongsToMany(User::class,
-               'favourite_Property','property_id','user_id');
+               'faivorate_Property','property_id','user_id');
           }    
 
            public function getCreateDate():string

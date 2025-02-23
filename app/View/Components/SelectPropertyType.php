@@ -14,7 +14,7 @@ class SelectPropertyType extends Component
      */
     public function __construct()
     {
-        $this->PropertyTypes = property_type::orderBy('name')->get(); 
+      
     }
 
     /**

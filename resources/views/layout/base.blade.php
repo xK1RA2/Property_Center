@@ -1,4 +1,4 @@
-@props(['title'=>''])
+@props(['title'=>'' , 'Tailwind'=>0])
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,10 +24,18 @@
     <!-- Libraries Stylesheet -->
     <link href="lib/animate/animate.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- Customized Bootstrap Stylesheet -->
+     
+    @if($Tailwind != 1)
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
+    
+    @else
+        <script src="https://cdn.tailwindcss.com"></script>
+    
+    @endif
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 </head>
