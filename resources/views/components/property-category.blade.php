@@ -46,7 +46,7 @@
                                 <div class="icon mb-3">
                                     <img class="img-fluid" src="img/icon-building.png" alt="Icon">
                                 </div>
-                                <h6>Building</h6>
+                                <h6>Office</h6>
                                 
                             </div>
                         </a>

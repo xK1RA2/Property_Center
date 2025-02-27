@@ -1,5 +1,5 @@
 @props(['Tailwind'=>1])
-<x-app-layout :$Tailwind>
+<x-guest-layout :$Tailwind>
     <!-- container -->
     <div class="flex flex-col items-center justify-center  p-8 bg-white">
         <div class="flex flex-col items-center rounded-3xl shadow-2xl shadow-gray-600/70 md:w-[500px] w-[300] p-6">
@@ -11,13 +11,14 @@
                 </svg>
                 Welcome Home
             </h1>
-            <form class="mt-4 w-full" action="" method="">
-                <!-- Email -->
+            <form class="mt-4 w-full" action="{{route('login.store')}}" method="POST">
+            @csrf    
+            <!-- Email -->
                 <div class="mb-4">
                     <label class="block text-gray-600 text-md font-bold">Email</label>
                     <div class="flex items-center border-b-2 border-gray-300 focus-within:border-green-500">
                         <span class="text-gray-400 p-2"><i class="fa-solid fa-envelope"></i></span>
-                        <input type="email" required placeholder="name@example.com"
+                        <input type="email" required placeholder="name@example.com" name="email"
                             class="w-full p-2 focus:outline-none">
                     </div>
                 </div>
@@ -27,7 +28,7 @@
                     <div class="flex items-center border-b-2 border-gray-300 focus-within:border-green-500">
                         <span class="text-gray-400 p-2"><i class="fa-solid fa-lock"></i></span>
                         <input id="password" type="password" required placeholder="••••••••"
-                            class="w-full p-2 focus:outline-none">
+                            class="w-full p-2 focus:outline-none" name="password">
                         <button type="button" onclick="togglePassword()"
                             class="text-gray-500 hover:text-gray-700 p-2">👁</button>
                     </div>
@@ -59,5 +60,5 @@
             password.type = password.type === 'password' ? 'text' : 'password';
         }
     </script>
-</x-app-layout >
+</x-guest-layout >
 

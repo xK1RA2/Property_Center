@@ -1,16 +1,18 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\PropertyType;
 use App\Models\User;
 
+
 class ViewProperty
 {
     public function index(){
-        $Properties = Property::where('published_at','<',now())
+        
+        $Properties = Property::where('published_at','<=',now())
         ->where('status' , 'Available')
         ->with(['PrimaryImage','city','Features'])
         ->orderBy('published_at','desc')
@@ -78,12 +80,5 @@ public function search(Request $request)
         return view("property.search",['Properties'=>$Properties , 'propertyType'=>$PropertyType]);
    
     }
-    public function wishList()
-    {
-        $Properties =User::find(1)
-        ->favouriteProperties()
-        ->with(['PrimaryImage','city','PropertyType'])
-        ->paginate(5);
-        return view('Property.wishlist',['Properties'=>$Properties]);
-    }
+  
 }

@@ -15,7 +15,8 @@
                         <div class="row g-4">
                           
               @foreach($Properties as $Property)
-                        <x-Property-item :$Property :isInWishList="true"/>
+             
+                        <x-property-item :$Property :isInWishList="true"/>
                         @endforeach
 </div>
 </div>

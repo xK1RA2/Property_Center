@@ -10,7 +10,6 @@
                         sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea elitr.</p>
                     <a href="" class="btn btn-primary py-3 px-5 me-3 animated fadeIn">Get Started</a>
                 </div>
-               
                 <div class="col-md-6 animated fadeIn">
                     <div class="owl-carousel header-carousel">
                         <div class="owl-carousel-item">
@@ -23,13 +22,13 @@
                 </div>
             </div>
         </div>
-       
+
+
         <!-- Category -->
-
         <x-property-category />
-
           <!-- About Us -->
         <x-about-us />
+
 
          <!-- Property List Start -->
         <div class="container-xxl py-5">
@@ -57,39 +56,43 @@
                         <div class="row g-4">
                           
          @foreach($Properties as $Property)             
-        <x-property-item :$Property  />
+        <x-property-item :$Property
+        :isInWishList="$Property->favouriteProperties->contains(\Illuminate\Support\Facades\Auth::user())" />
         @endforeach
          </div>
         </div>
        </div>
-
-                                     <div class="col-12 text-center">
+      
+                        </div>
+                        
+                    </div>
+                    <div class="col-12 text-center">
                                 <a class="btn btn-primary py-3 px-5" href="">Browse More Property</a>
                             </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-      
         <!-- Property List End -->
 
 
      <!-- Team Start -->
-      
 <div class="container-xxl py-5">
-
-
      <div class="container">
                 <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
                     <h1 class="mb-3">Property Dealers</h1>
                     <p>Eirmod sed ipsum dolor sit rebum labore magna erat. Tempor ut dolore lorem kasd vero ipsum sit eirmod sit. Ipsum diam justo sed rebum vero dolor duo.</p>
                 </div>
-    <x-Dealers :$dealers />
-    </div>
-    </div>
+
+                <div class="row g-4">
+            
+                @foreach($dealers as $dealer)
+    <x-Dealers :$dealer />
+                @endforeach
+              </div>
+              </div>
+              </div>
 
      <!-- Testimonial Start -->
      <div class="container-xxl py-5">

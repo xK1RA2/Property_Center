@@ -14,9 +14,8 @@ return new class extends Migration
        Schema::create('Properties' , function (Blueprint $table) {
         $table->id();
         $table->foreignId('Dealer_id')->constrained('users')->onDelete('cascade');;
-        $table->foreignId('Property_type_id');
+        $table->foreignId('Property_type_id')->constrained('Property_type');
         $table->foreignId('city_id');
-        
         $table->integer('year');
         $table->integer('price');
         $table->integer('phone')->nullable();
@@ -24,8 +23,9 @@ return new class extends Migration
         $table->longText('description')->nullable();
         $table->enum('status', ['Available', 'Not Available'])->default('Available'); 
         $table->timestamp('published_at')->nullable();
-        $table->timestamps('deleted at')->nullable();
+
         $table->timestamp('deleted_at')->nullable();
+        $table->timestamps();
        });
     }
 

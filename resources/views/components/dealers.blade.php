@@ -1,8 +1,7 @@
-@props(['dealers' ])
+@props(['dealer' ])
 
             
-                <div class="row g-4">
-               @foreach($dealers as $dealer)
+               
                
                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="team-item rounded overflow-hidden">
@@ -20,11 +19,9 @@
                         </div>
                     </div>
                     
-                
-               @endforeach
+
          
         <!-- Team End -->
 
        
 
-</div>

@@ -21,6 +21,6 @@ class SelectCityForm extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.select-city-form');
+        return view('components.select-city');
     }
 }

@@ -2,9 +2,7 @@
         <div class="container-fluid nav-bar bg-transparent">
             <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
                 <a href="/index" class="navbar-brand d-flex align-items-center text-center">
-                    <div class="icon p-2 me-2">
-                        <img class="img-fluid" src="img/icon-deal.png" alt="Icon" style="width: 30px; height: 30px;">
-                    </div>
+                  
                     <h1 class="m-0 text-primary">Property Center</h1>
                 </a>
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -25,7 +23,7 @@
                                 
                             </div>
                         </div>
-                        <a href="/Wishlist" class="nav-item nav-link">Wishlist</a>
+                        <a href="{{route('wishList.index')}}" class="nav-item nav-link">Wishlist</a>
                         <a href="contact.html" class="nav-item nav-link">DashBoard</a>
                         <a href="contact.html" class="nav-item nav-link">My Orders</a>
                     </div>

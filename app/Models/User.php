@@ -53,16 +53,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Property::class,'Dealer_id');
     }
-    public function favouriteProperties():BelongsToMany
-    {
-        return $this->belongsToMany(Property::class,'faivorate_Property');
-    }
+  
     public function Book_Preview():HasMany{
         return $this->HasMany(Property::class);
     }
-    public function favourite_Property():BelongsToMany
+    public function Favourite_Property():BelongsToMany
     {
-        return $this->belongsToMany(Car::class,'favourite_Property');
+        return $this->belongsToMany(Property::class,'faivorate_Property','user_id','property_id')
+      
+        ;
     }
     public function Orders(): HasMany
     {
