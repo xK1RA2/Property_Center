@@ -15,14 +15,12 @@ class PropertyType extends Model // Change to PascalCase
     protected  $table = 'Property_type';
     protected $fillable = [
         'name',
-        'type',
-        
     ];
 
   
-public function property()
+public function property():HasMany
 {
-    return $this->belongsTo(Property::class);
+    return $this->HasMany(Property::class);
 }
 
 }

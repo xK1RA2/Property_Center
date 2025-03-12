@@ -1,9 +1,11 @@
 /********** Template CSS **********/
 :root {
     --maincolor: #00B98E;
+    
     --secondary: #FF6922;
     --light: #EFFDF5;
     --dark: #0E2E50;
+  
 }
 
 .back-to-top {
@@ -170,6 +172,9 @@
 
 .header-carousel .owl-nav {
     position: absolute;
+    color : #000000;
+    border-radius:20px;
+    
     top: 50%;
     left: -25px;
     transform: translateY(-50%);
@@ -185,7 +190,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #FFFFFF;
+   
     background: var(--primary);
     border-radius: 40px;
     font-size: 20px;
@@ -195,6 +200,7 @@
 .header-carousel .owl-nav .owl-prev:hover,
 .header-carousel .owl-nav .owl-next:hover {
     background: var(--dark);
+    color:white;
 }
 
 @media (max-width: 768px) {
@@ -216,6 +222,7 @@
     justify-content: center;
     background: #FFFFFF !important;
     border-radius: 50px;
+    
     border: 1px dashed var(--primary) !important;
 }
 
@@ -242,6 +249,7 @@
 /*** Category ***/
 .cat-item div {
     background: #FFFFFF;
+  
     border: 1px dashed rgba(0, 185, 142, .3);
     transition: .5s;
 }
@@ -256,7 +264,7 @@
 }
 
 .cat-item:hover div * {
-    color: #FFFFFF !important;
+    color:#e0dcdc !important;
 }
 
 

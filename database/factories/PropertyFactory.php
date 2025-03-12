@@ -21,7 +21,7 @@ class PropertyFactory extends Factory
     {
         $dealerRole = Role::where('name','dealer');
         return [
-         
+            'PurchaseType' => $this->faker->randomElement(['Sell', 'Rent']),
             'Property_type_id'=> PropertyType::inRandomOrder()->value('id')?? PropertyType::factory()->create()->id,
             'dealer_id' => User::whereHas('role', function ($query) {
                 $query->where('name', 'dealer');

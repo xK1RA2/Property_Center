@@ -6,15 +6,18 @@ use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\PropertyType;
 use App\Models\User;
+use App\Models\Storage;
+
+
 
 
 class ViewProperty
 {
     public function index(){
         
-        $Properties = Property::where('published_at','<=',now())
-        ->where('status' , 'Available')
-        ->with(['PrimaryImage','city','Features'])
+        $Properties = Property::
+        where('status' , 'Available')
+        ->with(['PrimaryImage','city','Features','PropertyRate'])
         ->orderBy('published_at','desc')
         ->get();    
         
@@ -26,6 +29,10 @@ class ViewProperty
         return view("property.search",['Properties'=>$Properties ,'dealers' =>$dealers , 'propertyType'=>$propertyType]);
         
 }
+
+
+
+
 public function search(Request $request)
 
 

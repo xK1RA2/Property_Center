@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('property_id')->constrained('properties');
             $table->string('image_path',255);
             $table->integer('position');
+            $table->timestamp('deleted_at')->nullable();
+        $table->timestamps();
         });
     }
 

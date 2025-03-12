@@ -83,14 +83,24 @@ class DatabaseSeeder extends Seeder
 
         $userRole = Role::firstOrCreate(['name' => 'user']);
         $dealerRole = Role::firstOrCreate(['name' => 'dealer']);
+
+        $propertyType=[
+            'Ofiice' , 'Apartment' , 'Villa' , 'House'
+        ];
+
+        foreach($propertyType as $property){
+            $propertymake=PropertyType::firstOrCreate(['name' => $property]);
+        }
+
         
+
     //Create A 3 Users 
     User::factory()
     ->count(3)
     ->state(['role_id' =>$userRole->id ])
     ->create();
     
-
+        
     User::factory()
     ->count(4)
     ->state(['role_id' => $dealerRole->id])
@@ -103,7 +113,7 @@ class DatabaseSeeder extends Seeder
            ['position'=>$sequence->index %5 +1]),
              'PropertyImages')
            ->hasFeatures()
-           ->haspropertyType()
+         
     
       
          

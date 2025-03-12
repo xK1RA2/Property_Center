@@ -1,17 +1,19 @@
   @props(['Property','isInWishList'=>false ])
   <!-- Property List Start -->
             @if($Property)
-       
+           
                           <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+      
+                         
                                 <div class="property-item rounded overflow-hidden">
                                     <div class="position-relative overflow-hidden">
-                                        <a href=""><img class="img-fluid img-thumbnail " src="https://images.crowdspring.com/blog/wp-content/uploads/2017/08/23163415/pexels-binyamin-mellish-106399.jpg " alt="Responsive image"></a>
-                                        <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">For {{$Property->PropertyType->type}}</div>
+                                        <a href="{{route('property.details',$Property->id)}}">  <img class="img-fluid img-thumbnail" src="https://images.crowdspring.com/blog/wp-content/uploads/2017/08/23163415/pexels-binyamin-mellish-106399.jpg" alt="Responsive image"></a>
+                                        <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">For {{$Property->PurchaseType}}</div>
                                         <div class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">{{$Property->PropertyType->name}}</div>
                                     </div>
                                     <div class="p-4 pb-0">
                                         <h5 class="text-primary mb-3">${{$Property->price}}</h5>
-                                        <a class="d-block h5 mb-2" href="">{{$Property->PropertyType->name}}  For {{$Property->PropertyType->type}}</a>
+                                        <a class="d-block h5 mb-2" href="">{{$Property->PropertyType->name}}  For {{$Property->PurchaseType}}</a>
                                         <p><i class="fa fa-map-marker-alt text-primary me-2"></i>{{$Property->city->name}}  {{$Property->city->state->name}}</p>
                                     </div>
                                     <div class="d-flex border-top">
@@ -53,7 +55,7 @@
                                     </div>
                                 </div>
                             </div>
-                          
+                            
                         @endif
           
              

@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->foreignId('Property_id');
             $table->integer('Rate')->max(5)->min(1);
+       
+         
+            $table->timestamps();
 
     });
     }

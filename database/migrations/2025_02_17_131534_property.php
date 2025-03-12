@@ -15,7 +15,8 @@ return new class extends Migration
         $table->id();
         $table->foreignId('Dealer_id')->constrained('users')->onDelete('cascade');;
         $table->foreignId('Property_type_id')->constrained('Property_type');
-        $table->foreignId('city_id');
+        $table->foreignId('city_id')->constrained('cities');
+        $table->string('PurchaseType');
         $table->integer('year');
         $table->integer('price');
         $table->integer('phone')->nullable();
@@ -23,7 +24,6 @@ return new class extends Migration
         $table->longText('description')->nullable();
         $table->enum('status', ['Available', 'Not Available'])->default('Available'); 
         $table->timestamp('published_at')->nullable();
-
         $table->timestamp('deleted_at')->nullable();
         $table->timestamps();
        });

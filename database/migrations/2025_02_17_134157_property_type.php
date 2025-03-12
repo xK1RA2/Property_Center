@@ -13,11 +13,7 @@ return new class extends Migration
     {
         Schema::create('Property_type', function (Blueprint $table) {
             $table->id();
-           
-            $table->unsignedBigInteger('Property_id')->constrained('Properties')->nullable();
-            
             $table->string('name',45);
-            $table->string('type',45);
             $table->softDeletes();
         });
     }

@@ -14,6 +14,7 @@ use App\Models\PropertyFeatures;
 use App\Models\PropertyImage;
 use App\Models\PropertyType;
 use App\Models\State;
+use App\Models\Storage;
 use Carbon\Carbon;
 
 
@@ -23,6 +24,7 @@ class Property extends Model
     protected $table ='Properties';
           protected $fillable =[
             'Dealer_id',
+            'PurchaseType',
             'Property_type_id',
             'city_id',
             'year',
@@ -33,9 +35,9 @@ class Property extends Model
           ];
           //Relation With Property_Type
        
-public function propertyType()
+public function propertyType():BelongsTo 
 {
-    return $this->hasOne(PropertyType::class,'Property_id');
+    return $this->belongsTo(PropertyType::class,'Property_type_id');
 }
 
           //Relation With Book_Preview
@@ -63,9 +65,9 @@ public function propertyType()
                return $this->HasMany(Comment::class);
           }
            //Relation With Rate
-          public function Rate():HasMany
+          public function PropertyRate():HasMany
           {
-               return $this->HasMany(Rate::class);
+               return $this->HasMany(Rate::class,'Property_id');
           }
           //Relation With Property Images to get the primary image
           public function PrimaryImage(): HasOne 

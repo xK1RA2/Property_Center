@@ -1,12 +1,10 @@
-@props(['title'=>"AddProperty" , 'Cities' , 'propertyType'])
+@props(['title'=>"AddProperty" , 'Cities' , 'propertyType','Purchases'])
 <x-app-layout :$title >
 <div class="container mt-5">
     <div class="card shadow-lg p-4">
+    <form action="{{route('property.store')}}" method="POST"  enctype="multipart/form-data">
         <h3 class="text-center mb-4">Add Property</h3>
-        <form   action="{{route('property.store')}}"
-            method="POST"
-            enctype="multipart/form-data">
-            @csrf
+       @csrf
             <div class="row g-3">
                    <!--  اسم الحي للسكن *required-->
                    <div class="col-md-6">
@@ -43,20 +41,12 @@
                   <select id="citySelect"  class="form-control bg-white" name="PropertyName">
                  
                  
-    
+                    @foreach($propertyType as $Type)
                 
-                      <option value="Apartment"  >
-                          Apartment
+                      <option value="{{$Type->id}}"  >
+                          {{$Type->name}}
                       </option>
-                      <option value="House"  >
-                          House
-                      </option>
-                      <option value="Villa"  >
-                          Villa
-                      </option>
-                      <option value="Ofiice"  >
-                          Ofiice
-                      </option>
+                    @endforeach           
                   
                   </select>
                    </div>
@@ -96,11 +86,15 @@
                             <input type="number"name="Kitchen" value="old('Kitchen')" class="form-control shadow-sm"placeholder="Number of kitchen"min="0"required>
                         </div>
                         <div class="col-md-6">
+
                             <label class="form-label">Sale/Rent</label>
+                            
                             <select class="form-select shadow-sm"required name="PropertyPurchase">
-                                <option selected disabled>Select Option</option>
-                                <option value="rent">For Rent</option>
-                                <option value="sale">For Sale</option>
+                               
+                            @foreach($Purchases as $Purchase)
+                          
+                                <option value="{{$Purchase->PurchaseType}}">For {{$Purchase->PurchaseType}}</option>
+                                @endforeach
                             </select>
                         </div>
                 <!-- الوصف للسكن او العقار-->
@@ -110,7 +104,7 @@
                 </div>
                 <!-- وسائل الراحة واضافات السكن -->
                 <div class="col-md-6">
-                    <label class="form-label">Amenities</label>
+                    <label class="form-label">Features</label>
                     <div class="row">
                         <div class="col-6">
                             <div class="form-check">
@@ -134,7 +128,7 @@
                <!-- ارفع صور على الموقع-->
                 <div class="col-md-12 text-center  ">
                     <label class="form-label d-block">Upload Property Images</label>
-                    <input type="file" name="images[]" id="fileInput"class="d-none  "multiple required>
+                    <input type="file" name="images[]" multiple  name="images[]" id="fileInput"class="d-none  " required />
                     <label for="fileInput"class="btn btn-success btn-lg d-flex align-items-center justify-content-center mx-auto p-0 shadow-sm border rounded-circle"style="width: 70px; height: 70px; border-radius: 0;">
                     <i class="fa-solid fa-plus"></i>
                     </label>
@@ -144,7 +138,7 @@
             <div class="text-center mt-4">
                 <button type="submit"class="btn btn-success w-100 shadow-sm">Submit Property</button>
             </div>
-        </form>
+</form>
     </div>
 </div>
 <script src="./assets/js/bootstrap.bundle.min.js"></script>

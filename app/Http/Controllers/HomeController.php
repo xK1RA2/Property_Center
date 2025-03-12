@@ -13,7 +13,7 @@ class HomeController
     public function index(){
         $Properties = Property::where('published_at','<',now())
         ->where('status' , 'Available')
-        ->with(['PrimaryImage','city','Features','PropertyType'])
+        ->with(['PrimaryImage','city','Features','propertyType'])
         ->orderBy('published_at','desc')
         ->limit(6)
         ->get();    
@@ -23,8 +23,21 @@ class HomeController
         ->get();    
         
         return view("home.index",['Properties'=>$Properties ,'dealers' =>$dealers]);
-        
-        
+    }
+
+    public function Orders(){
+
+        return view("home.orders");
+
+    }
+    public function dashboard(){
+
+        return view("home.dashboard");
+
+    }
+    public function Details(Property $Property){
+        return view("home.Details",['Property'=>$Property]);
+
 
     }
 }

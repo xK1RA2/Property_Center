@@ -30,11 +30,10 @@
     <!-- Customized Bootstrap Stylesheet -->
      
     @if($Tailwind != 1)
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
     
     @else
-        <script src="https://cdn.tailwindcss.com"></script>
-    
+    <script src="https://cdn.tailwindcss.com"></script>
     @endif
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
@@ -42,11 +41,11 @@
 
 
 <body class="bg-white">
-<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+<!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
-        </div>
+        </div> -->
     {{$slot}}
    
     <!-- JavaScript Libraries -->

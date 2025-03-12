@@ -5,11 +5,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Comment extends Model
+class Rate extends Model
 {
+    use HasFactory;
+    protected $fillable = [
+        'user_id', 'Property_id', 'Rate', 'created_at', 'updated_at'
+    ];
+    protected $table = 'Rate';
     //Relation With Property
-    public function Property():HasMany
+    public function user():BelongsTo
     {
-         return $this->HasMany(Property::class,'user_id','property_id');
+        return $this->belongsTo(User::class); 
     }
+    public function Property():belongsTo
+    {
+         return $this->belongsTo(Property::class,'user_id','property_id');
+    }
+   
 }
