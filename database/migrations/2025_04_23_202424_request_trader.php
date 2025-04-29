@@ -6,18 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+   
     public function up(): void
     {
-        Schema::create('book_preview', function (Blueprint $table) {
+        Schema::create('request_trader', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->index();
-            $table->foreignId('property_id');
-           
-            $table->timestamp('Date');
-            $table->enum('status', ['Approved','Pending','Canceled'])->default('Approved');
+            $table->timestamps();
            
         });
     }
@@ -27,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('book_preview');
+        //
     }
 };

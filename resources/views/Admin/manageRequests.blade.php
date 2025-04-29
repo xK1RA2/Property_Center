@@ -121,40 +121,36 @@
                                         <tr>
                                             <th class="py-4 px-4">Request ID</th>
                                             <th class="py-4 px-4">User Name</th>
-                                            <th class="py-4 px-4">Request Type</th>
+                                          
                                             <th class="py-4 px-4">Submission Date</th>
-                                            <th class="py-4 px-4">Status</th>
                                             <th class="py-4 px-4">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td class="py-4 px-4">1</td>
-                                            <td class="py-4 px-4">John Doe</td>
-                                            <td class="py-4 px-4">Deller</td>
-                                            <td class="py-4 px-4">2025-02-27</td>
-                                            <td class="py-4 px-4 "><span class="badge bg-warning">Pending</span></td>
+
+                                            @foreach ($Requests as $Req )
+                                            
+                                           
+
+
+                                            <td class="py-4 px-4">{{ $Req->id }}</td>
+                                            <td class="py-4 px-4">{{ $Req->user->name }}</td>
+                    
+                                            <td class="py-4 px-4">{{ $Req->created_at }}</td>
                                             <td class="py-4 px-4 text-center space-y-3">
-                                                <button data-ripple-light="true" type="button"
+                                                <a data-ripple-light="true" type="button" href="{{ route('Request_Action',['Action'=>'Accept','Request_id'=>$Req->id]) }}"
                                                     class="select-none rounded-lg bg-[#00B98E] py-3 px-8 text-center font-sans text-xs font-bold capitalize  text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50">
                                                     Accept
-                                                </button>
-                                                <button data-ripple-light="true" type="button"
+                                                </a>
+                                                <a data-ripple-light="true" type="button" href="{{ route('Request_Action',['Action'=>'Reguse','Request_id'=>$Req->id]) }}"
                                                     class="select-none rounded-lg bg-red-700 py-3 px-6 text-center font-sans text-xs font-bold capitalize text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50">
                                                     Reject
-                                                </button>
+                                                </a>
                                             </td>
+                                            @endforeach
                                         </tr>
-                                        <tr>
-                                            <td class="py-4 px-4">2</td>
-                                            <td class="py-4 px-4">Jane Smith</td>
-                                            <td class="py-4 px-4">deller</td>
-                                            <td class="py-4 px-4">2025-02-26</td>
-                                            <td class="py-4 px-4"><span class="badge bg-success">Completed</span></td>
-                                            <td class="py-4 px-4 text-center space-y-3">
-                                                <button class="btn btn-secondary btn-sm text-white"> Done</button>
-                                            </td>
-                                        </tr>
+                                       
                                     </tbody>
                                 </table>
                             </div>

@@ -17,6 +17,8 @@ return new class extends Migration
                 $table->foreignId('Property_id');
                 $table->foreignId('comment_type_id');
                 $table->longtext('Description');
+                $table->timestamp('deleted_at')->nullable();
+                $table->timestamps();
 
         });
     }

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('Comment_Type',function(Blueprint $table){
                 $table->id();
                 $table->string('name');
+                $table->timestamp('deleted_at')->nullable();
+                $table->timestamps();
         });
     }
 

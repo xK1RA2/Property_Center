@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -17,6 +18,7 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
         'profile_image',
@@ -51,7 +53,7 @@ class User extends Authenticatable
 
     public function Properties(): HasMany
     {
-        return $this->hasMany(Property::class,'Dealer_id');
+        return $this->hasMany(Property::class, 'Dealer_id');
     }
   
     public function Book_Preview():HasMany{
@@ -59,9 +61,9 @@ class User extends Authenticatable
     }
     public function Favourite_Property():BelongsToMany
     {
-        return $this->belongsToMany(Property::class,'faivorate_Property','user_id','property_id')
-      
-        ;
+        return $this->belongsToMany(Property::class, 'faivorate_property', 'user_id', 'property_id');
+
+       
     }
     public function Orders(): HasMany
     {
@@ -69,7 +71,7 @@ class User extends Authenticatable
     }
     public function Role():BelongsTo
     {
-        return $this->belongsTo(Role::class); 
+        return $this->belongsTo(Role::class,'role_id'); 
     }
     //Relation With Comment
     public function Comment():HasMany
@@ -80,6 +82,10 @@ class User extends Authenticatable
     public function Rate():HasMany
     {
          return $this->HasMany(Rate::class);
+    }
+    public function Request():HasOne
+    {
+         return $this->hasOne(request_trader::class,'id');
     }
  
 

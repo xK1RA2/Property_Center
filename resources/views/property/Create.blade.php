@@ -1,7 +1,7 @@
 @props(['title'=>"AddProperty" , 'Cities' , 'propertyType','Purchases'])
 <x-app-layout :$title >
 <div class="container mt-5">
-    <div class="card shadow-lg p-4">
+    <div class="card shadow-lg p-4 border-primary">
     <form action="{{route('property.store')}}" method="POST"  enctype="multipart/form-data">
         <h3 class="text-center mb-4">Add Property</h3>
        @csrf
@@ -124,7 +124,7 @@
                         </div>
                     </div>
                 </div>
-                <hr class="mt-5">
+                <hr class="mt-5 text-dark">
                <!-- ارفع صور على الموقع-->
                 <div class="col-md-12 text-center  ">
                     <label class="form-label d-block">Upload Property Images</label>

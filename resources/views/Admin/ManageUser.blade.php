@@ -83,34 +83,32 @@
                                     </thead>
                                     <tbody>
                                         @foreach($Users as $user)
+                                        @if($user->role_id !== 3)
                                         <tr>
+                                   
                                             <td class="px-4 py-4 text-center">{{$user->id}}</td>
                                             <td class="py-4 px-4 text-center"><img src="images.jpg" class="object-cover rounded w-16 h-16" alt="Profile"></td>
                                             <td class="px-4 py-4 text-center">{{$user->name}}</td>
                                             <td class="px-4 py-4 text-center">{{$user->email}}</td>
                                             <td class="px-4 py-4 text-center">{{$user->phone}}</td>
-                                            <td class="px-4 py-4 text-center"><span class="badge fs-6 bg-green-500">{{$user->role->name}}</span></td>
+                                            <td class="px-4 py-4 text-center"><span class="badge fs-6 bg-green-500">{{ $user->role->name  }}</span></td>
         
                                             <td class="px-4 py-4 text-center ">
                                                 <button data-ripple-light="true" type="button"
                                                     class="select-none rounded-lg bg-[#00B98E] py-3 px-8 text-center font-sans text-xs font-bold capitalize  text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50">
                                                     Edit
                                                 </button>
-                                                <form 
-                          id="{{ $user->id }}"
-                          action="{{route('DestroyUsers',$user)}}"
-                          method="post"
-                          >
-                          @csrf
-                          
-                          <button 
+                                             
+                          <a 
+                             href="{{route('DestroyUsers',$user)}}"
                           class="select-none rounded-lg bg-red-700 py-3 px-6 text-center font-sans text-xs font-bold capitalize text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50" >
                            
                             Delete
-                          </button>
-                        </form>
+                          </a>
+                        
                                             </td>
                                         </tr>
+                                        @endif
                                         @endforeach
                                       
                                     </tbody>

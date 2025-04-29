@@ -21,7 +21,7 @@ use Carbon\Carbon;
 class Property extends Model
 {
     use HasFactory , SoftDeletes;
-    protected $table ='Properties';
+    protected $table ='properties';
           protected $fillable =[
             'Dealer_id',
             'PurchaseType',
@@ -37,12 +37,12 @@ class Property extends Model
        
 public function propertyType():BelongsTo 
 {
-    return $this->belongsTo(PropertyType::class,'Property_type_id');
+    return $this->belongsTo(PropertyType::class,'property_type_id');
 }
 
           //Relation With Book_Preview
           public function Book_Preview():HasMany{
-            return $this->HasMany(BookPreview::class);
+            return $this->HasMany(Book_Preview::class);
           }
           //Relation With Property Features
           public function Features():HasOne{
@@ -52,7 +52,7 @@ public function propertyType():BelongsTo
           //Relation With Dealer
           public function Dealer():BelongsTo
           {
-               return $this->belongsTo(User::class,'Dealer_id');
+               return $this->belongsTo(User::class, 'Dealer_id');
           }
           //Relation With City
           public function City():BelongsTo
@@ -92,8 +92,7 @@ public function propertyType():BelongsTo
           //Relation With users to get the Favourtie Property
           public function favouriteProperties():BelongsToMany
           {
-               return $this->belongsToMany(User::class,
-               'faivorate_Property','property_id','user_id');
+               return $this->belongsToMany(User::class, 'faivorate_property', 'property_id', 'user_id');
           }    
 
            public function getCreateDate():string

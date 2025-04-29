@@ -4,11 +4,11 @@
 <div class="container py-5">
         <h2 class="text-center mb-4">List of Traders</h2>
         <div>
-            <div class="row">
-                <!-- التاجر الاول -->
+            <div class="row pt-4">
+            
                  @foreach($Dealers as $Dealer)
                 <div class="col-md-3 mb-4">
-                      <a href=""class="text-decoration-none"><!--الرابط حط فيه البروفايل تاعه--> 
+                      <a href="{{ route('Dealer_Profile',$Dealer) }}"class="text-decoration-none"><!--الرابط حط فيه البروفايل تاعه--> 
                         <div class="card shadow-sm border-0">
                             <img src="./images/JohnDoe.jpg" class="card-img-top"alt="Trader Image"style="height: 200px; object-fit: cover;">
                             <div class="card-body text-center">

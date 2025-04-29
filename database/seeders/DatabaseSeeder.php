@@ -84,6 +84,10 @@ class DatabaseSeeder extends Seeder
         $userRole = Role::firstOrCreate(['name' => 'user']);
         $dealerRole = Role::firstOrCreate(['name' => 'dealer']);
 
+        $commenttype= CommentType::firstOrCreate(['name'=>'Normal']);
+        $commenttype= CommentType::firstOrCreate(['name'=>'Ananyomus']);
+
+
         $propertyType=[
             'Ofiice' , 'Apartment' , 'Villa' , 'House'
         ];

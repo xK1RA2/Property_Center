@@ -9,10 +9,15 @@ use Illuminate\Support\Facades\Auth;
 
 class WhislistController
 {
-    public function index()
+    public function index(Request $request)
     {
+        $user = $request->user()->role_id;
+        if($user !== 1){
+            return redirect()->route("login");
+        }
         // To render cars in wishList for authenticated users
-        $Properties =User::find(3)
+        $id = $request->user()->id;
+        $Properties =User::find($id)
         ->Favourite_Property()
         ->with(['PrimaryImage','City','propertyType'])
         ->paginate(5);
@@ -20,28 +25,16 @@ class WhislistController
         return view('property.wishlist',['Properties' => $Properties]);
     }
 
-    public function storeDestroy(Property $Property )
+    public function storeDestroy(Property $Property , Request $request )
     {
- 
-        $user = Auth::user();
-
-       $PropertyExists = $user->favourite_Property()->where('Property_id',$Property->id)->exists(); 
-
+        $user = User::Where('id',$request->user()->id)->first();
         
-        if ($PropertyExists) {
-            $user->favourite_Property()->detach($property);
-            return response()->json(
-                [
-                'added' => false,
-                'message' => 'Property was removed from watchlist'
-            ]);
-        }
+        $user->Favourite_Property()->toggle($Property->id);
+        return redirect()->back();
+     
 
+     
+        
     
-        $user->favourite_Property()->attach($car);
-        return response()->json([
-            'added' => true,
-            'message' => 'Property was added to watchlist'
-        ]);
     }
 }

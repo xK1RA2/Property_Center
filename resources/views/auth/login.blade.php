@@ -11,6 +11,10 @@
                 </svg>
                 Welcome Home
             </h1>
+            @error('email')
+            <div class="text-red-500">Email or Password Doesn't Match</div>
+          
+            @enderror
             <form class="mt-4 w-full" action="{{route('login.store')}}" method="POST">
             @csrf    
             <!-- Email -->
@@ -36,7 +40,7 @@
              
              
                 
-            </form>
+          
           
             <div class="flex flex-col w-full md:flex-row md:space-x-2">
                     <button
@@ -95,7 +99,7 @@
                 <a href="/signup" class="text-green-500 font-semibold hover:underline">Sign up</a>
             </div>
             <!-- Footer -->
-           
+            </form>
     </div>
     <script>
         function togglePassword() {

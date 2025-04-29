@@ -24,8 +24,7 @@
         </div>
 
 
-        <!-- Category -->
-        <x-property-category />
+        
           <!-- About Us -->
         <x-about-us />
 

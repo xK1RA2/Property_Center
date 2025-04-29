@@ -7,14 +7,11 @@ use Illuminate\Http\Request;
 class dealerController
 {
     
-    public function index(){
+    public function index(Request $request){
+       
         $dealers = User::where('role_id',2)->get();
         return view("home.Dealers",['Dealers'=>$dealers]);
         
     }
-    public function dashboard(){
-        
-        return view("Dealer.index");
-        
-    }
+ 
 }

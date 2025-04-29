@@ -23,7 +23,7 @@
                         <div class="row g-4">
                           
          @foreach($Properties as $Property)             
-        <x-property-item :$Property  />
+        <x-property-item :$Property :isInWishList="$Property->favouriteProperties->contains(\Illuminate\Support\Facades\Auth::user())" />
         @endforeach
          </div>
    </div>

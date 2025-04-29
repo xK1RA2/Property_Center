@@ -1,5 +1,40 @@
-@props(['title'=>'Details'])
+@props(['title'=>'Details','Comments'])
 
+<div class="modal fade " id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true" style="z-1050 ; margin-top:40px">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookingModalLabel">Book an Appointment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="bookingForm">
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phoneNumber" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phoneNumber" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="appointmentDate" class="form-label">Preferred Date</label>
+                            <input type="date" class="form-control" id="appointmentDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="appointmentTime" class="form-label">Preferred Time</label>
+                            <input type="time" class="form-control" id="appointmentTime" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="notes" class="form-label">Additional Notes</label>
+                            <textarea class="form-control" id="notes" rows="3" placeholder="Any additional information..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Submit Booking</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 <x-app-layout :$title>
 <div class="container my-5">
         <div class="row g-4 " >
@@ -8,8 +43,9 @@
                 <div id="propertyCarousel"class="carousel slide shadow"data-bs-ride="carousel">
                     <div class="carousel-inner">
                     <div class="carousel-item active">
-                        
-                        <img src="{{$Property->PrimaryImage->getUrl()}}"  alt="" />
+<!--                         
+                        <img src="{{$Property->PrimaryImage->getUrl()}}"  alt="" /> -->
+                        <img src="https://images.crowdspring.com/blog/wp-content/uploads/2017/08/23163415/pexels-binyamin-mellish-106399.jpg"  alt="" />
                         </div>
                     @foreach ($Property->PropertyImages as $image)
 
@@ -48,17 +84,82 @@
                         <!-- للتواصل -->
                         <h5 class="text-dark fw-bold mt-4">Contact Owner:</h5>
                         <div class="d-flex flex-column gap-2">
-                            <a href="tel:+962798677535"class="btn btn-primary">
+                            <a href="tel:+962798677535"class="">
                                 <i class="bi bi-telephone-fill me-2"></i>Call: {{$Property->Dealer->phone}}
                             </a>
-                            <a href="mailto:info@property.com"class="btn btn-primary">
+                            <a href="mailto:info@property.com"class="">
                                 <i class="bi bi-envelope-fill me-2"></i>Email: {{$Property->Dealer->email}}
                             </a>
                                <!--  زر لحجز موعد مراجعة عقار-->
-                               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                               @auth()
+                               <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#bookingModal">
                                 <i class="bi bi-calendar-check-fill me-2"></i>Book an Appointment
                             </button>
-       
+                            <button type="button" class="btn btn-primary  " data-bs-toggle="modal" data-bs-target="#checkoutModal">
+         Checkout 
+    </button>
+                            @endauth
+                            @guest()
+                            <a href="{{ route('login') }}" class="text-white">
+                            <button  class="btn btn-primary">
+                                <i class="bi bi-calendar-check-fill me-2"></i>Book an Appointment
+                                </a>
+                                @endguest
+                       
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkoutModalLabel">Complete Payment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <!-- الاسم -->
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Enter your full name" required>
+                    </div>
+                    <!-- الايميل -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <!--  حقل لنوع الدفع بس للباك ببين عامله زي ماطلبت-->
+                    <input type="hidden" id="paymentMethod" name="paymentMethod" value="">
+                    <div class="mb-3">
+                        <label for="cardNumber" class="form-label">Card Number</label>
+                        <div class="card-number-container">
+                            <input type="text" class="form-control" id="cardNumber" placeholder="xxxx xxxx xxxx xxxx" maxlength="19" required>
+                            <i class="fa-solid fa-credit-card card-icon" id="cardIcon"></i>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="expiry" class="form-label">Expiry Date</label>
+                            <input type="text" class="form-control" id="expiry" placeholder="MM/YY" required>
+                            <!-- رسالة الخطا لتاريخ البطاقة -->
+                            <div id="expiry-error" class="error-message">Please enter a valid expiry date (MM/YY) that is not expired.</div>
+                        </div>
+                        <div class="col">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control" id="cvv" placeholder="123" maxlength="3" required>
+                            <!-- رسالة خطا اذا غير 3 ارقام -->
+                            <div id="cvv-error" class="error-message">CVV must be exactly 3 digits.</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea class="form-control" id="address" rows="3" placeholder="Enter your address" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="completePayment">Complete Payment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
                         </div>
                     </div>
                 </div>
@@ -67,20 +168,14 @@
         <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
+            @auth
                 <div class="modal-header">
                     <h5 class="modal-title" id="bookingModalLabel">Book an Appointment</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" ></button>
                 </div>
                 <div class="modal-body">
-                    <form id="bookingForm">
-                        <div class="mb-3">
-                            <label for="fullName" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="phoneNumber" class="form-label">Phone Number</label>
-                            <input type="tel" class="form-control" id="phoneNumber" placeholder="Enter your phone number" required>
-                        </div>
+                    <form id="bookingForm" method="post" action="{{ route('Book',['id'=>$Property->id]) }}">
+                        
                         <div class="mb-3">
                             <label for="appointmentDate" class="form-label">Preferred Date</label>
                             <input type="date" class="form-control" id="appointmentDate" required>
@@ -94,8 +189,11 @@
                             <textarea class="form-control" id="notes" rows="3" placeholder="Any additional information..."></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Submit Booking</button>
+                        
                     </form>
                 </div>
+                @endauth
+                
             </div>
         </div>
     </div>
@@ -127,7 +225,12 @@
                                     <input type="radio"class="btn-check"name="rating"id="star5"value="5"autocomplete="off">
                                     <label class="btn btn-outline-warning fs-5 px-1 py-0"for="star5">★</label>
                                 </div>
+                                @guest()
+                        <a href="{{route('login')}}" class="btn btn-primary">Submit Rating</a>
+                                @endguest
+                                @auth
                                 <button type="submit"class="btn btn-primary">Submit Rating</button>
+                                @endauth()
                             </div>
                             
                         </form>
@@ -135,38 +238,20 @@
                 </div>
             </div>
         </div>
-<!-- التعليقات -->
-<div class="row mt-4">
-    <div class="col-12">
+        <div class="row mt-4">
+        <div class="col-12">
         <div class="card shadow border-0">
             <div class="card-body">
                 <h5 class="card-title text-dark fw-bold mb-4">Comments</h5>
-                <ul class="list-group list-group-flush mb-4">
-                    <li class="list-group-item bg-light p-3 rounded mb-2 d-flex align-items-center gap-3 border">
-                        <img src="./images/person1.png" class="rounded-circle" alt="Ahmed's avatar" style="width: 50px; height: 50px; object-fit: cover;">
-                        <div class="d-flex flex-column">
-                            <strong class="text-dark">Ahmed</strong>
-                            <span class="text-muted">Great property!</span>
-                        </div>
-                    </li>
-                    <li class="list-group-item bg-light p-3 rounded mb-2 d-flex align-items-center gap-3 border">
-                        <img src="./images/person2.png" class="rounded-circle" alt="Sarah's avatar" style="width: 50px; height: 50px; object-fit: cover;">
-                        <div class="d-flex flex-column">
-                            <strong class="text-dark">Sarah</strong>
-                            <span class="text-muted">Excellent location</span>
-                        </div>
-                    </li>
-                    <li class="list-group-item bg-light p-3 rounded mb-2 d-flex align-items-center gap-3 border">
-                        <img src="./images/person1.png" class="rounded-circle" alt="Mohammed's avatar" style="width: 50px; height: 50px; object-fit: cover;">
-                        <div class="d-flex flex-column">
-                            <strong class="text-dark">Mohammed</strong>
-                            <span class="text-muted">Reasonable price</span>
-                        </div>
-                    </li>
-                </ul>
-                <form>
+                @foreach($Comments as $Comment)
+<x-PropertyComments :$Comment />
+    @endforeach
+    <form action="{{ route('Comments',$Property) }}">
+                 
                     <div class="mb-3">
-                        <textarea class="form-control" rows="3" placeholder="Add your comment..." required></textarea>
+                        <textarea class="form-control" rows="3" placeholder="Add your comment..." required name="Description"></textarea>
+                        <label for="" class="fw-bold fs-5 me-2">Ananymous Comment</label>
+                        <input type="checkbox" name="Ananymous" value="Ananymous" class="mt-5" >
                     </div>
                     <button type="submit" class="btn btn-primary">Submit Comment</button>
                 </form>
@@ -174,4 +259,13 @@
         </div>
     </div>
 </div>
+
+    <script src="./js/bootstrap.bundle.min.js"></script>
+   
+    <script>
+      
+
+       
+        
+    </script>
 </x-app-layout>

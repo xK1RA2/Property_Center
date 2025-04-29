@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('faivorate_property', function (Blueprint $table) {
+        Schema::create('locations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('property_id')->constrained('properties')->onDelete('cascade');
+            $table->string('name');
+            $table->decimal('lat', 10, 7);
+            $table->decimal('lng', 10, 7);
+            $table->timestamps();
         });
         
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('faivorate_Property');
+        Schema::dropIfExists('locations');
     }
 };

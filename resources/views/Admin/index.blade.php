@@ -2,6 +2,8 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <x-guest-layout :$Tailwind>
 
     <div class=" overflow-hidden flex flex-col  justify-center">
@@ -60,7 +62,9 @@
                         </div>
                     </div>
                 </header>
-                <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
+            
+                     
+                        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
                     <div class="container px-6 py-8 mx-auto">
                         <h3 class="text-3xl font-medium text-gray-700">Dashboard</h3>
 
@@ -91,9 +95,20 @@
                                                     fill="currentColor"></path>
                                             </svg>
                                         </div>
-                                        <div class="ms-3">
+                                        <div class="ms-3 flex justify-between items-center w-full">
+                                            <div>
                                             <h4 class="fw-semibold text-dark">{{$Users->count();}}</h4>
                                             <div class="text-muted">Users</div>
+                                            </div>
+                                            <div>
+                                                <svg class="w-16 h-16" viewBox="0 0 36 36" placeholder="8,828">
+                                                    <circle class="text-gray-200" stroke-width="3" stroke="currentColor"
+                                                        fill="transparent" r="15" cx="18" cy="18" />
+                                                    <circle class="text-blue-500" stroke-width="3" stroke="currentColor"
+                                                        fill="transparent" stroke-dasharray="75, 100"
+                                                        stroke-linecap="round" r="15" cx="18" cy="18" />
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -114,9 +129,23 @@
                                                     fill="currentColor"></path>
                                             </svg>
                                         </div>
-                                        <div class="ms-3">
+                                        <div class="ms-3 flex justify-between items-center w-full">
+                                            <div>
                                             <h4 class="fw-semibold text-dark">{{$Orders->count();}}</h4>
                                             <div class="text-muted">Total Orders</div>
+                                            </div>
+                                            <div>
+                                                <svg class="w-16 h-16" viewBox="0 0 36 36" placeholder="8,828">
+                                                    <!-- Background Circle -->
+                                                    <circle class="text-gray-200" stroke-width="3" stroke="currentColor"
+                                                        fill="transparent" r="15" cx="18" cy="18" />
+                                                    <!-- Progress Circle -->
+                                                    <circle class="text-yellow-500" stroke-width="3"
+                                                        stroke="currentColor" fill="transparent"
+                                                        stroke-dasharray="75, 100" stroke-linecap="round" r="15" cx="18"
+                                                        cy="18" />
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -134,9 +163,23 @@
                                             </svg>
 
                                         </div>
-                                        <div class="ms-3">
+                                        <div class="ms-3 flex justify-between items-center w-full">
+                                            <div>
                                             <h4 class="fw-semibold text-dark">{{$Properties->count();}}</h4>
                                             <div class="text-muted">Total Properties</div>
+                                            </div>
+
+                                            <div>
+                                                <svg class="w-16 h-16" viewBox="0 0 36 36">
+                                                    <!-- Background Circle -->
+                                                    <circle class="text-gray-200" stroke-width="3" stroke="currentColor"
+                                                        fill="transparent" r="15" cx="18" cy="18" />
+                                                    <!-- Progress Circle -->
+                                                    <circle class="text-red-500" stroke-width="3" stroke="currentColor"
+                                                        fill="transparent" stroke-dasharray="75, 100"
+                                                        stroke-linecap="round" r="15" cx="18" cy="18" />
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -155,9 +198,23 @@
                                             </svg>
 
                                         </div>
-                                        <div class="ms-3">
+                                        <div class="ms-3 flex justify-between items-center w-full">
+                                            <div>
                                             <h4 class="fw-semibold text-dark">{{$Profit}}</h4>
                                             <div class="text-muted">Profit</div>
+                                            </div>
+                                            <div>
+                                                <svg class="w-16 h-16" viewBox="0 0 36 36">
+                                                    <!-- Background Circle -->
+                                                    <circle class="text-gray-200" stroke-width="3" stroke="currentColor"
+                                                        fill="transparent" r="15" cx="18" cy="18" />
+                                                    <!-- Progress Circle -->
+                                                    <circle class="text-green-600" stroke-width="3"
+                                                        stroke="currentColor" fill="transparent"
+                                                        stroke-dasharray="75, 100" stroke-linecap="round" r="15" cx="18"
+                                                        cy="18" />
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -165,389 +222,89 @@
                         </div>
 
 
-                     
-
-                        <div class="flex flex-col mt-8">
-                            <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-                                <div
-                                    class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
-                                    <table class="min-w-full">
-                                        <thead>
-                                            <tr>
-                                                <th
-                                                    class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500  tracking-wider">
-                                                    Name</th>
-                                                <th
-                                                    class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500  tracking-wider">
-                                                    Email</th>
-                                                <th
-                                                    class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500  tracking-wider">
-                                                    Status</th>
-                                                <th
-                                                    class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500  tracking-wider">
-                                                    Role</th>
-                                                <th
-                                                    class="px-6 py-3 border-b border-gray-200 bg-gray-50  text-xs leading-4 font-medium text-gray-500  tracking-wider text-left">
-                                                    Accept or Refuse</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody class="bg-white">
-                                            <tr>
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <div class="flex items-center">
-                                                        <div class="flex-shrink-0 h-10 w-10">
-                                                            <img class="h-10 w-10 rounded-full"
-                                                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                                alt="" />
-                                                        </div>
-
-                                                        <div class="ml-4">
-                                                            <div class="text-sm leading-5 font-medium text-gray-900">
-                                                                John Doe</div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-
-                                                    <div class="text-sm leading-5 text-gray-500">john@example.com</div>
-                                                </td>
-
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <span
-                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                                                </td>
-
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                                    Owner</td>
-
-                                                <td
-                                                    class="flex flex-col space-y-3 px-6 py-4 whitespace-no-wrap md:flex-row md:space-y-0 md:space-x-3 border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                                    <button data-ripple-light="true" type="button"
-                                                        class="select-none rounded-lg bg-[#00B98E] py-3 px-6 text-center align-middle font-sans text-xs font-bold  text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        Accept
-                                                    </button>
-                                                    <button data-ripple-light="true" type="button"
-                                                        class="select-none rounded-lg bg-red-700 py-3 px-6 text-center align-middle font-sans text-xs font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        Refuse
-                                                    </button>
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <div class="flex items-center">
-                                                        <div class="flex-shrink-0 h-10 w-10">
-                                                            <img class="h-10 w-10 rounded-full"
-                                                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                                alt="" />
-                                                        </div>
-
-                                                        <div class="ml-4">
-                                                            <div class="text-sm leading-5 font-medium text-gray-900">
-                                                                John Doe</div>
-
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <div class="text-sm leading-5 text-gray-500">john@example.com</div>
-                                                </td>
-
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <span
-                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                                                </td>
-
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                                    Owner</td>
-
-                                                <td
-                                                    class="flex flex-col space-y-3 px-6 py-4 whitespace-no-wrap md:flex-row md:space-y-0 md:space-x-3 border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                                    <button data-ripple-light="true" type="button"
-                                                        class="select-none rounded-lg bg-[#00B98E] py-3 px-6 text-center align-middle font-sans text-xs font-bold  text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        Accept
-                                                    </button>
-                                                    <button data-ripple-light="true" type="button"
-                                                        class="select-none rounded-lg bg-red-700 py-3 px-6 text-center align-middle font-sans text-xs font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        Refuse
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <div class="flex items-center">
-                                                        <div class="flex-shrink-0 h-10 w-10">
-                                                            <img class="h-10 w-10 rounded-full"
-                                                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                                alt="" />
-                                                        </div>
-
-                                                        <div class="ml-4">
-                                                            <div class="text-sm leading-5 font-medium text-gray-900">
-                                                                John Doe</div>
-
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <div class="text-sm leading-5 text-gray-500">john@example.com</div>
-                                                </td>
-
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <span
-                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                                                </td>
-
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                                    Owner</td>
-
-                                                <td
-                                                    class="flex flex-col space-y-3 px-6 py-4 whitespace-no-wrap md:flex-row md:space-y-0 md:space-x-3 border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                                    <button data-ripple-light="true" type="button"
-                                                        class="select-none rounded-lg bg-[#00B98E] py-3 px-6 text-center align-middle font-sans text-xs font-bold  text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        Accept
-                                                    </button>
-                                                    <button data-ripple-light="true" type="button"
-                                                        class="select-none rounded-lg bg-red-700 py-3 px-6 text-center align-middle font-sans text-xs font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        Refuse
-                                                    </button>
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <div class="flex items-center">
-                                                        <div class="flex-shrink-0 h-10 w-10">
-                                                            <img class="h-10 w-10 rounded-full"
-                                                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                                alt="" />
-                                                        </div>
-
-                                                        <div class="ml-4">
-                                                            <div class="text-sm leading-5 font-medium text-gray-900">
-                                                                John Doe</div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <div class="text-sm leading-5 text-gray-500">john@example.com</div>
-
-                                                </td>
-
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <span
-                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                                                </td>
-
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                                    Owner</td>
-
-                                                <td
-                                                    class="flex flex-col space-y-3 px-6 py-4 whitespace-no-wrap md:flex-row md:space-y-0 md:space-x-3 border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                                    <button data-ripple-light="true" type="button"
-                                                        class="select-none rounded-lg bg-[#00B98E] py-3 px-6 text-center align-middle font-sans text-xs font-bold  text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        Accept
-                                                    </button>
-                                                    <button data-ripple-light="true" type="button"
-                                                        class="select-none rounded-lg bg-red-700 py-3 px-6 text-center align-middle font-sans text-xs font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        Refuse
-                                                    </button>
-                                                </td>
-
-
-                                            </tr>
-                                            <tr>
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <div class="flex items-center">
-                                                        <div class="flex-shrink-0 h-10 w-10">
-                                                            <img class="h-10 w-10 rounded-full"
-                                                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                                alt="" />
-                                                        </div>
-
-                                                        <div class="ml-4">
-                                                            <div class="text-sm leading-5 font-medium text-gray-900">
-                                                                John Doe</div>
-
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <div class="text-sm leading-5 text-gray-500">john@example.com</div>
-                                                </td>
-
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <span
-                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                                                </td>
-
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                                    Owner</td>
-
-                                                <td
-                                                    class="flex flex-col space-y-3 px-6 py-4 whitespace-no-wrap md:flex-row md:space-y-0 md:space-x-3 border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                                    <button data-ripple-light="true" type="button"
-                                                        class="select-none rounded-lg bg-[#00B98E] py-3 px-6 text-center align-middle font-sans text-xs font-bold  text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        Accept
-                                                    </button>
-                                                    <button data-ripple-light="true" type="button"
-                                                        class="select-none rounded-lg bg-red-700 py-3 px-6 text-center align-middle font-sans text-xs font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        Refuse
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <div class="flex items-center">
-                                                        <div class="flex-shrink-0 h-10 w-10">
-                                                            <img class="h-10 w-10 rounded-full"
-                                                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                                alt="" />
-                                                        </div>
-
-                                                        <div class="ml-4">
-                                                            <div class="text-sm leading-5 font-medium text-gray-900">
-                                                                John Doe</div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-
-                                                    <div class="text-sm leading-5 text-gray-500">john@example.com</div>
-                                                </td>
-
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <span
-                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                                                </td>
-
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                                    Owner</td>
-
-                                                <td
-                                                    class="flex flex-col space-y-3 px-6 py-4 whitespace-no-wrap md:flex-row md:space-y-0 md:space-x-3 border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                                    <button data-ripple-light="true" type="button"
-                                                        class="select-none rounded-lg bg-[#00B98E] py-3 px-6 text-center align-middle font-sans text-xs font-bold  text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        Accept
-                                                    </button>
-                                                    <button data-ripple-light="true" type="button"
-                                                        class="select-none rounded-lg bg-red-700 py-3 px-6 text-center align-middle font-sans text-xs font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        Refuse
-                                                    </button>
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <div class="flex items-center">
-                                                        <div class="flex-shrink-0 h-10 w-10">
-                                                            <img class="h-10 w-10 rounded-full"
-                                                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                                alt="" />
-                                                        </div>
-
-                                                        <div class="ml-4">
-                                                            <div class="text-sm leading-5 font-medium text-gray-900">
-                                                                John Doe</div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <div class="text-sm leading-5 text-gray-500">john@example.com</div>
-
-                                                </td>
-
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <span
-                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                                                </td>
-
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                                    Owner</td>
-
-                                                <td
-                                                    class="flex flex-col space-y-3 px-6 py-4 whitespace-no-wrap md:flex-row md:space-y-0 md:space-x-3 border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                                    <button data-ripple-light="true" type="button"
-                                                        class="select-none rounded-lg bg-[#00B98E] py-3 px-6 text-center align-middle font-sans text-xs font-bold  text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        Accept
-                                                    </button>
-                                                    <button data-ripple-light="true" type="button"
-                                                        class="select-none rounded-lg bg-red-700 py-3 px-6 text-center align-middle font-sans text-xs font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        Refuse
-                                                    </button>
-                                                </td>
-
-
-                                            </tr>
-                                            <tr>
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <div class="flex items-center">
-                                                        <div class="flex-shrink-0 h-10 w-10">
-                                                            <img class="h-10 w-10 rounded-full"
-                                                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                                alt="" />
-                                                        </div>
-
-                                                        <div class="ml-4">
-
-                                                            <div class="text-sm leading-5 font-medium text-gray-900">
-                                                                John Doe</div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <div class="text-sm leading-5 text-gray-500">john@example.com</div>
-                                                </td>
-
-                                                <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                                                    <span
-                                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                                                </td>
-
-                                                <td
-                                                    class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                                    Owner</td>
-
-                                                <td
-                                                    class="flex flex-col space-y-3 px-6 py-4 whitespace-no-wrap md:flex-row md:space-y-0 md:space-x-3 border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                                    <button data-ripple-light="true" type="button"
-                                                        class="select-none rounded-lg bg-[#00B98E] py-3 px-6 text-center align-middle font-sans text-xs font-bold  text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        Accept
-                                                    </button>
-                                                    <button data-ripple-light="true" type="button"
-                                                        class="select-none rounded-lg bg-red-700 py-3 px-6 text-center align-middle font-sans text-xs font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        Refuse
-                                                    </button>
-                                                </td>
-
-
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                        <div class="mt-8 ">
+                            <div class="w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-white p-6 rounded-xl shadow-md">
+                                    <h2 class="text-xl font-semibold">Total Revenue</h2>
+                                    <p class="text-3xl font-bold mt-2">$236,535</p>
+                                    <p class="text-blue-500 text-sm flex items-center mt-1">
+                                        <span class="text-lg">⬆</span> 0.8% Than Last Month
+                                    </p>
+                                    <canvas id="revenueChart" class="mt-4"></canvas>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+
+                                <div class="bg-white p-6 rounded-xl shadow-md">
+                                    <h2 class="text-xl font-semibold">Total Revenue</h2>
+                                    <div class="mt-4 space-y-3">
+                                        <div>
+                                            <p class="text-gray-600">Real Estate Listing Marketplaces <span
+                                                    class="float-right">64%</span></p>
+                                            <div class="w-full bg-gray-200 h-2 rounded-full">
+                                                <div class="bg-purple-500 h-2 rounded-full" style="width: 64%;"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-600">Property Center Website wishlist <span
+                                                    class="float-right">40%</span></p>
+                                            <div class="w-full bg-gray-200 h-2 rounded-full">
+                                                <div class="bg-green-500 h-2 rounded-full" style="width: 40%;"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-600">Paid Property <span class="float-right">50%</span>
+                                            </p>
+                                            <div class="w-full bg-gray-200 h-2 rounded-full">
+                                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 50%;"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-600">Agent Fees & Property Referrals <span
+                                                    class="float-right">80%</span></p>
+                                            <div class="w-full bg-gray-200 h-2 rounded-full">
+                                                <div class="bg-pink-500 h-2 rounded-full" style="width: 80%;"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-600">Others <span class="float-right">15%</span></p>
+                                            <div class="w-full bg-gray-200 h-2 rounded-full">
+                                                <div class="bg-red-500 h-2 rounded-full" style="width: 15%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                              </div>
                 </main>
             </div>
         </div>
     </div>
-
+    <script>
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [
+                    {
+                        label: 'Last Month',
+                        data: [180, 120, 100, 50, 150, 160, 90],
+                        backgroundColor: 'rgba(74,100,254)',
+                    },
+                    {
+                        label: 'Running Month',
+                        data: [100, 90, 70, 40, 110, 120, 60],
+                        backgroundColor: 'rgba(74,146,254,0.8)',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
+             
     
 </x-guest-layout >

@@ -18,22 +18,23 @@ class signupController
     }
     public function store(Request $request)
     {
+        
         // Validate request data
+        
         $request->validate([
             'name'=>'required|string|max:255',
+            'username'=>'required|string|max:255',
             'email'=>'required|email|unique:users,email',
             'phone' => 'required|string|size:10|unique:users,phone',
             'password'=>'required','string',
-            
-        
-            
         ]);
-
+      
 
        
         $role = Role::where('name','user')->first();
         
         $user = User::create([
+        'username' => $request->username,
         'name' => $request->name,
         'email' => $request->email,
         'phone' => $request->phone,
@@ -41,11 +42,12 @@ class signupController
         'role_id'=> 1
    
     ]);
-    
-    
- 
-      return redirect('auth.login');
-       
+
+        
+      return redirect()->route('login')->with('success','Account Created Successfully')->with('error','Fix the error');
+        
+          
+        
 
     }
 }

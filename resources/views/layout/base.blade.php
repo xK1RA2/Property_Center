@@ -9,6 +9,8 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
 
+    <!-- Map API -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
 

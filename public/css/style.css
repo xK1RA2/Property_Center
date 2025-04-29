@@ -75,13 +75,13 @@
     margin-top: 45px;
     padding: 0 3rem;
     transition: .5s;
-    z-index: 9999;
+    z-index: 1050;
 }
 
 .nav-bar.sticky-top {
     position: sticky;
     padding: 0;
-    z-index: 9999;
+    z-index: 1050;
 }
 
 .navbar {
@@ -143,23 +143,17 @@
 
 @media (min-width: 992px) {
     .navbar .nav-item .dropdown-menu {
-        display: block;
+
         top: 100%;
         margin-top: 0;
-        transform: rotateX(-75deg);
+  
         transform-origin: 0% 0%;
-        opacity: 0;
-        visibility: hidden;
+
         transition: .5s;
         
     }
 
-    .navbar .nav-item:hover .dropdown-menu {
-        transform: rotateX(0deg);
-        visibility: visible;
-        transition: .5s;
-        opacity: 1;
-    }
+
 }
 
 

@@ -1,4 +1,4 @@
-@props(['Tailwind'=>0,'title'=>"Profile",'Dealers'])
+@props(['Tailwind'=>0,'title'=>"Profile",'Dealers','user'])
 
 <x-app-layout :$Tailwind :$title>
 
@@ -20,17 +20,20 @@
                     </button>
                 </div>
 
-                <form class="mt-3  p-3 rounded" action="POST">
-                    <h6 class="fw-bold text-primary mb-3">Update Password</h6>
+                <form class="mt-3  p-3 rounded" method="post" action="{{ route('UpdatePassword') }}" >
+                @csrf  
+                <h6 class="fw-bold text-primary mb-3">Update Password</h6>
                     <div class="mb-3">
                         <label class="form-label text-muted">Old Password</label>
-                        <input class="form-control rounded-pill" type="password" placeholder="Enter old password" required>
+                        <input class="form-control rounded-pill" type="password" name="password" placeholder="Enter old password" required>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label text-muted">New Password</label>
-                        <input class="form-control rounded-pill" type="password" placeholder="Enter new password" required>
+                        <input class="form-control rounded-pill" type="password" name="newPassword" placeholder="Enter new password" required>
                     </div>
-                    <button class="btn btn-primary w-100 mt-2">Change Password</button>
+
+                    <button class="btn btn-primary w-100 mt-2" type="submit">Change Password</button>
                 </form>
 
               
@@ -48,13 +51,13 @@
                                
                                 <div class="p-1  justify-content-between align-items-center">
                                    <label class="   text-dark fs-5 ">Username : </label>
-                                    <input class="  border-0 border-bottom form-control  bg-white" id="username" value="abed alrehman" disabled>
+                                    <input class="  border-0 border-bottom form-control  bg-white" id="username" value="{{$user->username}}" disabled>
                                 </div>
                             </div>
                             <div class="col-md-6">
                             <div class="p-1  justify-content-between align-items-center">
                                    <label class="   text-dark fs-5 ">Name : </label>
-                                    <input class="  border-0 border-bottom form-control  bg-white" id="name" value="abed alrehman" disabled>
+                                    <input class="  border-0 border-bottom form-control  bg-white" id="name" value="{{$user->name}}" disabled>
                                 </div>
                             </div>
                         </div>
@@ -65,13 +68,13 @@
                                 <div class="col-md-6">
                                 <div class="p-1  justify-content-between align-items-center">
                                    <label class="   text-dark fs-5 ">Email : </label>
-                                    <input class="  border-0 border-bottom form-control  bg-white" id="email" value="abed alrehman" disabled>
+                                    <input class="  border-0 border-bottom form-control  bg-white" id="email" value="{{$user->email}}" disabled>
                                 </div>
                                 </div>
                                 <div class="col-md-6">
                                 <div class="p-1  justify-content-between align-items-center">
                                    <label class="   text-dark fs-5 ">Phone : </label>
-                                    <input class="  border-0 border-bottom form-control  bg-white" id="phone" value="abed alrehman" disabled>
+                                    <input class="  border-0 border-bottom form-control  bg-white" id="phone" value="{{$user->phone}}" disabled>
                                 </div>
                                 </div>
                             </div>
@@ -87,15 +90,19 @@
 
                   
                 </div>
+                @if(request()->user()->role_id==1)
                 <div class="shadow " style="margin-top:38px">
-                <form action="" class=" p-3 rounded">
-
+                
+                <form action="{{ route('Request') }}" method="post" class=" p-3 rounded">
+                @csrf
                 <h3 class="text-center my-4 text-dark">Become a Trader</h3>
 
                 <button type=" submit" class="btn btn-primary w-100 mt-2"> Submit Request </button>
 
                 </form>
+                
                 </div>
+                @endif
 
             </div>
         </div>
