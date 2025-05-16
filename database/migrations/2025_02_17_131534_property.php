@@ -10,10 +10,10 @@ return new class extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('Dealer_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('Dealer_id')->references('id')->on('users')->onDelete('cascade');;
             $table->foreignId('property_type_id')->constrained('Property_Type');
             $table->foreignId('city_id')->constrained('cities');
-            $table->string('PurchaseType');
+          $table->string('PurchaseType');
             $table->integer('year');
             $table->integer('price');
             $table->integer('phone')->nullable();

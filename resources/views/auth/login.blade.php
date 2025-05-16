@@ -40,10 +40,12 @@
              
              
                 
-          
-          
+          @if(session('error'))
+            {{ session('error') }}
+          @endif
+         
             <div class="flex flex-col w-full md:flex-row md:space-x-2">
-                    <button
+                    <a href="{{ route('login.oauth','google') }}"
                         class="f mt-2 w-full h-[50px] rounded-[10px] flex justify-center items-center font-medium gap-2 border border-[#ededef] bg-white cursor-pointer hover:bg-gray-50 transition duration-600">
                         <svg version="1.1" width="20" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512"
@@ -66,7 +68,7 @@
 
                         Google
 
-                    </button>
+                    </a>
 
 
                     <button

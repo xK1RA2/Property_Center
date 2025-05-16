@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('locations', function (Blueprint $table) {
+        Schema::create('replay', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignId('property_id')->constrained()->onDelete('cascade');
-            $table->decimal('lat', 10, 7);
-            $table->decimal('lng', 10, 7);
+            $table->foreignId('user_id');
+            $table->foreignId('Comment_id');
+            $table->foreignId('Comment_type_id');
+            $table->longtext('Description');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
-        });
-        
+
+    });
     }
 
     /**
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('locations');
+        Schema::dropIfExists('replay');
     }
 };

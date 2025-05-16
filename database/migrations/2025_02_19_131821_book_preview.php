@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('book_preview', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->index();
+            $table->foreignId('dealer_id');
             $table->foreignId('property_id');
-           
-            $table->timestamp('Date');
-            $table->enum('status', ['Approved','Pending','Canceled'])->default('Approved');
-           
+            $table->string('description');
+            $table->timestamp('date')->nullable();
+            $table->enum('status', ['Approved','Pending','Rejected'])->default('Approved');
+            $table->timestamps();
         });
     }
 

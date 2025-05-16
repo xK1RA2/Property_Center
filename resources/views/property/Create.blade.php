@@ -11,7 +11,7 @@
                   <label class="form-label">State</label>
                   <select id="citySelect"  class="form-control bg-white"name="state_id">
                  
-                  <option value="">State</option>
+                  <option value="">City</option>
     
                   @foreach ($Cities as $city)
                       <option value="{{$city->state->id}}"  >

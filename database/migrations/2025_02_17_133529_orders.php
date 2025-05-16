@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('Property_id')->constrained('property')->onDelete('cascade'); // Car being ordered
             $table->enum('status', ['Approved','Pending','Canceled'])->default('Approved');
             $table->integer('price'); 
-            $table->timestamps('date');
+            $table->timestamp('date');
         });
     }
 

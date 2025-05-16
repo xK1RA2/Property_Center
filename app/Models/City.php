@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class City extends Model
 {
     use HasFactory;
-    public $timestamps = false;
+    protected $table = 'cities';
+        public $timestamps = false;
   
 
 

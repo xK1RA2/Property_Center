@@ -5,8 +5,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\PropertyType;
-use App\Models\User;
 use App\Models\Storage;
+use App\Models\User;
+use App\Models\City;
+use App\Models\State;
 
 
 
@@ -20,13 +22,13 @@ class ViewProperty
         ->with(['PrimaryImage','city','Features','PropertyRate'])
         ->orderBy('published_at','desc')
         ->get();    
-        
+        $Locations = City::groupBy('name')->get();
         $propertyType = PropertyType::groupBy('name')->get();
         $dealers = user::where('role_id','2') 
         ->limit(4)
         ->get();    
         
-        return view("property.search",['Properties'=>$Properties ,'dealers' =>$dealers , 'propertyType'=>$propertyType]);
+        return view("property.search",['Properties'=>$Properties ,'dealers' =>$dealers , 'propertyType'=>$propertyType,'Locations'=>$Locations]);
         
 }
 
@@ -39,17 +41,23 @@ public function search(Request $request)
     {
         
       
-        $PropertyType = $request->integer('Property_type_id');  
+        $PropertyType = $request->integer('Property_type_id'); 
+         
+        $PurchaseType=null;
+        if($request->string('Purchase_Type')=="Sell")
+        $PurchaseType ="Sell" ;  
+         elseif($request->string('Purchase_Type')=="Rent")
+         $PurchaseType ="Rent" ;  
         $city = $request->integer('city_id');  
-        $yearFrom = $request->integer('year_from');  
-        $yearTo = $request->integer('year_to');  
+
         $priceFrom = $request->integer('price_from');  
         $priceTo = $request->integer('price_to');  
    
         $sort = $request->input('sort','-published_at');  
     
         $query = Property::where('published_at','<',now())
-        ->with(['PrimaryImage','city','propertyType','Features']);
+        ->with(['PrimaryImage','City','propertyType','Features']);
+      
         if($city)
         {
             $query->where('city_id',$city); 
@@ -58,33 +66,31 @@ public function search(Request $request)
         {
             $query->where('Property_type_id',$PropertyType); 
         }
-        if($yearFrom)
-        {
-            $query->where('year','>=',$yearFrom); 
-        }
-        if($yearTo)
-        {
-            $query->where('year','<=',$yearTo); 
-        }
+        
+      
+       
         if($priceFrom)
         {
             $query->where('price','>=',$priceFrom); 
         }
-        if($yearTo)
+        if($priceTo)
         {
             $query->where('price','<=',$priceTo); 
         }
-        if(str_starts_with($sort,'-'))
+      
+        if($PurchaseType)
         {
-            $sort = substr($sort,1);
-            $query->orderBy($sort,'desc'); 
+            $query->where('PurchaseType',$PurchaseType); 
         }
-        else 
-        {
+
             $query->orderBy($sort);
-        }
-        $Properties = $query;
-        return view("property.search",['Properties'=>$Properties , 'propertyType'=>$PropertyType]);
+    
+        $Properties = $query->get();
+        $PropertyTypes = PropertyType::get(); 
+        $Locations = City::groupBy('name')->get();
+
+        
+        return view('property.search',['Properties'=>$Properties , 'propertyType'=>$PropertyTypes,'Locations'=>$Locations]);
    
     }
   

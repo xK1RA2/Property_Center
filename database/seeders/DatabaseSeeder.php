@@ -117,11 +117,8 @@ class DatabaseSeeder extends Seeder
            ['position'=>$sequence->index %5 +1]),
              'PropertyImages')
            ->hasFeatures()
-         
-    
-      
-         
-          
+           ->hasLocation()
+
         )
         ->create();
 

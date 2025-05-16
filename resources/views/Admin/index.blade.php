@@ -56,7 +56,7 @@
                                 <a href="#"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Profile</a>
 
-                                <a href="#"
+                                <a href="{{route('logout')}}"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white">Logout</a>
                             </div>
                         </div>
@@ -200,7 +200,7 @@
                                         </div>
                                         <div class="ms-3 flex justify-between items-center w-full">
                                             <div>
-                                            <h4 class="fw-semibold text-dark">{{$Profit}}</h4>
+                                            <h4 class="fw-semibold text-dark">${{$Profit}}</h4>
                                             <div class="text-muted">Profit</div>
                                             </div>
                                             <div>

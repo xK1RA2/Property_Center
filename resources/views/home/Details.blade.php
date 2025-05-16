@@ -5,29 +5,20 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="bookingModalLabel">Book an Appointment</h5>
+                  
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="bookingForm">
-                        <div class="mb-3">
-                            <label for="fullName" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="phoneNumber" class="form-label">Phone Number</label>
-                            <input type="tel" class="form-control" id="phoneNumber" placeholder="Enter your phone number" required>
-                        </div>
+                    <form id="bookingForm" action="{{ route('Booking',$Property) }}">
+                     
                         <div class="mb-3">
                             <label for="appointmentDate" class="form-label">Preferred Date</label>
-                            <input type="date" class="form-control" id="appointmentDate" required>
+                            <input type="date" class="form-control" id="appointmentDate" name="date" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="appointmentTime" class="form-label">Preferred Time</label>
-                            <input type="time" class="form-control" id="appointmentTime" required>
-                        </div>
+                       
                         <div class="mb-3">
                             <label for="notes" class="form-label">Additional Notes</label>
-                            <textarea class="form-control" id="notes" rows="3" placeholder="Any additional information..."></textarea>
+                            <textarea class="form-control" id="notes" rows="3" name="description" placeholder="Any additional information..."></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Submit Booking</button>
                     </form>
@@ -51,7 +42,7 @@
 
                     <div class="carousel-item ">
                         
-                  <img src="{{$image->getUrl()}}" alt="" />
+                  <img src="{{$image->getUrl()}}" alt=""  height="100%" width="100%">
                   </div>
                   @endforeach
                         
@@ -67,6 +58,7 @@
                     </button>
                 </div>
             </div>
+      
             <!-- المعلومات الي على يمين الشاشة -->
             <div class="col-md-6">
                 <div class="card h-100 shadow border-0">
@@ -92,20 +84,46 @@
                             </a>
                                <!--  زر لحجز موعد مراجعة عقار-->
                                @auth()
+                               @if(session('BookingSuccess'))
+                            <div class="alert alert-success">
+                        {{ session('BookingSuccess') }}
+                        </div>
+                             @endif
+                               @if(session('BookingUpdated'))
+                            <div class="alert alert-info">
+                        {{ session('BookingUpdated') }}
+                        </div>
+                             @endif
                                <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#bookingModal">
                                 <i class="bi bi-calendar-check-fill me-2"></i>Book an Appointment
                             </button>
+                            @if(session('Past'))
+                    <div class="alert alert-danger">
+                        {{ session('Past') }}
+                        </div>
+                    @endif
+                    @if(session('CheckoutSuccess'))
+                    <div class="alert alert-success">
+                        {{ session('CheckoutSuccess') }}
+                        </div>
+                    @endif
+                            @if(session('ExpDate'))
+                    <div class="alert alert-danger">
+                        {{ session('ExpDate') }}
+                        </div>
+                    @endif
+                            @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
                             <button type="button" class="btn btn-primary  " data-bs-toggle="modal" data-bs-target="#checkoutModal">
          Checkout 
     </button>
-                            @endauth
-                            @guest()
-                            <a href="{{ route('login') }}" class="text-white">
-                            <button  class="btn btn-primary">
-                                <i class="bi bi-calendar-check-fill me-2"></i>Book an Appointment
-                                </a>
-                                @endguest
-                       
     <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -114,6 +132,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <!-- الاسم -->
+                 <form action="{{ route('checkout',$Property) }}" >
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="name" class="form-label">Full Name</label>
@@ -129,36 +148,62 @@
                     <div class="mb-3">
                         <label for="cardNumber" class="form-label">Card Number</label>
                         <div class="card-number-container">
-                            <input type="text" class="form-control" id="cardNumber" placeholder="xxxx xxxx xxxx xxxx" maxlength="19" required>
+                            <input type="text" class="form-control" name="CardNumber" id="cardNumber" placeholder="xxxx xxxx xxxx xxxx" maxlength="19" required>
                             <i class="fa-solid fa-credit-card card-icon" id="cardIcon"></i>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col">
                             <label for="expiry" class="form-label">Expiry Date</label>
-                            <input type="text" class="form-control" id="expiry" placeholder="MM/YY" required>
+                            <input type="date" name="expDate" class="form-control" id="expiry" placeholder="MM/YY" required>
                             <!-- رسالة الخطا لتاريخ البطاقة -->
                             <div id="expiry-error" class="error-message">Please enter a valid expiry date (MM/YY) that is not expired.</div>
                         </div>
                         <div class="col">
                             <label for="cvv" class="form-label">CVV</label>
-                            <input type="text" class="form-control" id="cvv" placeholder="123" maxlength="3" required>
+                            <input type="text" class="form-control" name="cvv" id="cvv" placeholder="123" maxlength="3" required>
                             <!-- رسالة خطا اذا غير 3 ارقام -->
                             <div id="cvv-error" class="error-message">CVV must be exactly 3 digits.</div>
                         </div>
                     </div>
+                    @if($Property->PurchaseType == "Rent")
+                    <div class="row">
+                    <div class="col">
+                            <label for="expiry" class="form-label">Date From</label>
+                            <input type="date" name="From" class="form-control" id="expiry" placeholder="MM/YY" required>
+                            <!-- رسالة الخطا لتاريخ البطاقة -->
+                            <div id="expiry-error" class="error-message">Please enter a valid expiry date (MM/YY) that is not expired.</div>
+                        </div>  <div class="col">
+                            <label for="expiry" class="form-label">Date To</label>
+                            <input type="date" name="To" class="form-control" id="expiry" placeholder="MM/YY" required>
+                            <!-- رسالة الخطا لتاريخ البطاقة -->
+                            <div id="expiry-error" class="error-message">Please enter a valid expiry date (MM/YY) that is not expired.</div>
+                        </div>
+                        </div>
+                    @endif
                     <div class="mb-3">
                         <label for="address" class="form-label">Address</label>
-                        <textarea class="form-control" id="address" rows="3" placeholder="Enter your address" required></textarea>
+                        <textarea class="form-control" id="address" name="address" rows="3" placeholder="Enter your address" required></textarea>
                     </div>
                 </div>
+             
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="completePayment">Complete Payment</button>
+                    <button type="submit" class="btn btn-secondary" >Close</button>
+                    <button type="submit" class="btn btn-primary" >Complete Payment</button>
                 </div>
             </div>
         </div>
+        </form>
     </div>
+                            @endauth
+                            @guest()
+                            <a href="{{ route('login') }}" class="text-white">
+                            <button  class="btn btn-primary">
+                                <i class="bi bi-calendar-check-fill me-2"></i>Book an Appointment
+                                </a>
+                                @endguest
+                       
+
 
                         </div>
                     </div>
@@ -170,6 +215,7 @@
             <div class="modal-content">
             @auth
                 <div class="modal-header">
+             
                     <h5 class="modal-title" id="bookingModalLabel">Book an Appointment</h5>
                     <button type="button" class="btn-close" ></button>
                 </div>
@@ -212,7 +258,13 @@
                         <form id="ratingForm" action="{{route('rate.store', $Property)}}" method="post" >
                             @csrf
                             <h6 class="fw-bold text-primary mb-3">Choose Your Rating:</h6>
-                            <div class="d-flex align-items-center justify-content-start gap-3 mb-3 p-3 bg-light rounded">
+                            @if(session('RateSubmit'))
+                            <div class="alert alert-success text-dark">{{ session('RateSubmit') }}</div>
+                            @elseif(session('update'))
+                            <div class="alert alert-info text-dark">{{ session('update') }}</div>
+                            
+                            @endif
+                            <div class="d-flex align-items-center justify-content-start gap-3 mb-3 p-3 rounded">
                                 <div class="btn-group"role="group"aria-label="Star Rating">
                                     <input type="radio"class="btn-check"name="rating"id="star1"value="1"autocomplete="off">
                                     <label class="btn btn-outline-warning fs-5 px-1 py-0"for="star1">★</label>
@@ -243,6 +295,17 @@
         <div class="card shadow border-0">
             <div class="card-body">
                 <h5 class="card-title text-dark fw-bold mb-4">Comments</h5>
+                @if(session('Delete'))
+                <div class="alert alert-danger">
+                    {{ session('Delete') }}
+                    </div>
+                @endif
+
+                @if(session('success'))
+                <div class="alert alert-success text-dark">
+{{ session('success') }}
+                </div>
+                @endif
                 @foreach($Comments as $Comment)
 <x-PropertyComments :$Comment />
     @endforeach

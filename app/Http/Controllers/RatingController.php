@@ -12,7 +12,7 @@ class RatingController
     public function store(Request $request, Property $property)
     {
 
-      $rate = Rate::where(['user_id'=>$request->user()->id])->first();
+      $rate = Rate::where(['user_id'=>$request->user()->id ,'Property_id'=>$property->id])->first();
       if(!$rate){
         $request->validate([
             'rating' => 'required|integer|between:1,5'
@@ -28,8 +28,20 @@ class RatingController
             ],
             
         );
+        return redirect()->back()->with('RateSubmit','Thanks For Rating');
+    }else
+    {
+        $request->validate([
+            'rating' => 'required|integer|between:1,5'
+        ]);
+
+            $Rate = Rate::where('Property_id',$property->id);
+            $rate = ['Rate'=>$request['rating']];
+            $Rate->update($rate);
+            return redirect()->back()->with('update','Rate Upated');
+        
     }
-        return redirect()->back();
+        
     }
     
 }

@@ -1,31 +1,47 @@
-@props(['Tailwind'=>0,'title'=>"Profile",'Dealers','user'])
+@props(['Tailwind'=>0,'title'=>"Profile",'Dealers','user','Avg'])
 
 <x-app-layout :$Tailwind :$title>
-
-
 
     <div class="container shadow-lg mt-5 p-4 bg-white rounded">
         <div class="row">
             <!-- Left Section -->
             <div class="col-md-4  ">
                 <div class="p-3 text-center border-0 ">
+                    
                     <h5 class="fw-bold text-muted mb-4">Account Management</h5>
-                    <img id="profileImage" src="images (1).jpg" 
-                         class="img-fluid rounded-circle mx-auto d-block mt-2 shadow-sm" 
+                    <img id="profile-pic" 
+                    
+                            src="{{
+                            asset('storage/'.$user->profile_image) 
+                            }}" 
+                            
+                            class="img-fluid rounded-circle mx-auto d-block mt-2 shadow-sm" 
                          style="width: 150px; height: 150px; object-fit: cover;">
-                    <input type="file" id="imageUpload" class="d-none" accept="image/*">
-                    <button class="btn btn-outline-primary mt-3" 
-                            onclick="document.getElementById('imageUpload').click()">
-                        Upload Photo
-                    </button>
+                         @if(session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                         @endif
+                    <input type="file" id="imageUploadx " class="d-none" accept="image/*">
+                    <form action="{{route('EditImage')}}" enctype="multipart/form-data" method="POST">
+                    @csrf
+                    <div>
+                    <input type="file" id="upload-input" name="image"  accept="image/*" class="mt-3 " >
+                    <button class="btn btn-primary mt-3" type="submit">Submit</button>
+                    </div>
+                    </form>
                 </div>
 
                 <form class="mt-3  p-3 rounded" method="post" action="{{ route('UpdatePassword') }}" >
                 @csrf  
                 <h6 class="fw-bold text-primary mb-3">Update Password</h6>
+                
                     <div class="mb-3">
-                        <label class="form-label text-muted">Old Password</label>
-                        <input class="form-control rounded-pill" type="password" name="password" placeholder="Enter old password" required>
+                        <label class="form-label text-muted ">Old Password</label>
+                        @if(session('error') ) <span class="text-danger ps-3"> {{session('error')}}</span> @endif
+                        @if(session('PasswordUpdated') ) <span class="text-info ps-3"> {{session('PasswordUpdated')}}</span> @endif
+                        
+                        <input class="form-control rounded-pill " type="password" name="password" placeholder="Enter old password" required>
                     </div>
 
                     <div class="mb-3">
@@ -36,65 +52,87 @@
                     <button class="btn btn-primary w-100 mt-2" type="submit">Change Password</button>
                 </form>
 
-              
+             
             </div>
 
             <!-- Right Section -->
-            <div class="col-md-8 ">
+            <div class="col-md-8  ">
                 <div class="card p-4 border-0  position-relative">
                     
                     <h4 class="fw-bold text-dark mb-4 border-bottom">Profile Information</h4>
-                    <form id="profileForm" action="POST">
+                  @if(session('Personal'))
+                                <div class="alert alert-success">{{ session('Personal') }}</div>
+                  @endif
+                    <form id="profileForm" action="{{ route('InformationUpdate') }}" >
                         <div class="row mb-4">
                             <div class="col-md-6">
                                
                                
                                 <div class="p-1  justify-content-between align-items-center">
                                    <label class="   text-dark fs-5 ">Username : </label>
-                                    <input class="  border-0 border-bottom form-control  bg-white" id="username" value="{{$user->username}}" disabled>
+                                    <input class="   border-primary form-control  bg-white @error('username') border-danger   @enderror" name="username" id="username" value="{{$user->username}}" >
                                 </div>
                             </div>
                             <div class="col-md-6">
                             <div class="p-1  justify-content-between align-items-center">
                                    <label class="   text-dark fs-5 ">Name : </label>
-                                    <input class="  border-0 border-bottom form-control  bg-white" id="name" value="{{$user->name}}" disabled>
+                                    <input class="   border-primary form-control  bg-white @error('name') border-danger  @enderror" name="name" id="name" value="{{$user->name}}" >
                                 </div>
                             </div>
                         </div>
             
                         <div class="mt-4">
-                            <h4 class="fw-bold text-dark border-bottom">Contact Info</h4>
+                            
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                 <div class="p-1  justify-content-between align-items-center">
                                    <label class="   text-dark fs-5 ">Email : </label>
-                                    <input class="  border-0 border-bottom form-control  bg-white" id="email" value="{{$user->email}}" disabled>
+                                    <input class="   border-primary form-control  bg-white @error('email') border-danger    @enderror" name="email" id="email" value="{{$user->email}}" type="email" >
                                 </div>
                                 </div>
                                 <div class="col-md-6">
                                 <div class="p-1  justify-content-between align-items-center">
                                    <label class="   text-dark fs-5 ">Phone : </label>
-                                    <input class="  border-0 border-bottom form-control  bg-white" id="phone" value="{{$user->phone}}" disabled>
+                                    <input class="   border-primary form-control  bg-white @error('phone') border-danger  @enderror" name="phone" id="phone" value="{{$user->phone}}" >
                                 </div>
                                 </div>
                             </div>
                         </div>
             
                      
+                        @if(request()->user()->role_id==2)
+                    <div class="fs-5 text-dark ">Rate :
+                    {{number_format($Avg, 1)}}
                     
+<div class="d-inline text-warning ps-5">
+                    <?php $i=1 ; ?>
+                    @for($i; $i<=$Avg ; $i++)
+                       <span > <i class="fa-solid fa-star"></i> </span>
+                    @endfor
+                    
+                    @if($i - $Avg < 1 )
+                    <i class="fa-solid fa-star-half-stroke"></i>
+                    @endif
+                    </div>
+</div> 
+              @endif
                         <button id="updateButton" class="btn btn-success mt-4 w-100 rounded-pill" type="submit" 
-                                onclick="updateProfile(event)">
+                                >
                             Update Profile
                         </button>
                     </form>
-
+                    
                   
                 </div>
                 @if(request()->user()->role_id==1)
+                @if(session('RequestSuccess'))
+                            <div class="alert alert-primary text-dark ">    {{ session('RequestSuccess') }}</div>
+                @endif 
                 <div class="shadow " style="margin-top:38px">
-                
+              
                 <form action="{{ route('Request') }}" method="post" class=" p-3 rounded">
                 @csrf
+               
                 <h3 class="text-center my-4 text-dark">Become a Trader</h3>
 
                 <button type=" submit" class="btn btn-primary w-100 mt-2"> Submit Request </button>
@@ -102,6 +140,9 @@
                 </form>
                 
                 </div>
+               
+                        
+
                 @endif
 
             </div>

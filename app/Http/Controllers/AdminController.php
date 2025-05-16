@@ -6,11 +6,14 @@ use App\Models\book_preview;
 use App\Models\PropertyType;
 use App\Models\request_trader;
 use App\Models\User;
+use App\Models\City;
+use App\Models\checkout;
 use App\Models\Auth;
 use App\Models\Order;
 use App\Models\PropertyFeatures;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\DB;
 
 class AdminController
 {
@@ -23,8 +26,9 @@ class AdminController
 
 
         $users= User::get();
-        $orders = Order::get();
-        $Profit = Order::avg('price');
+        $orders = checkout::get();
+        $Profit = checkout::sum('price');
+        $Profit = $Profit * 0.01;
         $Properties = Property::get();
         
 
@@ -43,10 +47,20 @@ class AdminController
         ->get();
         return view("Admin.ManageProperty",['Properties'=>$Properties]);
     }
-    public function DestroyProperty(Property $property){
+    public function EditProperty(Request $request , Property $property){
+                $Property = Property::where('id',$property->id)->first();
 
-     
-        $property->delete();
+                return redirect()->route('UpdateProperty',$Property);
+    }
+    public function UpdateProperty(Request $request , Property $property){
+        $propertyType = PropertyType::orderBy('name')->get();
+        $Cities = City::groupBy('name')->get();
+        $Purchases = Property::groupBy('PurchaseType')->get()->wherenotnull('PurchaseType');
+       
+            return  view('Admin.UpdateProperty',['Property'=>$property,'propertyType'=>$propertyType ,'Cities'=>$Cities,'Purchases'=>$Purchases]);
+    }
+    public function DestroyProperty(Property $property){
+        $Prop = Property::where('id',$property->id)->with(['Features','Book_Preview','Comment','PropertyRate','location'])->delete();
         return redirect()->route('ManageProperty');
 
     }
@@ -98,21 +112,20 @@ class AdminController
     }
     public function DestroyUsers(User $User){
        
-        if($User->role_id ==1){
-            $User->Properties()->delete();
-            $User->Comment()->delete();
-            $User->Book_Preview()->delete();
-            $User->Favourite_Property()->delete();
-            $User->delete();
-        }else{
+        // if($User->role_id ==1){
+    
 
-        $Property = Property::where('Dealer_id',$User->id)->get();
-        foreach($Property as $Prop)
-        $Prop->delete();
-      
-        $Book =book_preview::where('user_id',$User->id)->delete();  
-        dd();
-        }
+        //     // Make sure we load it with no relations (not needed unless you've eager loaded)
+        //     $User->unsetRelations(); // Removes any loaded relations
+            
+        //     $User?->delete(); 
+        // }else{
+
+        //     $User->unsetRelations(); // Removes any loaded relations
+            
+        //     $User?->delete(); 
+        // }
+        DB::statement('DELETE FROM users WHERE id = 4');
         return redirect()->route('ManageUsers');
     }
 }

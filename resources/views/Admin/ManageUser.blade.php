@@ -54,7 +54,7 @@
                                 <a href="#"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-[#00B98E] hover:text-white">Profile</a>
 
-                                <a href="#"
+                                <a href="{{route('logout')}}"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-[#00B98E] hover:text-white">Logout</a>
                             </div>
                         </div>
@@ -87,7 +87,9 @@
                                         <tr>
                                    
                                             <td class="px-4 py-4 text-center">{{$user->id}}</td>
-                                            <td class="py-4 px-4 text-center"><img src="images.jpg" class="object-cover rounded w-16 h-16" alt="Profile"></td>
+                                            <td class="py-4 px-4 text-center"><img  src="{{
+                    asset('storage/'.$user->profile_image) 
+                    }}"  class="object-cover rounded w-16 h-16" alt="Profile"></td>
                                             <td class="px-4 py-4 text-center">{{$user->name}}</td>
                                             <td class="px-4 py-4 text-center">{{$user->email}}</td>
                                             <td class="px-4 py-4 text-center">{{$user->phone}}</td>

@@ -4,7 +4,7 @@
             <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4 " >
                 <a href="/index" class="navbar-brand d-flex align-items-center text-center">
                   
-                    <h1 class="m-0 text-primary">Property Center</h1>
+                    <h2 class="m-0 text-primary">Property Center</h2>
                 </a>
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
@@ -53,9 +53,9 @@
                             <div class="dropdown-menu rounded-0 m-0">
                            
                             <a href="{{route('user.profile')}}" class="dropdown-item">Profile</a>
-                            @if(request()->user()->role_id==1)
+                            
                             <a href="{{route('orders')}}" class="dropdown-item">My Orders</a>
-                                @endif
+                              
                                 <a href="{{route('logout')}}" class="dropdown-item">Logout</a>
                                 
                                

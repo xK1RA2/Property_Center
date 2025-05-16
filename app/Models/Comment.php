@@ -23,7 +23,10 @@ class Comment extends Model
     }
     public function user():belongsTo
     {
-         return $this->belongsTo(User::class,'id');
+         return $this->belongsTo(User::class,'user_id');
+    }     
+    public function Replay():HasMany{
+     return $this->HasMany(Replay::class);
     }
 
     public function CommentType():HasOne

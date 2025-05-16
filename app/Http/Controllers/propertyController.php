@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Models\checkout;
 use App\Models\PropertyType;
 use App\Models\Property;
 use App\Models\Comment;
@@ -49,7 +50,7 @@ class propertyController
     public function update(Request $request, Property $property)
     {
         $user = $request->user()->role_id;
-        if($user !== 2){
+        if($user == 1){
             return redirect()->route("login");
         }
         $validatedData = $request->validate([
@@ -98,7 +99,10 @@ class propertyController
         $property->update($data);
         
         $property->features()->update($featuresData);
-   
+   if($user == 3){
+    return redirect()->route('ManageProperty',$property)
+        ->with('success','Property was updated');
+   }
         return redirect()->route('property.edit',$property)
         ->with('success','Property was updated');
     }
@@ -158,7 +162,8 @@ class propertyController
             
             $property->PropertyImages()->create(['image_path'=>$path,'position'=>$i+1]);
         }
-        return redirect()->back()->with('success','property was created');
+        
+        return redirect()->route('locations.create')->with('success','Property has been added you can add it\'s location in the map');
     }
 
     public function edit(Property $property,Request $request){
@@ -211,8 +216,67 @@ class propertyController
         $comment = Comment::create($data);
     }
         
-        return redirect()->back();
+        return redirect()->back()->with('success','Comment Has Been Submited');
 }
- 
+ public function CommentDelete(Comment $Comment , Request $request){
+        
+        $comment_Delete = Comment::where(['user_id'=>$request->user()->id , 'id' =>$Comment->id])->delete();
+
+        return redirect()->back()->with('Delete','Comment Has Been Deleted');
+ }
+
+public function checkout(Request $request , Property $property){
+    
+    
+
+    if($request['expDate'] > now()){
+            
+        if(isset($request['From']) && isset($request['To'])){
+                 $request->validate([
+    'From' => 'required|date',
+    'To' => 'required|date|after_or_equal:From',
+                    ]);
+                    
+               }
+  
+        $data=[
+            'user_id'=>$request->user()->id,
+            'dealer_id'=>$property->Dealer_id,
+            'property_id'=>$property->id,
+            'price'=>$property->price,
+            'card_number'=>$request['CardNumber'],
+            'expDate'=>$request['expDate'],
+            'from'=>$request['From'],
+            'to'=>$request['To'],
+            'cvv'=>$request['cvv'],
+            'address'=>$request['address'],
+            'date'=>now(),
+        ];
+     
+        
+       
+        $checkout = checkout::where(
+            ['user_id'=>$request->user()->id , 'property_id'=>$property->id]
+        )->first();
+
+        if($checkout){
+            $checkout->update($data);
+        }else{
+            $checkout=checkout::create($data);
+        }
+        $data = ['status'=>'Not Available'];
+        $property->update($data);
+
+        return redirect()->back()->with('CheckoutSuccess','Checkout Completed');
+     }else{
+        return redirect()->back()->with('ExpDate','Expiration date can not be in the past');
+    
+     }
+
+
+}
+
+
+
 }
 

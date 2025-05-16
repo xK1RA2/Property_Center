@@ -101,7 +101,7 @@
                                 <a href="#"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-[#00B98E] hover:text-white">Profile</a>
 
-                                <a href="#"
+                                <a href="{{route('logout')}}"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-[#00B98E] hover:text-white">Logout</a>
                             </div>
                         </div>
@@ -141,7 +141,7 @@
                                         @foreach($Properties as $Property)
                                         <tr>
                                             <td class="py-4 px-8">{{$Property->id}}</td>
-                                            <td class=""><img src="image.jpg" class="rounded img-fluid w-40 h-20" alt="Image"></td>
+                                            <td class=""><img src="{{$Property->PrimaryImage?->getUrl()}}" class="rounded img-fluid w-40 h-20" alt="Image"></td>
                                             <td class="py-4 px-8">{{$Property->PropertyType->name}}</td>
                                             <td class="py-4 px-8">{{$Property->city->name}} / {{$Property->city->state->name}}</td>
                                             <td class="py-4 px-8"><span class="badge @if($Property->status=='Available') bg-[#00B98E] @elseif($Property->status !=='Available') bg-red-700 @endif">{{$Property->status}}</span></td>
@@ -153,19 +153,18 @@
                                                
 
 
-                                                <form 
-                          id="{{ $Property->id }}"
-                          action="{{route('DestroyProperty',$Property)}}"
-                          method="post"
-                          >
-                          @csrf
-                          
-                          <button 
+                                                <a href="{{route('EditProperty',$Property)}}" 
+                          class="select-none rounded-lg bg-[#00B98E] py-3 px-8 text-center font-sans text-xs font-bold capitalize  text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 #  " >
+                           
+                            Edit
+                          </a>
+                          <a href="{{route('DestroyProperty',$Property)}}" 
                           class="select-none rounded-lg bg-red-700 py-3 px-6 text-center font-sans text-xs font-bold capitalize text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50" >
                            
                             Delete
-                          </button>
-                        </form>
+                          </a>
+                        
+
                                             </td>
                                         </tr>
                                         @endforeach

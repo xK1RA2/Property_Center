@@ -9,10 +9,10 @@
                         <th>#</th>
                         <th>Image</th>
                         <th>Dealer Name</th>
-                        <th>Property Name</th>
+                        <th>PropertyType</th>
                         <th>Location</th>
                         <th>Price</th>
-                        <th>Order Status</th>
+                     
                         <th>Date</th>
                         <th>Details</th>
                     </tr>
@@ -25,13 +25,12 @@
                        
                         <td class="align-middle">{{$order->id}}</td>
                         <td><img src="./assets/images/download.jpg" alt="Property" class="img-fluid rounded" style="max-width: 100px;"></td>
-                        <td class="align-middle">{{$order->Property->user->name}}</td>
-                        <td class="align-middle">{{$order->Property->Property_type->name}}</td>
-                        <td class="align-middle">{{$order->Property->states->name}}</td>
+                        <td class="align-middle">{{$order->Property->Dealer->name}}</td>
+                        <td class="align-middle">{{$order->Property->PropertyType->name}}</td>
+                        <td class="align-middle">{{$order->Property->city->state->name}}</td>
                         <td class="align-middle text-success fw-bold">{{$order->Property->price}} $</td>
-                        <td class="align-middle"><span class="badge bg-success rounded-pill">{{$order->Property->status}}</span></td>
                         <td class="align-middle">{{$order->created_at}}</td>
-                        <td class="align-middle"><a href="#" class="btn btn-outline-primary btn-sm">View</a></td>
+                        <td class="align-middle"><a href="{{ route('property.details',$order->Property) }}" class="btn btn-outline-primary btn-sm">View</a></td>
                     </tr>
                     @endforeach
               

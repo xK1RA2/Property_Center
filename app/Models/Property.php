@@ -104,6 +104,11 @@ public function propertyType():BelongsTo
           {
                return $this->year .' - '.$this->Property->dealer_name;
           }
+          public function location()
+{
+    return $this->hasOne(Location::class);
+}
+
 
         
 }
