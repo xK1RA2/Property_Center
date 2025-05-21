@@ -14,7 +14,7 @@ class mapsController
     public function LocationStore(Request $request)  {
         $property = Property::orderBy('id', 'desc')->first();
         $location = Location::create([
-            'name' => $request->name,
+            'name' => 1,
             'property_id' => $property->id,
             'lat' => $request->lat,
             'lng' => $request->lng,
