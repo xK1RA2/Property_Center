@@ -11,10 +11,7 @@ class WhislistController
 {
     public function index(Request $request)
     {
-        $user = $request->user()->role_id;
-        if($user !== 1){
-            return redirect()->route("login");
-        }
+        $user = \Auth::user();
         // To render cars in wishList for authenticated users
         $id = $request->user()->id;
         $Properties =User::find($id)

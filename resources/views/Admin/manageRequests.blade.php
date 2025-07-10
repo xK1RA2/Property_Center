@@ -121,21 +121,23 @@
                                         <tr>
                                             <th class="py-4 px-4">Request ID</th>
                                             <th class="py-4 px-4">User Name</th>
+                                            <th class="py-4 px-4">User Email</th>
                                           
                                             <th class="py-4 px-4">Submission Date</th>
                                             <th class="py-4 px-4">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                     
 
                                             @foreach ($Requests as $Req )
                                             
-                                           
+                                              <tr>
 
 
                                             <td class="py-4 px-4">{{ $Req->id }}</td>
                                             <td class="py-4 px-4">{{ $Req->user->name }}</td>
+                                            <td class="py-4 px-4">{{ $Req->user->email }}</td>
                     
                                             <td class="py-4 px-4">{{ $Req->created_at }}</td>
                                             <td class="py-4 px-4 text-center space-y-3">
@@ -148,8 +150,9 @@
                                                     Reject
                                                 </a>
                                             </td>
+                                            </tr>
                                             @endforeach
-                                        </tr>
+                                        
                                        
                                     </tbody>
                                 </table>

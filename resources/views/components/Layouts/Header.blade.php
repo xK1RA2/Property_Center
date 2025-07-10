@@ -34,9 +34,8 @@
                             @endauth
                      
                         @auth()
-                        @if(request()->user()->role_id==1)
-                        <a href="{{route('wishList.index')}}" class="nav-item nav-link">Wishlist</a>
-                        @endif
+
+                     <a href="{{route('wishList.index')}}" class="nav-item nav-link">Wishlist</a>
                         @if(request()->user()->role_id==2)
                         
                         <a href="{{route('index.dashboard')}}" class="nav-item nav-link">DashBoard</a>

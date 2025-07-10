@@ -91,7 +91,7 @@
                     Sign in
                 </button>
                 <div class="text-center mt-4">
-                    <a href="#"
+                    <a href="{{route('forgot')}}"
                         class="text-gray-500 hover:text-green-500 transition duration-300 hover:underline">Forgot
                         Password?</a>
                 </div>

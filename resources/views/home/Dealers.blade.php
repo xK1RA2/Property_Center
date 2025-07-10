@@ -10,19 +10,21 @@
                 <div class="col-md-3 mb-4">
                       <a href="{{ route('Dealer_Profile',$Dealer) }}"class="text-decoration-none"><!--الرابط حط فيه البروفايل تاعه--> 
                         <div class="card shadow-sm border-0">
-                            <img  src="{{
+    <img class="img-fluid" src="{{
                             asset('storage/'.$Dealer->profile_image) 
-                            }}"  class="card-img-top"alt="Trader Image"style="height: 200px; object-fit: cover;">
+                            }}" alt="" style="height: 200px;width:300px;">
                             <div class="card-body text-center">
                                 <h5 class="card-title text-dark">{{$Dealer->name}}</h5>
                                 <p class="card-text text-muted">{{$Dealer->email}}</p>
                                 <p class="text-muted">{{$Dealer->phone}}</p>
                                 <div class="text-warning">
-                                @if(request()->user()->role_id==2)
+                                
                     
                     
 <div class=" text-warning ">
+    
                     <?php $i=1 ;
+                    
                     $Avg = $Dealer->Rate->avg('Rate'); ?>
                     @for($i; $i<=$Avg ; $i++)
                        <span > <i class="fa-solid fa-star"></i> </span>
@@ -34,7 +36,7 @@
                     </div>
  
 
-              @endif
+          
               
                                 </div>
                             </div>

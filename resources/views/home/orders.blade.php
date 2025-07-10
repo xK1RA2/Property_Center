@@ -7,7 +7,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th>#</th>
-                        <th>Image</th>
+             
                         <th>Dealer Name</th>
                         <th>PropertyType</th>
                         <th>Location</th>
@@ -22,9 +22,9 @@
                     @foreach ($orders as $order)
                    
                     <tr>
-                       
+                     
                         <td class="align-middle">{{$order->id}}</td>
-                        <td><img src="./assets/images/download.jpg" alt="Property" class="img-fluid rounded" style="max-width: 100px;"></td>
+
                         <td class="align-middle">{{$order->Property->Dealer->name}}</td>
                         <td class="align-middle">{{$order->Property->PropertyType->name}}</td>
                         <td class="align-middle">{{$order->Property->city->state->name}}</td>

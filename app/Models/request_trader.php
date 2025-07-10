@@ -3,6 +3,8 @@
 namespace App\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class request_trader extends Model
@@ -12,8 +14,12 @@ class request_trader extends Model
         'user_id'
     ];
     protected $table = 'request_trader';
-    public function user():HasOne
+    public function user():BelongsTo
     {
-        return $this->HasOne(User::class,'id'); 
+        return $this->BelongsTo(User::class,'user_id'); 
+    }
+    public function Property():BelongsTo
+    {
+        return $this->BelongsTo(Property::class); 
     }
 }

@@ -15,12 +15,12 @@ class HomeController
 {
     
     public function index(Request $request){
-        $Properties = Property::where('published_at','<',now())
-        ->where('status' , 'Available')
+        $Properties = Property::where('status' , 'Available')
         ->with(['PrimaryImage','city','Features','propertyType'])
         ->orderBy('published_at','desc')
         ->limit(6)
         ->get();    
+        
         
         $dealers = User::where('role_id', 2)
         ->with('Rate') // Load the Rate relationship
@@ -35,7 +35,8 @@ class HomeController
 
     public function Orders(Request $request){
      $orders = Checkout::where('user_id', $request->user()->id)
-    ->with('property', 'user')
+    ->with('Property', 'user')
+    ->where('created_at','<=',now())
     ->get();
      return view("home.orders",['orders'=> $orders]);
 
@@ -49,7 +50,7 @@ class HomeController
         $Properties = Property::where(["Dealer_id"=>$request->user()->id])->get();
         $Requests = book_preview::where('dealer_id',$request->user()->id)->orderByDesc('status')->with('Property','User')->get();
         $checkouts = checkout::where('dealer_id',$request->user()->id)->get();
-
+        
         return view("home.dash",["Dealer" =>$user ,"Properties"=>$Properties,'Requests'=>$Requests ,'Checkouts'=>$checkouts ]);
 
     }
@@ -63,6 +64,8 @@ class HomeController
             if($request->date < now()){
                return redirect()->back()->with('Past','Time Can Not Be In The Past');
             }
+
+       
         $booking = book_preview::
         where(['property_id'=>$property->id ,
                        'user_id'=>$request->user()->id
@@ -78,7 +81,7 @@ class HomeController
                 'user_id'=>$request->user()->id,
                 'dealer_id'=>$property->Dealer_id,
                 'property_id'=>$property->id,
-                'Date'=>$request['date'],
+                'Date'=>$request->date,
                 'description'=>$description,
                 'status'=>'Pending'
         ];

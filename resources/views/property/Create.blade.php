@@ -37,7 +37,7 @@
              
                     <!-- نوع العقار-->
                 <div class="col-md-6">
-                  <label class="form-label">PropertyType</label>
+                  <label class="form-label text-info">PropertyType</label>
                   <select id="citySelect"  class="form-control bg-white" name="PropertyName">
                  
                  

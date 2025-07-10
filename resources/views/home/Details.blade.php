@@ -27,19 +27,20 @@
         </div>
     </div>
 <x-app-layout :$title>
-<div class="container my-5">
-        <div class="row g-4 " >
+<div class="container my-5 ">
+        <div class="row g-4 mb-5 pb-5" style="height:550px" >
             <!-- السلايدر الخاص في الصور -->
-            <div class="col-md-6" >
+            <div class="col-md-6 " >
                 <div id="propertyCarousel"class="carousel slide shadow"data-bs-ride="carousel">
                     <div class="carousel-inner">
                     <div class="carousel-item active">
-<!--                         
-                        <img src="{{$Property->PrimaryImage->getUrl()}}"  alt="" /> -->
-                        <img src="https://images.crowdspring.com/blog/wp-content/uploads/2017/08/23163415/pexels-binyamin-mellish-106399.jpg"  alt="" />
+                       
+                        <img src="{{$Property->PrimaryImage->getUrl()}}" height="100%" width="100%" alt="" />
                         </div>
                     @foreach ($Property->PropertyImages as $image)
-
+                            @if($image->position ==1)
+                            @continue
+                            @endif
                     <div class="carousel-item ">
                         
                   <img src="{{$image->getUrl()}}" alt=""  height="100%" width="100%">
@@ -60,8 +61,8 @@
             </div>
       
             <!-- المعلومات الي على يمين الشاشة -->
-            <div class="col-md-6">
-                <div class="card h-100 shadow border-0">
+            <div class="col-md-6 ">
+                <div class="card h-200 shadow border-0">
                     <div class="card-body">
                         <h2 class="card-title text-dark fw-bold"> {{$Property->PropertyType->name}} in {{$Property->city->state->name}}</h2>
                         <p class="card-text text-muted">An {{$Property->PropertyType->name}} with {{$Property->Features->Bedrooms}} bedrooms and {{$Property->Features->Bathrooms}} bathrooms, {{$Property->Features->Area}} square meters, prime location near services.</p>
@@ -90,7 +91,7 @@
                         </div>
                              @endif
                                @if(session('BookingUpdated'))
-                            <div class="alert alert-info">
+                            <div class=" p-2 alert-info ">
                         {{ session('BookingUpdated') }}
                         </div>
                              @endif
@@ -98,22 +99,22 @@
                                 <i class="bi bi-calendar-check-fill me-2"></i>Book an Appointment
                             </button>
                             @if(session('Past'))
-                    <div class="alert alert-danger">
+                    <div class="p-2 alert-danger">
                         {{ session('Past') }}
                         </div>
                     @endif
                     @if(session('CheckoutSuccess'))
-                    <div class="alert alert-success">
+                    <div class="p-2 alert-success">
                         {{ session('CheckoutSuccess') }}
                         </div>
                     @endif
                             @if(session('ExpDate'))
-                    <div class="alert alert-danger">
+                    <div class="p-2 alert-danger">
                         {{ session('ExpDate') }}
                         </div>
                     @endif
                             @if ($errors->any())
-    <div class="alert alert-danger">
+    <div class="p-2 alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -124,6 +125,8 @@
                             <button type="button" class="btn btn-primary  " data-bs-toggle="modal" data-bs-target="#checkoutModal">
          Checkout 
     </button>
+
+
     <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -210,39 +213,7 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-            @auth
-                <div class="modal-header">
-             
-                    <h5 class="modal-title" id="bookingModalLabel">Book an Appointment</h5>
-                    <button type="button" class="btn-close" ></button>
-                </div>
-                <div class="modal-body">
-                    <form id="bookingForm" method="post" action="{{ route('Book',['id'=>$Property->id]) }}">
-                        
-                        <div class="mb-3">
-                            <label for="appointmentDate" class="form-label">Preferred Date</label>
-                            <input type="date" class="form-control" id="appointmentDate" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="appointmentTime" class="form-label">Preferred Time</label>
-                            <input type="time" class="form-control" id="appointmentTime" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="notes" class="form-label">Additional Notes</label>
-                            <textarea class="form-control" id="notes" rows="3" placeholder="Any additional information..."></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Submit Booking</button>
-                        
-                    </form>
-                </div>
-                @endauth
-                
-            </div>
-        </div>
-    </div>
+       
         <!-- التقيمات -->
         <div class="row mt-5">
             <div class="col-12">

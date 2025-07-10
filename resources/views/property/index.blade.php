@@ -18,11 +18,11 @@
                   </thead>
                   <tbody>
                     @forelse($Properties as $Property)
-                    <tr>
+                    <tr class="fs-5">
                       <td>
                         <img
                           src="{{$Property->PrimaryImage?->getUrl() ?: '/img/no-image.png'}}" 
-                         height="100px" width="200px" />
+                         height="150px" width="300px" />
                       </td>
                       <td class="pt-5">{{$Property->propertyType->name}}  </td>
                       <td class="pt-5">{{ $Property->getCreateDate()}}</td>

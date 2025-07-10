@@ -163,7 +163,7 @@ class propertyController
             $property->PropertyImages()->create(['image_path'=>$path,'position'=>$i+1]);
         }
         
-        return redirect()->route('locations.create')->with('success','Property has been added you can add it\'s location in the map');
+        return redirect()->route('locations.create')->with('success','Property has been added you can add it\'s location on the map');
     }
 
     public function edit(Property $property,Request $request){
@@ -186,6 +186,7 @@ class propertyController
     public function Destroy(Property $property, Request $request){
        
         $property->delete();
+        $property->location()->delete();
         return redirect()->route('myProperties')
        ;
     }

@@ -80,6 +80,8 @@ Route::get('/wishList',[WhislistController::class,'index'])->name('wishList.inde
 Route::get('/wishList/{property}',[WhislistController::class,'storeDestroy'])->name('wishList.storeDestroy');
 
 Route::get('/login',[loginController::class,'create'])->name('login');
+Route::get('/forgot',[loginController::class,'forgot'])->name('forgot');
+Route::Post('/ForgotUpdate',[loginController::class,'ForgotUpdate'])->name('ForgotUpdate');
 Route::get('/logout',[loginController::class,'logout'])->name('logout');
 Route::post('/login',[loginController::class,'store'])->name('login.store');
 Route::get('/signup',[signupController::class,'create'])->name('signup');
@@ -116,13 +118,40 @@ Route::match(['get', 'post'], '/botman', function () {
     // Greeting handler
     $botman->hears('.*\bprofile\b.*', callback: function ($bot) {
         $purchaseLink = route('user.profile');
-        $bot->reply(" Visit the Profile page:<a href='$purchaseLink' target='_blank'>Profile</a> ");
+        $bot->reply(" Visit the Profile page:<a href='$purchaseLink' target='_blank'>Profile</a> .");
     });
-    $botman->hears('.*\bBuy|Rent\b.*', function ($bot) {
+    $botman->hears('.*\bWhishlist\b.*', callback: function ($bot) {
+        $purchaseLink = route('wishList.index');
+        $bot->reply(" Visit WishList Page:<a href='$purchaseLink' target='_blank'>WishList</a>. ");
+    });
+    $botman->hears('.*\bMap\b.*', callback: function ($bot) {
+        $purchaseLink = route('maps');
+        $bot->reply(" Visit Page:<a href='$purchaseLink' target='_blank'>Map</a>. ");
+    });
+    $botman->hears('.*\bDealers\b.*', callback: function ($bot) {
+        $purchaseLink = route('Dealers');
+        $bot->reply(" Visit Page:<a href='$purchaseLink' target='_blank'>Dealers</a>. ");
+    });
+    $botman->hears('.*\bMy Orders\b.*', callback: function ($bot) {
+        $purchaseLink = route('orders');
+        $bot->reply(" Visit Page:<a href='$purchaseLink' target='_blank'>My Order</a>. ");
+    });
+    $botman->hears('.*\bBuy|Rent|Purchase\b.*', function ($bot) {
         $purchaseLink = route('Purchase');
         $bot->reply(" Sure! <br> <br> Visit <a href='$purchaseLink' target='_blank'>PurchaseProperty</a> Page. ");
     });
-
+    $botman->hears('.*\bSell\b.*', function ($bot) {
+        $purchaseLink = route('property');
+        $bot->reply(" Sure! <br> <br> If you are a Dealer visit <a href='$purchaseLink' target='_blank'>Add Property</a> Page.If you are not you must become a trader, you have to send a request from Profile Page. ");
+    });
+     $botman->hears('.*\bMy Proper|Own Property\b.*', function ($bot) {
+        $purchaseLink = route('myProperties');
+        $bot->reply(" Sure! <br> <br> If you are a Dealer visit <a href='$purchaseLink' target='_blank'>My Properties</a> Page. <br> <br>If you are not you must become a trader, you have to send a request from Profile Page. ");
+    });
+$botman->hears('.*\bDashboard\b.*', function ($bot) {
+        $purchaseLink = route('dealer.dashboard');
+        $bot->reply(" Sure! <br> <br> If you are a Dealer visit <a href='$purchaseLink' target='_blank'>Dashboard</a> Page. <br> <br> If you are not you must become a trader, you have to send a request from Profile Page.");
+    });
     // Fallback handler
     $botman->fallback(function ($bot) {
         $message = strtolower($bot->getMessage()->getText());

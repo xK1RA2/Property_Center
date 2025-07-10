@@ -58,7 +58,10 @@ class SocialiteController
 
             // We also mark the user as authenticated
             Auth::login($dbUser);
-            
+            if(Auth::user()->role_id==3){
+            return redirect()->intended(route('Dashboard'));
+
+            }
             // And redirect to intended page or to home page
             return redirect()->intended(route('home'));
 

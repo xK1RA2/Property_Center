@@ -83,9 +83,9 @@ class User extends Authenticatable
     {
          return $this->HasMany(Rate::class);
     }
-    public function Request():HasOne
+    public function Request():BelongsTo
     {
-         return $this->hasOne(request_trader::class,'id');
+         return $this->BelongsTo(request_trader::class,'user_id');
     }
  
 

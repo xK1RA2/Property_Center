@@ -9,11 +9,12 @@ class dealerController
     
     public function index(Request $request){
        
-        $dealers = User::where('role_id',2)->get()->sortByDesc(function ($user) {
-            
-            return $user->Rate->avg('Rate');
-        });
-       
+       $dealers = User::with('Rate') // eager load the Rate relationship
+    ->where('role_id', 2)
+    ->get()
+    ->sortByDesc(function ($user) {
+        return $user->Rate->avg('Rate'); // assuming 'Rate' is a numeric field in the related model
+    });     
         return view("home.Dealers",['Dealers'=>$dealers]);
         
     }

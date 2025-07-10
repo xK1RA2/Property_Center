@@ -10,16 +10,27 @@
                                
                                 <img class="img-fluid" src="{{
                             asset('storage/'.$dealer->profile_image) 
-                            }}" alt="">
+                            }}" alt="" style="height: 200px;width:300px;">
                                 <div class="position-absolute start-50 top-100 translate-middle d-flex align-items-center">
 
                                 </div>
                             </div>
-
+                                
                             <div class="text-center p-4 mt-3">
-                                <h5 class="fw-bold mb-0">{{$dealer->name}}</h5>
+                                <hr>
+                                <h5 class="fw-bold mb-3">{{$dealer->name}}</h5>
                                 <small></small>
-                               
+                                 
+                                 <?php $i=1 ;
+                    
+                    $Avg = $dealer->Rate->avg('Rate'); ?>
+                    @for($i; $i<=$Avg ; $i++)
+                       <span class="text-warning"> <i class="fa-solid fa-star"></i> </span>
+                    @endfor
+                    
+                    @if($i - $Avg < 1 )
+                    <i class="fa-solid fa-star-half-stroke"></i>
+                    @endif
                             </div>
                             </a>
                         </div>

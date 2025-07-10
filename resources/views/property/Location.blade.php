@@ -7,15 +7,16 @@
             width: 70%;
         }</style>
 
-@if(session('success'))
-<div class="alert alert-success pt-2 mt-2 mx-2">
+ @if(session('success'))
+<div class="alert-success p-2 mt-2 mx-2">
     {{ session('success') }}
 </div>
     @endif
-<div class="container d-flex  space-x-5 mt-5 flex-wrap">
 
-    <div class=" text-center   me-5 border border-primary rounded p-3 ">
-   
+<div class="container d-flex  space-x-5 mt-5 flex-wrap ">
+
+    <div class=" text-center   me-5  p-3 border border-primary rounded">
+  
     <h2 class="py-4  ">Add Location</h2>
 <form method="POST" class=""  action="{{ route('locations.store') }}">
     @csrf
@@ -30,7 +31,7 @@
     
 </form>
 </div>
-<div id="map" ></div>
+<div id="map" class="border border-primary rounded"></div>
 
 </div>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -63,5 +64,5 @@
     });
 </script>
 
-
+<x-layouts.footer />
 </x-app-layout>

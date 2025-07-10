@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('date')->nullable();
             $table->enum('status', ['Approved','Pending','Rejected'])->default('Approved');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

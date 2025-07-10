@@ -42,7 +42,7 @@ class AdminController
             return redirect()->route("login");
         }
         $Properties = Property::orderBy('status','asc')
-        ->where('published_at','<',now())
+        
         ->with(['PropertyType','PrimaryImage','City'])
         ->get();
         return view("Admin.ManageProperty",['Properties'=>$Properties]);
@@ -75,7 +75,7 @@ class AdminController
         return view("Admin.ManageRequests",["Requests"=>$Requests]);
     }
 
-    public function Request_Action( Request $request ){
+    public function Request_Action( Request $request  ){
         $user = $request->user()->role_id;
         if($user !== 3){
             return redirect()->route("login");
@@ -84,9 +84,11 @@ class AdminController
         if($request->Action == "Accept"){
             
 
-            
+           
                 $data = ['role_id'=>2];
-                $request->user()->update($data);
+                $req = request_trader::where('id',$request['Request_id'])->with('user')->first();
+                $user = User::where('id',$req->user_id)->first();
+                $user->update($data);
                 $request_trader = request_trader::where('id',$request->Request_id)->first();
                 $request_trader->delete();
 

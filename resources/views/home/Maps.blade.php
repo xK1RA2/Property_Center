@@ -7,15 +7,15 @@
     width: 100%;
 }
 </style>
-
+    <div class=" m-2 mx-5 border border-primary">
     <div id="map" class="w-10 h-10"></div>
-   
+   </div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
           const locations = @json($locations); // The locations array
 
 // Initialize the map, centered on the first location by default
-const map = L.map('map').setView([locations[0].lat, locations[0].lng], 13);
+const map = L.map('map').setView([locations[0].lat, locations[0].lng], 2);
 
 // Add OpenStreetMap tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -28,8 +28,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Add markers for all locations
 locations.forEach(function(location) {
+  
     L.marker([location.lat, location.lng]).addTo(map)
-        .bindPopup( 'Price :'+ '$' + location.property.price);
+        .bindPopup( 'Price :'+ '$' + location.property.price + '<br>');
 });
 
 // Optionally, fit the map bounds to the markers

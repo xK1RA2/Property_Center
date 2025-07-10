@@ -55,8 +55,8 @@ public function search(Request $request)
    
         $sort = $request->input('sort','-published_at');  
     
-        $query = Property::where('published_at','<',now())
-        ->with(['PrimaryImage','City','propertyType','Features']);
+        $query = Property::
+        with(['PrimaryImage','City','propertyType','Features']);
       
         if($city)
         {
@@ -89,7 +89,7 @@ public function search(Request $request)
         $PropertyTypes = PropertyType::get(); 
         $Locations = City::groupBy('name')->get();
 
-        
+
         return view('property.search',['Properties'=>$Properties , 'propertyType'=>$PropertyTypes,'Locations'=>$Locations]);
    
     }

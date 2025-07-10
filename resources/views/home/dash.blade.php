@@ -85,7 +85,7 @@
                         <thead class="text-dark">
                             <tr>
                                 <th>#</th>
-                                <th>Property Type</th>
+                                
                                 <th>Username</th>
                                 <th>User Phone</th>
                                 <th>Date</th>
@@ -99,9 +99,9 @@
                             <tr>
                             <?php $count =0; ?>
                                 @foreach ($Requests as $Req)
+                                
                                 <?php $count++ ?>
                                 <td>{{ $count }}</td>
-                                <td><a href="{{ route('property.details',$Req->Property) }}">{{$Req->Property->PropertyType->name}}</a></td>
                                 <td>{{$Req->User->name}}</td>
                                 <td>{{$Req->User->phone}}</td>
                                 <td>{{$Req->date}}</td>

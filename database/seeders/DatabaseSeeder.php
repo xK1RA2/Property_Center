@@ -105,11 +105,11 @@ class DatabaseSeeder extends Seeder
     ->create();
     
         
-    User::factory()
+     User::factory()
     ->count(4)
     ->state(['role_id' => $dealerRole->id])
     ->has(Property::factory()
-        ->count(10) 
+        ->count(2) 
         ->has(
             PropertyImages::factory()
            ->count(5)

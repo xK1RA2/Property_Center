@@ -14,7 +14,7 @@ class checkout extends Model
   ,'cvv','address','date','dealer_id'
  ];
  public function Property():BelongsTo{
-    return $this->belongsTo(Property::class , 'id');
+    return $this->belongsTo(Property::class );
   }
   public function User():BelongsTo{
     return $this->belongsTo(User::class,'user_id');
