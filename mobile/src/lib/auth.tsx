@@ -8,7 +8,6 @@ import type { User } from './types';
 
 const TOKEN_KEY = 'pc_token';
 
-// SecureStore is native-only; fall back to localStorage on web.
 const storage = {
   get: async (): Promise<string | null> => {
     try {
@@ -54,7 +53,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await storage.clear();
   }, []);
 
-  // restore a saved session on launch
   useEffect(() => {
     (async () => {
       const token = await storage.get();
@@ -70,13 +68,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     })();
   }, [clearSession]);
 
-  // ask for push permission once someone is signed in (no-op on web / simulators / Expo Go Android)
   const userId = user?.id;
   useEffect(() => {
     if (userId) void registerForPush();
   }, [userId]);
 
-  // an expired / revoked token anywhere logs the user out
   useEffect(() => {
     setUnauthorizedHandler(() => void clearSession());
     return () => setUnauthorizedHandler(null);

@@ -1,6 +1,5 @@
 @props(['Tailwind'=>1])
 <x-guest-layout :$Tailwind>
-    <!-- container -->
     <div class="flex flex-col items-center justify-center  p-8 bg-white min-h-screen">
         <div class="flex flex-col items-center rounded-3xl shadow-2xl shadow-gray-600/70 md:w-[500px] w-[300] p-6">
             <h1 class="text-3xl font-semibold text-gray-700 flex items-center p-4">
@@ -17,7 +16,6 @@
             @enderror
             <form class="mt-4 w-full" action="{{route('ForgotUpdate')}}" method="POST">
             @csrf    
-            <!-- Email -->
                 <div class="mb-4">
                     <label class="block text-gray-600 text-md font-bold">Email</label>
                     <div class="flex items-center border-b-2 border-gray-300 focus-within:border-green-500">
@@ -33,20 +31,16 @@
                 @if(session('error'))
             {{ session('error') }}
           @endif
-         
-         
-                   <!-- Button -->
+
                    <button type="submit"
                     class="mt-4 w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition">
                     Submit
                 </button>
              
-                  <!-- Sign up -->
             <div class="text-center mt-6 text-gray-600">
                 Don't have an account?
                 <a href="/signup" class="text-green-500 font-semibold hover:underline">Sign up</a>
             </div>
-            <!-- Footer -->
             </form>
     </div>
     <script>

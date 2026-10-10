@@ -35,13 +35,8 @@
             </div>
         </div>
 
-
-        
-          <!-- About Us -->
         <x-about-us />
 
-
-         <!-- Property List Start -->
         <div class="container-xxl py-5">
             <div class="container">
                 <div class="row g-0 gx-5 align-items-end">
@@ -55,8 +50,7 @@
                             <li class="nav-item me-2">
                                 <a class="btn btn-outline-primary active" data-bs-toggle="pill" href="#tab-1">Featured</a>
                             </li>
-               
-                            
+
                         </ul>
                     </div>
          </div>
@@ -84,10 +78,7 @@
         </div>
     </div>
 </div>
-        <!-- Property List End -->
 
-
-     <!-- Team Start -->
 <div class="container-xxl py-5">
      <div class="container">
                 <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
@@ -104,7 +95,6 @@
               </div>
               </div>
 
- 
               <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
 
         <x-layouts.footer/>

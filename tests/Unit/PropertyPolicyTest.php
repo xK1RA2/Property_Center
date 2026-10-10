@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Policies\PropertyPolicy;
 use PHPUnit\Framework\TestCase;
 
-/** Pure logic, no database: models are built in memory. */
 class PropertyPolicyTest extends TestCase
 {
     private PropertyPolicy $policy;
@@ -54,7 +53,6 @@ class PropertyPolicyTest extends TestCase
 
     public function test_a_regular_user_may_not_even_for_a_matching_id(): void
     {
-        // ids can coincide across roles; the role must still be checked
         $user = $this->user(10, User::ROLE_USER);
 
         $this->assertFalse($this->policy->update($user, $this->propertyOf(10)));

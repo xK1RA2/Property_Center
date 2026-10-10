@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('Rate', function (Blueprint $table) {
@@ -16,16 +13,12 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->foreignId('Property_id');
             $table->integer('Rate')->max(5)->min(1);
-       
-         
+
             $table->timestamps();
 
     });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('Rate');

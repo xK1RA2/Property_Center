@@ -19,7 +19,6 @@ class FavoriteController extends Controller
         );
     }
 
-    /** PUT /properties/{property}/favorite : idempotent add */
     public function store(Request $request, Property $property): JsonResponse
     {
         $request->user()->Favourite_Property()->syncWithoutDetaching([$property->id]);

@@ -18,7 +18,7 @@ class ProductionHardeningTest extends TestCase
             ->assertHeader('X-Content-Type-Options', 'nosniff')
             ->assertHeader('X-Frame-Options', 'SAMEORIGIN')
             ->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-        $response->assertHeaderMissing('Strict-Transport-Security'); // plain http in tests
+        $response->assertHeaderMissing('Strict-Transport-Security');
     }
 
     public function test_api_responses_have_the_headers_too(): void
@@ -43,7 +43,7 @@ class ProductionHardeningTest extends TestCase
         $this->assertStringStartsWith('https://', route('login'));
         $this->assertStringStartsWith('https://', url('/storage/x.jpg'));
 
-        URL::forceScheme('http'); // don't leak into other tests
+        URL::forceScheme('http');
     }
 
     public function test_health_endpoint_is_up(): void

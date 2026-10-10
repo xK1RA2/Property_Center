@@ -8,10 +8,6 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
-/**
- * Local development data: reference data plus fake users and listings.
- * Never run this in production, use ReferenceDataSeeder there.
- */
 class DatabaseSeeder extends Seeder
 {
     public function run(): void

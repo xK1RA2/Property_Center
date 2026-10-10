@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const colors = {
-  primary: '#00B98E', // same green as the website
+  primary: '#00B98E',
   primaryDark: '#008c6c',
   bg: '#f5f7f6',
   card: '#ffffff',

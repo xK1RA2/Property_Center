@@ -39,7 +39,6 @@ export default function PropertyForm() {
   const [images, setImages] = useState<LocalImage[]>([]);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
 
-  // fill the form when editing
   useEffect(() => {
     const p = existing.data;
     if (!p) return;

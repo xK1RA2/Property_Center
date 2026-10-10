@@ -1,5 +1,4 @@
 @props(['Properties','propertyType' ,'count'=>1,'Locations'])
-  <!-- Search Start -->
   <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
             <div class="container">
                 <div class="row g-2">
@@ -19,7 +18,6 @@
                                 </select>
                             </div>
 
-                            
                             <div class="col-md-4">
                                 <select class="form-select border-0 py-3" name="Purchase_Type">
                                     <option selected >Purchase Type</option>
@@ -45,14 +43,12 @@
                             <div class="col-md-4">
                               
                                     <input type="number" class="form-select border-0 py-3" placeholder="Price from" name="price_from" id="price_to">
-                                  
-                       
+
                             </div>
                             <div class="col-md-4">
                               
                                     <input type="number" class="form-select border-0 py-3" placeholder="Price to" name="price_to" id="price_to">
-                                  
-                       
+
                             </div>
                              <div class="col-md-4">
                         <button class="btn btn-dark border-0 w-100 py-3">Search</button>
@@ -60,10 +56,8 @@
                         </div>
                         
                     </div>
-                   
 
                         </form>
                 </div>
             </div>
         </div>
-        <!-- Search End -->

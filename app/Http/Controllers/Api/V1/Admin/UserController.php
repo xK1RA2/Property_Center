@@ -25,7 +25,6 @@ class UserController extends Controller
             'This user can not be deleted.'
         );
 
-        // properties (and their images/bookings) reference the dealer, so don't half-delete
         abort_if(
             $user->Properties()->withTrashed()->exists(),
             422,

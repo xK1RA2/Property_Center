@@ -29,7 +29,6 @@
 <x-app-layout :$title>
 <div class="container my-5 ">
         <div class="row g-4 mb-5 pb-5" style="height:550px" >
-            <!-- السلايدر الخاص في الصور -->
             <div class="col-md-6 " >
                 <div id="propertyCarousel"class="carousel slide shadow"data-bs-ride="carousel">
                     <div class="carousel-inner">
@@ -60,7 +59,6 @@
                 </div>
             </div>
       
-            <!-- المعلومات الي على يمين الشاشة -->
             <div class="col-md-6 ">
                 <div class="card h-200 shadow border-0">
                     <div class="card-body">
@@ -74,7 +72,6 @@
                             @if($Property->Features->Air_Conditioner) <li class="list-group-item bg-light"> Air Conditioning  </li>@endif
                            
                         </ul>
-                        <!-- للتواصل -->
                         <h5 class="text-dark fw-bold mt-4">Contact Owner:</h5>
                         <div class="d-flex flex-column gap-2">
                             <a href="tel:+962798677535"class="">
@@ -83,7 +80,6 @@
                             <a href="mailto:info@property.com"class="">
                                 <i class="bi bi-envelope-fill me-2"></i>Email: {{$Property->Dealer->email}}
                             </a>
-                               <!--  زر لحجز موعد مراجعة عقار-->
                                @auth()
                                @if(session('BookingSuccess'))
                             <div class="alert alert-success">
@@ -126,7 +122,6 @@
          Checkout 
     </button>
 
-
     <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -134,21 +129,17 @@
                     <h5 class="modal-title" id="checkoutModalLabel">Complete Payment</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <!-- الاسم -->
                  <form method="POST" action="{{ route('checkout',$Property) }}">@csrf
-                    {{-- Only the last 4 digits ever reach the server (see propertyController::checkout) --}}
                     <input type="hidden" name="card_last4" id="cardLast4">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="name" class="form-label">Full Name</label>
                         <input type="text" class="form-control" id="name" placeholder="Enter your full name" required>
                     </div>
-                    <!-- الايميل -->
                     <div class="mb-3">
                         <label for="email" class="form-label">Email Address</label>
                         <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
                     </div>
-                    <!--  حقل لنوع الدفع بس للباك ببين عامله زي ماطلبت-->
                     <input type="hidden" id="paymentMethod" name="paymentMethod" value="">
                     <div class="mb-3">
                         <label for="cardNumber" class="form-label">Card Number</label>
@@ -161,13 +152,11 @@
                         <div class="col">
                             <label for="expiry" class="form-label">Expiry Date</label>
                             <input type="date" class="form-control" id="expiry" autocomplete="off" placeholder="MM/YY" required>
-                            <!-- رسالة الخطا لتاريخ البطاقة -->
                             <div id="expiry-error" class="error-message">Please enter a valid expiry date (MM/YY) that is not expired.</div>
                         </div>
                         <div class="col">
                             <label for="cvv" class="form-label">CVV</label>
                             <input type="text" class="form-control" id="cvv" autocomplete="off" placeholder="123" maxlength="3" required>
-                            <!-- رسالة خطا اذا غير 3 ارقام -->
                             <div id="cvv-error" class="error-message">CVV must be exactly 3 digits.</div>
                         </div>
                     </div>
@@ -176,12 +165,10 @@
                     <div class="col">
                             <label for="expiry" class="form-label">Date From</label>
                             <input type="date" name="From" class="form-control" id="expiry" placeholder="MM/YY" required>
-                            <!-- رسالة الخطا لتاريخ البطاقة -->
                             <div id="expiry-error" class="error-message">Please enter a valid expiry date (MM/YY) that is not expired.</div>
                         </div>  <div class="col">
                             <label for="expiry" class="form-label">Date To</label>
                             <input type="date" name="To" class="form-control" id="expiry" placeholder="MM/YY" required>
-                            <!-- رسالة الخطا لتاريخ البطاقة -->
                             <div id="expiry-error" class="error-message">Please enter a valid expiry date (MM/YY) that is not expired.</div>
                         </div>
                         </div>
@@ -207,8 +194,6 @@
                                 <i class="bi bi-calendar-check-fill me-2"></i>Book an Appointment
                                 </a>
                                 @endguest
-                       
-
 
                         </div>
                     </div>
@@ -216,18 +201,15 @@
             </div>
         </div>
        
-        <!-- التقيمات -->
         <div class="row mt-5">
             <div class="col-12">
                 <div class="card shadow border-0">
                     <div class="card-body">
                         <h5 class="card-title text-dark fw-bold">Property Rating</h5>
                         <div class="text-warning mb-4 fs-4">
-                            
-                          
+
                             ★★★★☆ <span class="text-muted fs-6">({{$Property->PropertyRate->avg('Rate')}} out of 5 - Based on {{$Property->PropertyRate->count('Rate')}} reviews)</span>
                         </div>
-                        <!-- كيف تحط تقيم -->
                         <form id="ratingForm" action="{{route('rate.store', $Property)}}" method="post" >
                             @csrf
                             <h6 class="fw-bold text-primary mb-3">Choose Your Rating:</h6>
@@ -299,7 +281,6 @@
     <script src="./js/bootstrap.bundle.min.js"></script>
    
     <script>
-        // Only the last 4 digits are submitted; the full number never leaves the browser.
         document.getElementById('cardNumber')?.addEventListener('input', function () {
             document.getElementById('cardLast4').value = this.value.replace(/\D/g, '').slice(-4);
         });

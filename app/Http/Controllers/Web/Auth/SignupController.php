@@ -24,7 +24,6 @@ class SignupController extends Controller
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
-        // role is never taken from the request: everyone starts as a regular user
         $user = new User($data);
         $user->forceFill(['role_id' => User::ROLE_USER])->save();
 

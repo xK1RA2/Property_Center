@@ -7,7 +7,6 @@ export interface Coordinate {
   lng: number;
 }
 
-/** Web has no native map view, so the pin is entered as numbers. */
 export function LocationPicker({
   value,
   onChange,

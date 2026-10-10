@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Gate;
 
 class PropertyController extends Controller
 {
-    /** GET /properties : public, filterable, paginated */
     public function index(Request $request)
     {
         $request->validate([
@@ -53,7 +52,6 @@ class PropertyController extends Controller
         );
     }
 
-    /** GET /my/properties : the dealer's own listings (any status) */
     public function mine(Request $request)
     {
         return PropertyResource::collection(
@@ -120,7 +118,6 @@ class PropertyController extends Controller
         return response()->json(null, 204);
     }
 
-    /** API field names -> column names. */
     private function attributes(array $data, bool $onlyPresent = false): array
     {
         $map = [
@@ -143,7 +140,7 @@ class PropertyController extends Controller
         }
 
         if (!$onlyPresent) {
-            unset($out['status']); // create() sets it explicitly
+            unset($out['status']);
         }
 
         return $out;

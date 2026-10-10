@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Storage;
 use Tests\Concerns\MakesMarketplaceData;
 use Tests\TestCase;
 
-/** Behaviour of the Blade site after the controllers were split into single-purpose classes. */
 class WebFlowsTest extends TestCase
 {
     use RefreshDatabase, MakesMarketplaceData;
@@ -36,7 +35,6 @@ class WebFlowsTest extends TestCase
         $this->property->Features()->update(['Bedrooms' => 2, 'Bathrooms' => 1, 'Area' => 90]);
     }
 
-    // ---------- every page still renders ----------
 
     public function test_public_pages_render(): void
     {
@@ -81,7 +79,6 @@ class WebFlowsTest extends TestCase
         }
     }
 
-    // ---------- search ----------
 
     public function test_search_filters_and_sorts(): void
     {
@@ -100,7 +97,6 @@ class WebFlowsTest extends TestCase
         $this->get('/Search?sort=password')->assertSessionHasErrors('sort');
     }
 
-    // ---------- bookings ----------
 
     public function test_booking_is_created_then_updated_and_must_be_in_the_future(): void
     {
@@ -120,7 +116,6 @@ class WebFlowsTest extends TestCase
             ->assertSessionHasErrors('date');
     }
 
-    // ---------- ratings: one user must never change another user's rating ----------
 
     public function test_rating_only_changes_the_callers_own_rating(): void
     {
@@ -130,7 +125,6 @@ class WebFlowsTest extends TestCase
         $this->actingAs($alice)->post("/property/{$this->property->id}/rating", ['rating' => 5])->assertSessionHas('RateSubmit');
         $this->actingAs($bob)->post("/property/{$this->property->id}/rating", ['rating' => 1])->assertSessionHas('RateSubmit');
 
-        // Bob changes his mind. Alice's 5 must be untouched (the old code overwrote every rating).
         $this->actingAs($bob)->post("/property/{$this->property->id}/rating", ['rating' => 3])->assertSessionHas('update');
 
         $this->assertSame(5, Rating::where('user_id', $alice->id)->value('Rate'));
@@ -145,7 +139,6 @@ class WebFlowsTest extends TestCase
             ->assertSessionHasErrors('rating');
     }
 
-    // ---------- comments ----------
 
     public function test_anonymous_comment_and_owner_only_delete(): void
     {
@@ -169,7 +162,6 @@ class WebFlowsTest extends TestCase
             ->assertSessionHasErrors('Description');
     }
 
-    // ---------- dealer creates a listing ----------
 
     public function test_dealer_creates_a_listing_with_address_year_and_photos_then_pins_it(): void
     {
@@ -198,7 +190,6 @@ class WebFlowsTest extends TestCase
         $this->assertEquals(0, $created->Features->Heating);
         $this->assertSame(1, $created->PropertyImages()->count());
 
-        // pin goes on THIS listing, even if another dealer created one in the meantime
         $this->makeProperty($this->makeDealer());
         $this->post('/locations', ['lat' => 31.9, 'lng' => 35.9])->assertRedirect();
 
@@ -222,7 +213,6 @@ class WebFlowsTest extends TestCase
         $this->assertSame(0, Location::count());
     }
 
-    // ---------- profile ----------
 
     public function test_profile_update_checks_uniqueness_against_other_users_only(): void
     {
@@ -232,7 +222,7 @@ class WebFlowsTest extends TestCase
 
         $payload = ['name' => 'Me', 'username' => 'me_name', 'email' => $me->email, 'phone' => '0791111111'];
 
-        $this->post('/InformationUpdate', $payload)->assertSessionHas('Personal'); // keeping my own values is fine
+        $this->post('/InformationUpdate', $payload)->assertSessionHas('Personal');
         $this->post('/InformationUpdate', ['email' => $other->email] + $payload)->assertSessionHasErrors('email');
         $this->post('/InformationUpdate', ['phone' => $other->phone] + $payload)->assertSessionHasErrors('phone');
     }
@@ -263,7 +253,6 @@ class WebFlowsTest extends TestCase
         $this->assertSame(1, \App\Models\TraderRequest::where('user_id', $user->id)->count());
     }
 
-    // ---------- signup / login ----------
 
     public function test_signup_ignores_a_posted_role_and_enforces_password_rules(): void
     {
@@ -292,7 +281,6 @@ class WebFlowsTest extends TestCase
         $this->assertGuest();
     }
 
-    // ---------- password reset ----------
 
     public function test_old_unauthenticated_password_overwrite_is_gone(): void
     {
@@ -351,7 +339,6 @@ class WebFlowsTest extends TestCase
         $this->assertTrue(Hash::check('original-pass', $user->fresh()->password));
     }
 
-    // ---------- checkout through the service ----------
 
     public function test_two_buyers_cannot_both_buy_the_same_property(): void
     {
@@ -367,7 +354,6 @@ class WebFlowsTest extends TestCase
         $this->assertEquals($first->id, Checkout::first()->user_id);
     }
 
-    // ---------- misc ----------
 
     public function test_wishlist_page_lists_saved_properties(): void
     {

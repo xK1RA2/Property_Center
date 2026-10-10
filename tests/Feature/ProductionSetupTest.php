@@ -12,7 +12,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
-/** What an operator runs on a brand new production database. */
 class ProductionSetupTest extends TestCase
 {
     use RefreshDatabase;

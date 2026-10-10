@@ -19,7 +19,6 @@ class SocialiteController extends Controller
     {
         abort_unless(in_array($provider, self::PROVIDERS, true), 404);
 
-        // Implement proper redirect to oauth provider
         return Socialite::driver($provider)->redirect();
 
     }
@@ -29,8 +28,6 @@ class SocialiteController extends Controller
         abort_unless(in_array($provider, self::PROVIDERS, true), 404);
 
         try {
-            // NOT stateless(): the OAuth "state" value must be checked, otherwise an attacker can
-            // make a victim's browser finish the attacker's login (login CSRF).
             $social = Socialite::driver($provider)->user();
 
             $field = $provider . '_id';
@@ -45,9 +42,6 @@ class SocialiteController extends Controller
             if ($existing) {
                 $alreadyLinked = $existing->{$field} !== null && hash_equals((string) $existing->{$field}, (string) $social->getId());
 
-                // Linking a provider to a password account that already owns this email is only safe when
-                // the provider proves the address is verified. Otherwise someone could register a provider
-                // account with a victim's email and walk into the victim's account.
                 if (!$alreadyLinked && !$this->emailIsVerifiedByProvider($provider, $social)) {
                     return redirect(route('login'))->with(
                         'error',
@@ -76,14 +70,12 @@ class SocialiteController extends Controller
                 ? redirect()->intended(route('Dashboard'))
                 : redirect()->intended(route('home'));
         } catch (\Throwable $e) {
-            // log the detail, show nothing internal to the visitor
             Log::warning('Social login failed', ['provider' => $provider, 'error' => $e->getMessage()]);
 
             return redirect(route('login'))->with('error', 'We could not sign you in with ' . ucfirst($provider) . '. Please try again.');
         }
     }
 
-    /** Google reports whether the address is verified; Facebook gives no such guarantee. */
     private function emailIsVerifiedByProvider(string $provider, $social): bool
     {
         if ($provider !== 'google') {

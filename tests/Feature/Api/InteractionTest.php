@@ -26,7 +26,6 @@ class InteractionTest extends TestCase
         $this->property = $this->makeProperty($this->dealer);
     }
 
-    // ---------- comments ----------
 
     public function test_anyone_can_read_comments_and_anonymous_authors_stay_hidden(): void
     {
@@ -76,7 +75,6 @@ class InteractionTest extends TestCase
         $this->deleteJson("/api/v1/comments/{$comment->id}")->assertNoContent();
     }
 
-    // ---------- ratings ----------
 
     public function test_rating_is_one_per_user_and_can_be_changed(): void
     {
@@ -103,7 +101,6 @@ class InteractionTest extends TestCase
         }
     }
 
-    // ---------- favorites ----------
 
     public function test_favorites_add_is_idempotent_and_remove_works(): void
     {
@@ -126,7 +123,6 @@ class InteractionTest extends TestCase
         $this->getJson('/api/v1/favorites')->assertJsonCount(0, 'data');
     }
 
-    // ---------- bookings ----------
 
     private function bookingDate(): string
     {

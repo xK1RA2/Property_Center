@@ -4,12 +4,10 @@
 <x-app-layout >
 
 <div class="container mt-5">
-        <!-- Header -->
         <div class="text-center mb-5">
             <h1 class="header-title">Residential Real Estate Dashboard</h1>
         </div>
 
-        <!--  Cards -->
         <div class="row g-4 mb-5">
             <div class="col-md-3">
                 <div class="card stat-card p-3">
@@ -63,7 +61,6 @@
                 </div>
             </div>
         </div>
-        <!-- الجدول -->
         @if(session('success'))
                     <div class="alert alert-success">
                         {{ session('success') }}
@@ -123,8 +120,5 @@
             </div>
         </div>
     </div>
-
-       
-
 
 </x-app-layout>

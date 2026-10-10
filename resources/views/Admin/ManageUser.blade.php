@@ -13,7 +13,6 @@
 
             <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
                 class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-[#00B98E] lg:translate-x-0 lg:static lg:inset-0">
-               
 
                 <x-layouts.admin-header :$active />
             </div>
@@ -29,13 +28,10 @@
 
                         <div class="relative mx-4 lg:mx-0">
 
-
-
                         </div>
                     </div>
 
                     <div class="flex items-center">
-                      
 
                         <div x-data="{ dropdownOpen: false }" class="relative">
                             <button @click="dropdownOpen = ! dropdownOpen"
@@ -62,9 +58,6 @@
                 <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
                     <div class="container px-6 py-8 mx-auto">
                         <h3 class="text-3xl font-medium text-gray-700">Manage User</h3>
-
-                        
-
 
                         <div class="container mt-4">
                             <div class="table-responsive">

@@ -20,7 +20,6 @@ class NewsletterTest extends TestCase
         $this->seedLookups();
     }
 
-    /** Subscribers are created through forceFill: confirmed_at must never be mass-assignable. */
     private function subscriber(array $attrs): NewsletterSubscriber
     {
         $subscriber = new NewsletterSubscriber();
@@ -77,11 +76,9 @@ class NewsletterTest extends TestCase
     {
         $subscriber = $this->subscriber(['email' => 'victim@example.com']);
 
-        // no signature
         $this->get("/newsletter/confirm/{$subscriber->id}")->assertForbidden();
         $this->get("/newsletter/unsubscribe/{$subscriber->id}")->assertForbidden();
 
-        // signature for a different subscriber
         $other = $this->subscriber(['email' => 'other@example.com']);
         $forged = str_replace("/confirm/{$other->id}", "/confirm/{$subscriber->id}", $other->confirmUrl());
         $this->get($forged)->assertForbidden();
@@ -168,7 +165,6 @@ class NewsletterTest extends TestCase
         $this->post('/newsletter', ['newsletter_email' => 'one-too-many@example.com'])->assertStatus(429);
     }
 
-    // ---------- sending issues ----------
 
     public function test_issue_goes_only_to_confirmed_active_subscribers(): void
     {

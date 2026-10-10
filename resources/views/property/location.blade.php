@@ -36,7 +36,7 @@
 </div>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-    const map = L.map('map').setView([39.8283, -98.5795], 4); // Center USA
+    const map = L.map('map').setView([39.8283, -98.5795], 4);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -50,16 +50,13 @@
         const lat = e.latlng.lat;
         const lng = e.latlng.lng;
 
-        // Set form values
         document.getElementById('lat').value = lat;
         document.getElementById('lng').value = lng;
 
-        // Remove old marker
         if (marker) {
             map.removeLayer(marker);
         }
 
-        // Add new marker
         marker = L.marker([lat, lng]).addTo(map);
     });
 </script>

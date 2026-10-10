@@ -8,9 +8,6 @@ use App\Models\PropertyType;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends Factory<Property>
- */
 class PropertyFactory extends Factory
 {
     protected $model = Property::class;
@@ -18,8 +15,6 @@ class PropertyFactory extends Factory
     public function definition(): array
     {
         return [
-            // Column names are case-insensitive on MySQL: define each column exactly once
-            // (a second "dealer_id" key would be a duplicate column there).
             'Dealer_id' => fn () => User::where('role_id', User::ROLE_DEALER)->inRandomOrder()->value('id')
                 ?? User::factory()->create(['role_id' => User::ROLE_DEALER])->id,
             'property_type_id' => fn () => PropertyType::inRandomOrder()->value('id')
@@ -35,7 +30,6 @@ class PropertyFactory extends Factory
         ];
     }
 
-    /** Listed and visible: published in the past and available. */
     public function listed(): static
     {
         return $this->state(fn () => ['status' => 'Available'])
@@ -44,7 +38,6 @@ class PropertyFactory extends Factory
 
     public function configure(): static
     {
-        // published_at is not mass-assignable, so set it after creation
         return $this->afterCreating(function (Property $property) {
             if ($property->published_at === null && $this->faker->boolean(90)) {
                 $property->forceFill([

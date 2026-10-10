@@ -1,10 +1,8 @@
   @props(['Property','isInWishList'=>false ])
-  <!-- Property List Start -->
             @if($Property)
            
                           <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-      
-                         
+
                                 <div class="property-item rounded overflow-hidden">
                                     <div class="position-relative overflow-hidden">
                                         <a href="{{route('property.details',$Property->id)}}">  <img class="img-fluid img-thumbnail" src="{{optional($Property->PrimaryImage)->getUrl()}}" style="height:250px; width:430px" alt="Responsive image"></a>
@@ -58,6 +56,4 @@
                             </div>
                             
                         @endif
-          
-             
-        <!-- Property List End -->
+

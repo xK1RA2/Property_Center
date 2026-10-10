@@ -6,7 +6,6 @@ import type { Paginated } from '@/lib/types';
 
 import { colors, Empty, ErrorState, Loading } from './ui';
 
-/** Infinite-scroll list for any paginated API endpoint. */
 export function PagedList<T extends { id: number }>({
   queryKey,
   fetchPage,

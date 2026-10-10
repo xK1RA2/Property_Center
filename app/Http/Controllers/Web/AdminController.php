@@ -12,7 +12,6 @@ use App\Models\Checkout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-// Access is restricted to admins by the "role:3" middleware group in routes/web.php.
 class AdminController extends Controller
 {
 

@@ -22,7 +22,6 @@ class TraderRequestController extends Controller
         return response()->json(['data' => $requests]);
     }
 
-    /** PATCH /admin/trader-requests/{id} {action: approve|reject} */
     public function update(Request $request, TraderRequest $traderRequest): JsonResponse
     {
         $data = $request->validate(['action' => ['required', 'in:approve,reject']]);

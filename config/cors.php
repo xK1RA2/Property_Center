@@ -1,12 +1,5 @@
 <?php
 
-/*
-| Cross-Origin Resource Sharing for the JSON API.
-|
-| The mobile app is not a browser and ignores CORS. This only matters for a web front end on another
-| origin. By default NO other origin may call the API from a browser; list trusted ones in
-| CORS_ALLOWED_ORIGINS, e.g. "https://app.example.com,https://admin.example.com".
-*/
 return [
     'paths' => ['api/*'],
 
@@ -22,6 +15,5 @@ return [
 
     'max_age' => 600,
 
-    // tokens travel in the Authorization header, never in cookies
     'supports_credentials' => false,
 ];

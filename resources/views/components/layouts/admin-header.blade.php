@@ -2,7 +2,6 @@
 <div class="flex items-center justify-center mt-8">
                     <div class="flex items-center">
 
-
                         <span class="mx-2 text-2xl font-semibold text-white">Admin Dashboard</span>
                     </div>
                 </div>

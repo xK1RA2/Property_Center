@@ -12,7 +12,6 @@ export interface Coordinate {
 
 const AMMAN: Region = { latitude: 31.9539, longitude: 35.9106, latitudeDelta: 0.15, longitudeDelta: 0.15 };
 
-/** Tap the map to drop the listing's pin. */
 export function LocationPicker({
   value,
   onChange,
@@ -23,7 +22,6 @@ export function LocationPicker({
   const map = useRef<MapView>(null);
   const [locating, setLocating] = useState(false);
 
-  // when editing, jump to the saved pin
   useEffect(() => {
     if (value) {
       map.current?.animateToRegion(
@@ -31,8 +29,6 @@ export function LocationPicker({
         300,
       );
     }
-    // only on first mount / when an existing value arrives
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value === null]);
 
   const onPress = (e: MapPressEvent) => {

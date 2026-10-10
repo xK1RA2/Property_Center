@@ -3,7 +3,6 @@ import MapView, { Marker } from 'react-native-maps';
 
 import { colors } from './ui';
 
-/** Read-only map with the listing's pin and an "Open in Maps" shortcut. */
 export function PropertyMap({ lat, lng, title }: { lat: number; lng: number; title?: string }) {
   const openInMaps = () => {
     const label = encodeURIComponent(title ?? 'Property');

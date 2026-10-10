@@ -45,8 +45,6 @@ class NewsletterSend extends Command
 
         $subject = (string) $this->argument('subject');
 
-        // each subscriber gets their own message so the unsubscribe link is personal;
-        // the mailable is queued, so a worker (queue:work) delivers them
         NewsletterSubscriber::active()->orderBy('id')->each(
             fn (NewsletterSubscriber $s) => Mail::to($s->email)->queue(new NewsletterIssue($s, $subject, $body))
         );

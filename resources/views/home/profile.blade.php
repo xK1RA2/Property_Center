@@ -4,7 +4,6 @@
 
     <div class="container shadow-lg mt-5 p-4 bg-white rounded">
         <div class="row">
-            <!-- Left Section -->
             <div class="col-md-4  ">
                 <div class="p-3 text-center border-0 ">
                     
@@ -52,10 +51,8 @@
                     <button class="btn btn-primary w-100 mt-2" type="submit">Change Password</button>
                 </form>
 
-             
             </div>
 
-            <!-- Right Section -->
             <div class="col-md-8  ">
                 <div class="card p-4 border-0  position-relative">
                     
@@ -66,8 +63,7 @@
                     <form id="profileForm" method="POST" action="{{ route('InformationUpdate') }}">@csrf
                         <div class="row mb-4">
                             <div class="col-md-6">
-                               
-                               
+
                                 <div class="p-1  justify-content-between align-items-center">
                                    <label class="   text-dark fs-5 ">Username : </label>
                                     <input class="   border-primary form-control  bg-white @error('username') border-danger   @enderror" name="username" id="username" value="{{$user->username}}" >
@@ -98,8 +94,7 @@
                                 </div>
                             </div>
                         </div>
-            
-                     
+
                         @if(request()->user()->role_id==2)
                     <div class="fs-5 text-dark ">Rate :
                     {{number_format($Avg, 1)}}
@@ -121,8 +116,7 @@
                             Update Profile
                         </button>
                     </form>
-                    
-                  
+
                 </div>
                 @if(request()->user()->role_id==1)
                 @if(session('RequestSuccess'))
@@ -140,8 +134,6 @@
                 </form>
                 
                 </div>
-               
-                        
 
                 @endif
 
@@ -149,10 +141,8 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS and JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Image preview functionality
         document.getElementById('imageUpload').addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (file) {
@@ -164,34 +154,30 @@
             }
         });
 
-        // Toggle edit mode for all fields
         document.getElementById('editButton').addEventListener('click', function() {
             const inputs = document.querySelectorAll('#profileForm input');
             const updateButton = document.getElementById('updateButton');
             const isEditing = this.textContent === 'Save';
             
             if (isEditing) {
-                // Save mode: disable inputs, remove borders, and change button text back to "Edit"
                 inputs.forEach(input => {
                     input.disabled = true;
                     input.classList.remove('border');
                     input.classList.add('border-0');
                 });
                 this.textContent = 'Edit';
-                updateButton.textContent = 'Update Profile'; // Reset Update button text
+                updateButton.textContent = 'Update Profile';
             } else {
-                // Edit mode: enable inputs, add borders, change Update button to "Save Changes", and change Edit button to "Save"
                 inputs.forEach(input => {
                     input.disabled = false;
                     input.classList.remove('border-0');
                     input.classList.add('border');
                 });
-                updateButton.textContent = 'Save Changes'; // Change Update button to "Save Changes"
+                updateButton.textContent = 'Save Changes';
                 this.textContent = 'Save';
             }
         });
 
-        // Update profile functionality
         function updateProfile(event) {
             event.preventDefault();
             const updateButton = document.getElementById('updateButton');
@@ -202,17 +188,15 @@
             const phone = document.getElementById('phone');
 
             if (updateButton.textContent === 'Update Profile') {
-                // Switch to edit mode: enable inputs and add borders
                 inputs.forEach(input => {
                     input.disabled = false;
                     input.classList.remove('border-0');
                     input.classList.add('border','rounded-pill','px-2' ,'w-1/2');
                 });
                 updateButton.textContent = 'Save Changes';
-                document.getElementById('editButton').style.display = 'none'; // Hide Edit button while editing
+                document.getElementById('editButton').style.display = 'none';
                 
             } else {
-                // Save changes
                 if (!username.value.trim() || !lastName.value.trim() || !email.value.trim() || !phone.value.trim()) {
                     alert('Please fill in all required fields (Username, Last Name, Email, and Phone)!');
                     return;
@@ -228,7 +212,6 @@
                     return;
                 }
 
-                
                 inputs.forEach(input => {
                     input.disabled = true;
                     input.classList.remove('border','rounded-pill','px-2' ,'w-1/2');
@@ -236,16 +219,14 @@
                 });
                 
                 updateButton.textContent = 'Update Profile';
-                document.getElementById('editButton').style.display = 'block'; // Show Edit button again
+                document.getElementById('editButton').style.display = 'block';
             }
         }
 
-        // Interactive star rating functionality
         document.addEventListener('DOMContentLoaded', function() {
             const stars = document.querySelectorAll('.star');
-            let currentRating = 3; // Default rating of 3.0 (3 stars out of 5)
+            let currentRating = 3;
 
-            // Initialize stars based on default rating
             updateStars(currentRating);
 
             stars.forEach(star => {

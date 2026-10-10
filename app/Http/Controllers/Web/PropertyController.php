@@ -12,14 +12,12 @@ use App\Services\PropertyService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
-/** Dealer-facing listing management plus the public detail pages. */
 class PropertyController extends Controller
 {
     public function __construct(private PropertyService $properties)
     {
     }
 
-    // ---------- public ----------
 
     public function details(Property $property)
     {
@@ -33,7 +31,6 @@ class PropertyController extends Controller
         return redirect()->route('property.details', $property);
     }
 
-    // ---------- dealer ----------
 
     public function index(Request $request)
     {
@@ -62,7 +59,6 @@ class PropertyController extends Controller
             $request->file('images') ?: [],
         );
 
-        // the next page lets the dealer drop a pin for this exact listing
         $request->session()->put('new_property_id', $property->id);
 
         return redirect()->route('locations.create')
@@ -101,7 +97,6 @@ class PropertyController extends Controller
         return redirect()->route('myProperties');
     }
 
-    // ---------- helpers ----------
 
     private function validated(Request $request): array
     {
@@ -118,7 +113,6 @@ class PropertyController extends Controller
         ]);
     }
 
-    /** Form field names -> column names. Absent optional fields are simply not sent. */
     private function attributes(array $data, Request $request): array
     {
         return array_filter([

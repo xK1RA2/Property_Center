@@ -6,17 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        // referenced tables may be created by later migrations; MySQL needs the check off
         Schema::withoutForeignKeyConstraints(function () {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Buyer
-            $table->foreignId('Property_id')->constrained('properties')->onDelete('cascade'); // Car being ordered
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('Property_id')->constrained('properties')->onDelete('cascade');
             $table->enum('status', ['Approved','Pending','Canceled'])->default('Approved');
             $table->integer('price'); 
             $table->timestamp('date');
@@ -24,7 +20,6 @@ return new class extends Migration
         });
     }
 
-    
     public function down(): void
     {
         Schema::dropIfExists('orders');

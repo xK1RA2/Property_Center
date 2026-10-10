@@ -8,21 +8,10 @@ use App\Models\State;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-/**
- * Data the application cannot run without. Safe to run repeatedly, and the
- * only seeder you should run in production:
- *
- *   php artisan db:seed --class=ReferenceDataSeeder --force
- *
- * Role ids matter: 1 = user, 2 = dealer, 3 = admin (see App\Models\User::ROLE_*).
- * Comment type ids matter too: 1 = normal, 2 = anonymous.
- */
 class ReferenceDataSeeder extends Seeder
 {
     public function run(): void
     {
-        // The code compares against these ids (User::ROLE_*, comment_type_id 1/2), so they are
-        // written explicitly: auto-increment can skip numbers (MySQL does after any rollback).
         DB::table('roles')->upsert([
             ['id' => 1, 'name' => 'user'],
             ['id' => 2, 'name' => 'dealer'],
@@ -47,7 +36,6 @@ class ReferenceDataSeeder extends Seeder
         }
     }
 
-    /** @return array<string, string[]> */
     private function cities(): array
     {
         return [

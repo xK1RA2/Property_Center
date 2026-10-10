@@ -12,12 +12,10 @@
    </div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-          const locations = @json($locations); // The locations array
+          const locations = @json($locations);
 
-// Initialize the map, centered on the first location by default
 const map = L.map('map').setView([locations[0].lat, locations[0].lng], 2);
 
-// Add OpenStreetMap tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         zoom: 5,
         minZoom: 2,
@@ -26,14 +24,12 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
-// Add markers for all locations
 locations.forEach(function(location) {
   
     L.marker([location.lat, location.lng]).addTo(map)
         .bindPopup( 'Price :'+ '$' + location.property.price + '<br>');
 });
 
-// Optionally, fit the map bounds to the markers
 let bounds = [];
 locations.forEach(function(location) {
     bounds.push([location.lat, location.lng]);
@@ -53,11 +49,9 @@ if (navigator.geolocation) {
               .openPopup();
            
         }, function () {
-            // If permission denied or failed, fit bounds to all locations
             map.fitBounds(bounds);
         });
     } else {
-        // Geolocation not supported
         map.fitBounds(bounds);
     }
 map.fitBounds(bounds);

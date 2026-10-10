@@ -11,7 +11,6 @@ class Comment extends Model
 {
     protected $table = 'comments';
 
-    //Relation With Property
     protected $fillable = [
     
      'user_id',
@@ -35,6 +34,5 @@ class Comment extends Model
     {
          return $this->HasOne(CommentType::class);
     }
-    
 
 }

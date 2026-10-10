@@ -16,7 +16,6 @@
          <div>
         
          <x-search-form :$Locations :$Properties :$propertyType action='/search' method="Get"/>
-      
 
          <div class="tab-content">
                     <div id="tab-1" class="tab-pane fade show p-0 active">
@@ -34,7 +33,6 @@
    </div>
        </div>
 
-                                   
                         </div>
                     </div>
                 </div>

@@ -43,7 +43,6 @@ class CreateAdmin extends Command
             return self::SUCCESS;
         }
 
-        // username/phone are required by the website's forms but not by the database
         $user = new User([
             'name' => (string) $this->option('name'),
             'email' => $email,

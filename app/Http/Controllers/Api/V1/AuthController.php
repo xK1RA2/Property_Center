@@ -99,7 +99,6 @@ class AuthController extends Controller
 
         $user->update(['password' => $data['password']]);
 
-        // every other phone/browser that held a token must sign in again with the new password
         $user->tokens()->where('id', '!=', $user->currentAccessToken()->id)->delete();
 
         return response()->json(['message' => 'Password updated']);

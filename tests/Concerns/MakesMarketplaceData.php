@@ -10,10 +10,6 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
-/**
- * Deterministic fixtures: the app's roles are fixed ids (1 user, 2 dealer, 3 admin)
- * and comment types are 1 normal / 2 anonymous, so they are seeded explicitly.
- */
 trait MakesMarketplaceData
 {
     protected PropertyType $type;
@@ -21,7 +17,6 @@ trait MakesMarketplaceData
 
     protected function seedLookups(): void
     {
-        // explicit ids: MySQL does not reuse auto-increment values after a rolled-back test
         DB::table('roles')->insert([
             ['id' => 1, 'name' => 'user'],
             ['id' => 2, 'name' => 'dealer'],
@@ -71,7 +66,6 @@ trait MakesMarketplaceData
         return $property;
     }
 
-    /** A real 1x1 PNG, so tests don't depend on the GD extension. */
     protected function fakePng(string $name = 'photo.png'): UploadedFile
     {
         return UploadedFile::fake()->createWithContent(

@@ -19,8 +19,7 @@ class PropertyImage extends Model
     public function Property():BelongsTo {
         return $this->BelongsTo(Property::class,'property_id');
     }
-  
-    
+
     public function getUrl()
     {
         if(str_starts_with($this->image_path,'http'))

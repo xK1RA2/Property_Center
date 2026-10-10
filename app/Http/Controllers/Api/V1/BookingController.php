@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
-    /** GET /bookings : users see their own, dealers see bookings on their properties, admins see all */
     public function index(Request $request)
     {
         $user = $request->user();
@@ -28,7 +27,6 @@ class BookingController extends Controller
         return BookingResource::collection($bookings);
     }
 
-    /** POST /properties/{property}/bookings : create, or update the user's existing booking */
     public function store(Request $request, Property $property, BookingService $bookings): JsonResponse
     {
         $data = $request->validate([
@@ -42,7 +40,6 @@ class BookingController extends Controller
             ->response()
             ->setStatusCode($booking->wasRecentlyCreated ? 201 : 200);
     }
-    /** PATCH /bookings/{booking} : the property's dealer approves or rejects */
     public function update(Request $request, Booking $booking, BookingService $bookings): BookingResource
     {
         abort_unless($booking->dealer_id == $request->user()->id, 403);

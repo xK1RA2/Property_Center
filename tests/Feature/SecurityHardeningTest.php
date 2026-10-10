@@ -13,6 +13,7 @@ use Laravel\Sanctum\Sanctum;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\User as SocialUser;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Concerns\MakesMarketplaceData;
 use Tests\TestCase;
 
@@ -26,7 +27,6 @@ class SecurityHardeningTest extends TestCase
         $this->seedLookups();
     }
 
-    // ---------- mass assignment ----------
 
     public function test_role_and_social_ids_cannot_be_mass_assigned(): void
     {
@@ -51,7 +51,6 @@ class SecurityHardeningTest extends TestCase
         $this->assertNull(User::where('email', 'eve@example.com')->value('google_id'));
     }
 
-    // ---------- privacy of other people's data ----------
 
     public function test_a_commenters_phone_and_username_are_not_public(): void
     {
@@ -105,7 +104,6 @@ class SecurityHardeningTest extends TestCase
         $this->get("/Dealers/{$dealer->id}")->assertOk();
     }
 
-    // ---------- logout is not a link ----------
 
     public function test_logout_requires_post(): void
     {
@@ -118,7 +116,6 @@ class SecurityHardeningTest extends TestCase
         $this->assertGuest();
     }
 
-    // ---------- one password policy ----------
 
     public static function weakPasswords(): array
     {
@@ -129,7 +126,7 @@ class SecurityHardeningTest extends TestCase
         ];
     }
 
-    /** @dataProvider weakPasswords */
+    #[DataProvider('weakPasswords')]
     public function test_weak_passwords_are_refused_on_api_registration(string $password): void
     {
         $this->postJson('/api/v1/auth/register', [
@@ -137,7 +134,7 @@ class SecurityHardeningTest extends TestCase
         ])->assertUnprocessable()->assertJsonValidationErrors('password');
     }
 
-    /** @dataProvider weakPasswords */
+    #[DataProvider('weakPasswords')]
     public function test_weak_passwords_are_refused_on_website_signup(string $password): void
     {
         $this->post('/signup', [
@@ -160,7 +157,6 @@ class SecurityHardeningTest extends TestCase
         ])->assertSessionHasErrors('password');
     }
 
-    // ---------- brute force ----------
 
     public function test_repeated_wrong_passwords_for_one_account_are_throttled_on_the_api(): void
     {
@@ -171,7 +167,6 @@ class SecurityHardeningTest extends TestCase
                 ->assertUnprocessable();
         }
 
-        // even the CORRECT password is refused once the account is locked for the window
         $this->postJson('/api/v1/auth/login', ['email' => 'target@example.com', 'password' => 'right-pass1'])
             ->assertStatus(429);
     }
@@ -200,7 +195,6 @@ class SecurityHardeningTest extends TestCase
         $this->assertGuest();
     }
 
-    // ---------- tokens ----------
 
     public function test_api_tokens_expire(): void
     {
@@ -242,7 +236,6 @@ class SecurityHardeningTest extends TestCase
         $this->assertSame(0, $user->tokens()->count());
     }
 
-    // ---------- headers / CORS ----------
 
     public function test_responses_send_a_content_security_policy_that_blocks_framing_and_base_hijacking(): void
     {
@@ -272,12 +265,10 @@ class SecurityHardeningTest extends TestCase
         $this->assertNull($response->headers->get('Access-Control-Allow-Origin'));
     }
 
-    // ---------- social login ----------
 
     private function fakeProvider(string $name, SocialUser $user): void
     {
         $driver = Mockery::mock();
-        // stateless() is NOT allowed: the OAuth state must be verified. Calling it would fail the test.
         $driver->shouldReceive('user')->andReturn($user);
         Socialite::shouldReceive('driver')->with($name)->andReturn($driver);
     }
@@ -353,7 +344,6 @@ class SecurityHardeningTest extends TestCase
         $this->assertStringNotContainsString('SQLSTATE', (string) session('error'));
     }
 
-    // ---------- uploads ----------
 
     private function pngClaiming(int $width, int $height): UploadedFile
     {
@@ -377,7 +367,6 @@ class SecurityHardeningTest extends TestCase
             ->assertUnprocessable();
     }
 
-    // ---------- accountability ----------
 
     public function test_destructive_admin_actions_are_logged_with_who_did_them(): void
     {

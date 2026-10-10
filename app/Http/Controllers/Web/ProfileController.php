@@ -23,7 +23,6 @@ class ProfileController extends Controller
 
     public function dealer(User $dealer)
     {
-        // only dealers have a public profile; this must not be a way to read any user's details
         abort_unless($dealer->role_id === User::ROLE_DEALER, 404);
 
         return view('home.DealerProfile', [
@@ -73,7 +72,6 @@ class ProfileController extends Controller
 
         $user->update(['password' => $request->input('newPassword')]);
 
-        // a changed password signs the phone app (API tokens) out everywhere
         $user->tokens()->delete();
         $request->session()->regenerate();
 

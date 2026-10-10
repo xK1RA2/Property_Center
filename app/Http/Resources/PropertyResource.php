@@ -43,7 +43,6 @@ class PropertyResource extends JsonResource
                 array_key_exists('property_rate_count', $this->resource->getAttributes()),
                 fn () => (int) $this->property_rate_count
             ),
-            // only set by show() for a signed-in viewer
             'is_favorite' => $this->when(array_key_exists('is_favorite', $this->resource->getAttributes()), fn () => (bool) $this->is_favorite),
             'my_rating' => $this->when(array_key_exists('my_rating', $this->resource->getAttributes()), fn () => $this->my_rating),
             'created_at' => $this->created_at,

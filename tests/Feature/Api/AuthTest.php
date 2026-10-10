@@ -117,7 +117,7 @@ class AuthTest extends TestCase
 
         $this->withToken($token)->postJson('/api/v1/auth/logout')->assertOk();
 
-        $this->app['auth']->forgetGuards(); // the test app instance caches the resolved user
+        $this->app['auth']->forgetGuards();
         $this->withToken($token)->getJson('/api/v1/me')->assertUnauthorized();
     }
 

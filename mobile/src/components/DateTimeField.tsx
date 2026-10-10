@@ -3,11 +3,6 @@ import { Platform, Pressable, Text, View } from 'react-native';
 
 import { colors } from './ui';
 
-/**
- * Date + time picker.
- * Android: native date dialog then time dialog. iOS: inline compact picker.
- * Web has no native picker, so it falls back to a text field (YYYY-MM-DDTHH:mm).
- */
 export function DateTimeField({
   label,
   value,

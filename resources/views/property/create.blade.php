@@ -6,7 +6,6 @@
         <h3 class="text-center mb-4">Add Property</h3>
        @csrf
             <div class="row g-3">
-                   <!--  اسم الحي للسكن *required-->
                    <div class="col-md-6">
                   <label class="form-label">State</label>
                   <select id="citySelect"  class="form-control bg-white"name="state_id">
@@ -20,7 +19,6 @@
                   @endforeach
                   </select>
                    </div>
-                  <!-- المدينة للسكن-->
                   <div class="col-md-6">
                   <label class="form-label">City</label>
                   <select id="citySelect"  class="form-control bg-white"name="city_id">
@@ -35,12 +33,10 @@
                   </select>
                    </div>
              
-                    <!-- نوع العقار-->
                 <div class="col-md-6">
                   <label class="form-label text-info">PropertyType</label>
                   <select id="citySelect"  class="form-control bg-white" name="PropertyName">
-                 
-                 
+
                     @foreach($propertyType as $Type)
                 
                       <option value="{{$Type->id}}"  >
@@ -51,7 +47,6 @@
                   </select>
                    </div>
               
-                <!-- سعر ومساحة السكن-->
                 <div class="col-md-6">
                     <label class="form-label">Price($)</label>
                     <input type="number" value="old('price')" name="price" class="form-control shadow-sm"placeholder="Enter price"required>
@@ -68,27 +63,20 @@
                     <label class="form-label">Year built</label>
                     <input type="number" name="year" value="{{ old('year', date('Y')) }}" min="1800" max="2031" class="form-control shadow-sm">
                 </div>
- 
-             
-          
-              
-                <!-- عدد الغرف في البيت-->
+
                 <div class="col-md-6">
                     <label class="form-label">Bedrooms</label>
                     <input type="number" name="Bedrooms" value="old('Bedrooms')" class="form-control shadow-sm"placeholder="Number of Bedrooms"min="1"required>
                 </div>
-                <!-- عدد الحمامات في الشقة-->
                 <div class="col-md-6">
                     <label class="form-label">Bathrooms</label>
                     <input type="number" name="Bathrooms" value="old('Bathrooms')" class="form-control shadow-sm"placeholder="Number of Bathrooms"min="1"required>
                 </div>
-                <!-- عدد الصالات في السكن-->
                 <div class="col-md-6">
                     <label class="form-label">Living Rooms</label>
                     <input type="number"name="rooms" value="old('rooms')" class="form-control shadow-sm"placeholder="Number of Living Rooms"min="1"required>
                 </div>
 
-                <!-- عدد المطابخ وخيار البيع أو الإيجار -->
                         <div class="col-md-6">
                             <label class="form-label">Kitchens</label>
                             <input type="number"name="Kitchen" value="old('Kitchen')" class="form-control shadow-sm"placeholder="Number of kitchen"min="0"required>
@@ -105,12 +93,10 @@
                                 @endforeach
                             </select>
                         </div>
-                <!-- الوصف للسكن او العقار-->
                 <div class="col-md-6">
                     <label class="form-label">Description</label>
                     <textarea class="form-control shadow-sm"rows="4"value="old('Description')"placeholder="Enter property description"name="Description"></textarea>
                 </div>
-                <!-- وسائل الراحة واضافات السكن -->
                 <div class="col-md-6">
                     <label class="form-label">Features</label>
                     <div class="row">
@@ -133,7 +119,6 @@
                     </div>
                 </div>
                 <hr class="mt-5 text-dark">
-               <!-- ارفع صور على الموقع-->
                 <div class="col-md-12 text-center  ">
                     <label class="form-label d-block">Upload Property Images</label>
                     <input type="file" name="images[]" multiple  name="images[]" id="fileInput"class="d-none  " required />
@@ -142,7 +127,6 @@
                     </label>
                 </div>
             </div>
-            <!-- ارسال المعلومات للداتا بيس-->
             <div class="text-center mt-4">
                 <button type="submit"class="btn btn-success w-100 shadow-sm">Submit Property</button>
             </div>
@@ -151,6 +135,4 @@
 </div>
 <script src="./assets/js/bootstrap.bundle.min.js"></script>
 </x-app-layout  >
-
-
 

@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class RatingController extends Controller
 {
-    /** PUT /properties/{property}/rating : one rating per user, re-sending updates it */
     public function upsert(Request $request, Property $property): JsonResponse
     {
         $data = $request->validate([

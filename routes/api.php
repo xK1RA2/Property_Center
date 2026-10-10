@@ -12,13 +12,8 @@ use App\Http\Controllers\Api\V1\RatingController;
 use App\Http\Controllers\Api\V1\TraderRequestController;
 use Illuminate\Support\Facades\Route;
 
-/*
-| REST API, served under /api/v1 (JSON only, Sanctum bearer-token auth).
-| Send "Accept: application/json" and "Authorization: Bearer <token>".
-*/
 Route::prefix('v1')->middleware('throttle:api')->group(function () {
 
-    // ---- Public ----
     Route::post('auth/register', [AuthController::class, 'register'])->middleware('throttle:10,1');
     Route::post('auth/login', [AuthController::class, 'login'])->middleware('throttle:login');
 
@@ -31,7 +26,6 @@ Route::prefix('v1')->middleware('throttle:api')->group(function () {
     Route::get('property-types', [LookupController::class, 'propertyTypes']);
     Route::get('dealers', [LookupController::class, 'dealers']);
 
-    // ---- Authenticated ----
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('auth/logout', [AuthController::class, 'logout']);
         Route::get('me', [AuthController::class, 'me']);
@@ -56,20 +50,17 @@ Route::prefix('v1')->middleware('throttle:api')->group(function () {
         Route::post('trader-requests', [TraderRequestController::class, 'store'])
             ->middleware('role:' . \App\Models\User::ROLE_USER);
 
-        // ---- Dealer ----
         Route::middleware('role:' . \App\Models\User::ROLE_DEALER)->group(function () {
             Route::get('my/properties', [PropertyController::class, 'mine']);
             Route::post('properties', [PropertyController::class, 'store']);
             Route::patch('bookings/{booking}', [BookingController::class, 'update']);
         });
 
-        // ---- Dealer (own) or admin: ownership enforced by PropertyPolicy ----
         Route::middleware('role:2,3')->group(function () {
             Route::match(['put', 'patch'], 'properties/{property}', [PropertyController::class, 'update']);
             Route::delete('properties/{property}', [PropertyController::class, 'destroy']);
         });
 
-        // ---- Admin ----
         Route::middleware('role:' . \App\Models\User::ROLE_ADMIN)->prefix('admin')->group(function () {
             Route::get('users', [Admin\UserController::class, 'index']);
             Route::delete('users/{user}', [Admin\UserController::class, 'destroy']);

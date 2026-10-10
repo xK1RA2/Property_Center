@@ -13,7 +13,6 @@
 
             <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
                 class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-[#00B98E] lg:translate-x-0 lg:static lg:inset-0">
-             
 
                 <x-layouts.admin-header :$active />
             </div>
@@ -28,8 +27,6 @@
                         </button>
 
                         <div class="relative mx-4 lg:mx-0">
-
-
 
                         </div>
                     </div>
@@ -112,7 +109,6 @@
                         <div class="container mt-4">
                         </div>
 
-
                         <div class="container mt-4 text-center">
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover text-center w-100">
@@ -127,12 +123,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                     
 
                                             @foreach ($Requests as $Req )
                                             
                                               <tr>
-
 
                                             <td class="py-4 px-4">{{ $Req->id }}</td>
                                             <td class="py-4 px-4">{{ $Req->user->name }}</td>
@@ -145,12 +139,10 @@
                                             </td>
                                             </tr>
                                             @endforeach
-                                        
-                                       
+
                                     </tbody>
                                 </table>
                             </div>
-
 
                     </div>
                 </main>

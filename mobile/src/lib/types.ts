@@ -1,4 +1,4 @@
-export type Role = 1 | 2 | 3; // 1 user, 2 dealer, 3 admin
+export type Role = 1 | 2 | 3;
 
 export interface User {
   id: number;

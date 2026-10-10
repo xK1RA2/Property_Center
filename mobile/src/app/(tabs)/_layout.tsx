@@ -29,7 +29,6 @@ export default function TabsLayout() {
       <Tabs.Screen name="index" options={{ title: 'Explore', tabBarIcon: icon('search') }} />
       <Tabs.Screen name="favorites" options={{ title: 'Saved', tabBarIcon: icon('heart') }} />
       <Tabs.Screen name="bookings" options={{ title: 'Bookings', tabBarIcon: icon('calendar') }} />
-      {/* only dealers get the listings tab */}
       <Tabs.Screen
         name="listings"
         options={{ title: 'My listings', tabBarIcon: icon('home'), href: isDealer ? undefined : null }}

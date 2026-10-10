@@ -1,10 +1,3 @@
-/**
- * Dynamic Expo config. Static values live in app.json; this adds the pieces that
- * depend on secrets / environment so nothing sensitive is committed.
- *
- *   GOOGLE_MAPS_API_KEY   Google Maps SDK key (Android + iOS builds; not needed in Expo Go)
- *   EAS_PROJECT_ID        from `eas init`; required for push tokens
- */
 module.exports = ({ config }) => ({
   ...config,
   plugins: [

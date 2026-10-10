@@ -194,7 +194,6 @@ export default function PropertyDetail() {
             </View>
           ) : null}
 
-          {/* rating */}
           <Text style={{ fontSize: 17, fontWeight: '800', marginTop: 24, color: colors.text }}>Rating</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 }}>
             {[1, 2, 3, 4, 5].map((n) => (
@@ -208,7 +207,6 @@ export default function PropertyDetail() {
             </Text>
           </View>
 
-          {/* booking (users only; dealers don't book their own listing) */}
           {!isOwner && p.status === 'Available' ? (
             <View style={{ marginTop: 24 }}>
               <Text style={{ fontSize: 17, fontWeight: '800', color: colors.text, marginBottom: 10 }}>Book a visit</Text>
@@ -218,7 +216,6 @@ export default function PropertyDetail() {
             </View>
           ) : null}
 
-          {/* comments */}
           <Text style={{ fontSize: 17, fontWeight: '800', marginTop: 28, marginBottom: 10, color: colors.text }}>Comments</Text>
           <Field label="Add a comment" value={comment} onChangeText={setComment} multiline />
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>

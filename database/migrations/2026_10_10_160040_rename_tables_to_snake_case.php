@@ -3,14 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 
-/**
- * Original tables were created with mixed case and typos (Comment_Type, Rate,
- * faivorate_property, book_preview...). MySQL on Linux treats table names as
- * case-sensitive, so this also makes the schema portable.
- */
 return new class extends Migration
 {
-    /** old => new */
     private array $tables = [
         'Comment_Type' => 'comment_types',
         'Comments' => 'comments',
@@ -38,10 +32,6 @@ return new class extends Migration
         }
     }
 
-    /**
-     * Two steps through a temporary name: SQLite (and MySQL on Windows/macOS)
-     * compare names case-insensitively, so a case-only rename can't be done directly.
-     */
     private function move(string $from, string $to): void
     {
         if (!Schema::hasTable($from)) {

@@ -1,8 +1,5 @@
 @props(['dealer' ])
 
-            
-               
-               
                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="team-item rounded overflow-hidden">
                         <a href="{{ route('Dealer_Profile',$dealer) }}">
@@ -35,10 +32,4 @@
                             </a>
                         </div>
                     </div>
-                    
-
-         
-        <!-- Team End -->
-
-       
 

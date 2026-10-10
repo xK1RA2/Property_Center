@@ -8,10 +8,8 @@ use BotMan\BotMan\BotManFactory;
 use BotMan\BotMan\Drivers\DriverManager;
 use BotMan\Drivers\Web\WebDriver;
 
-/** The site's help bot: answers with links to the right page. */
 class ChatbotController extends Controller
 {
-    /** keyword pattern => [route name, label, intro] */
     private const LINKS = [
         '.*\bprofile\b.*' => ['user.profile', 'Profile', 'Visit the Profile page:'],
         '.*\bWhishlist\b.*' => ['wishList.index', 'WishList', 'Visit WishList Page:'],

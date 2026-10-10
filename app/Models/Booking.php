@@ -15,7 +15,6 @@ class Booking extends Model
       public function Property():BelongsTo{
         return $this->belongsTo(Property::class, 'property_id');
       }
-      // Correct FK mapping (the legacy Property() relation above uses a wrong key)
       public function propertyRef():BelongsTo{
         return $this->belongsTo(Property::class, 'property_id');
       }

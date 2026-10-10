@@ -6,8 +6,6 @@
 <link href="css/style.css" rel="stylesheet"> 
  <x-app-layout title="Property Details"  >
 
-
-    <!-- جافا سكريبت للتقيم -->
     <script>
         document.querySelectorAll('input[name="rating"]').forEach((input) => {
             input.addEventListener('change', function () {
@@ -26,7 +24,6 @@
             }
         });
 
-        // (pop massege)جافا سكريبت لفورم الحجز
         document.getElementById('bookingForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const fullName = document.getElementById('fullName').value;
@@ -37,15 +34,14 @@
 
             if (fullName && phoneNumber && appointmentDate && appointmentTime) {
                 alert(`Booking Submitted!\nName: ${fullName}\nPhone: ${phoneNumber}\nDate: ${appointmentDate}\nTime: ${appointmentTime}\nNotes: ${notes || 'None'}`);
-                this.reset(); // Reset the form
-                bootstrap.Modal.getInstance(document.getElementById('bookingModal')).hide(); // Close the modal
+                this.reset();
+                bootstrap.Modal.getInstance(document.getElementById('bookingModal')).hide();
             } else {
                 alert('Please fill in all required fields!');
             }
         });
     </script>
-   
-    
+
 </x-app-layout >
 
 </x-app-layout>

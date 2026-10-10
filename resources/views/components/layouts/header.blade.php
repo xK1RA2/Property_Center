@@ -1,5 +1,4 @@
 
- <!-- Navbar Start -->
         <div class="container-fluid nav-bar bg-transparent  " id="navbar">
             <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4 " >
                 <a href="/index" class="navbar-brand d-flex align-items-center text-center">
@@ -20,8 +19,7 @@
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Property</a>
                        
                         <div class="dropdown-menu rounded-0 m-0">
-                          
-                               
+
                                 <a href="/myProperties" class="dropdown-item">My Properties</a>
                                 <a href="{{route('property')}}" class="dropdown-item">Add Property</a>
                                 <a href="/View" class="dropdown-item ">Purchase Property</a>
@@ -56,8 +54,7 @@
                             <a href="{{route('orders')}}" class="dropdown-item">My Orders</a>
                               
                                 <form method="POST" action="{{ route('logout') }}" style="display:inline">@csrf<button type="submit" class="dropdown-item" style="background:none;border:0;width:100%;text-align:left">Logout</button></form>
-                                
-                               
+
                             </div>
                             </div>
                             @endauth
@@ -74,5 +71,4 @@
                 </div>
             </nav>
         </div>
-        <!-- Navbar End -->
    

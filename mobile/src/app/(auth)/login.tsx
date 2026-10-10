@@ -18,7 +18,7 @@ export default function Login() {
     setError('');
     try {
       const { token, user } = await api.login(email.trim(), password);
-      await signIn(token, user); // the (auth) layout redirects into the app
+      await signIn(token, user);
     } catch (e) {
       setError(e instanceof ApiError ? e.detail : 'Something went wrong');
     } finally {

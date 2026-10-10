@@ -6,12 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        // referenced tables may be created by later migrations; MySQL needs the check off
         Schema::withoutForeignKeyConstraints(function () {
         Schema::create('faivorate_property', function (Blueprint $table) {
             $table->id();
@@ -22,9 +18,6 @@ return new class extends Migration
         
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('faivorate_Property');

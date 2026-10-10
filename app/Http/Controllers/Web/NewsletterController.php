@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Log;
 
 class NewsletterController extends Controller
 {
-    /** The footer form. Always answers the same, so the form can't be used to probe who is subscribed. */
     public function subscribe(Request $request)
     {
         $data = $request->validate([
@@ -24,9 +23,7 @@ class NewsletterController extends Controller
         $email = mb_strtolower(trim($data['newsletter_email']));
         $subscriber = NewsletterSubscriber::firstOrCreate(['email' => $email]);
 
-        // already subscribed and active: nothing to do, and no email to nag them with
         if (!$subscriber->isActive()) {
-            // someone who left and comes back must confirm again
             if ($subscriber->unsubscribed_at) {
                 $subscriber->forceFill(['unsubscribed_at' => null, 'confirmed_at' => null])->save();
             }
@@ -34,7 +31,6 @@ class NewsletterController extends Controller
             try {
                 Mail::to($subscriber->email)->send(new NewsletterConfirmation($subscriber));
             } catch (\Throwable $e) {
-                // SMTP down / misconfigured: tell the visitor honestly rather than "check your inbox"
                 Log::error('Newsletter confirmation email failed', ['email' => $email, 'error' => $e->getMessage()]);
 
                 return redirect()->back()

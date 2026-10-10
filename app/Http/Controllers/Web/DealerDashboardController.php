@@ -8,7 +8,6 @@ use App\Models\Checkout;
 use App\Models\Property;
 use Illuminate\Http\Request;
 
-/** Routes are behind the role:2 middleware. */
 class DealerDashboardController extends Controller
 {
     public function __invoke(Request $request)

@@ -2,11 +2,8 @@
 
 <x-app-layout :$Tailwind :$title>
 
-
-
     <div class="container shadow-lg mt-5 p-4 bg-white rounded">
         <div class="row">
-            <!-- Left Section -->
             <div class="col-md-4  ">
                 <div class="p-3 text-center border-0 ">
                     <h5 class="fw-bold text-muted mb-4">Dealer Account</h5>
@@ -17,11 +14,8 @@
                
                 </div>
 
-             
-              
             </div>
 
-            <!-- Right Section -->
             <div class="col-md-8 ">
                 <div class="card p-4 border-0  position-relative">
                     
@@ -29,8 +23,7 @@
                     <form id="profileForm" action="POST">
                         <div class="row mb-4">
                             <div class="col-md-6">
-                               
-                               
+
                                 <div class="p-1  justify-content-between align-items-center">
                                    <label class="   text-dark fs-5 ">Username : </label>
                                     <input class="  border-0 border-bottom form-control  bg-white" id="username" value="{{$user->username}}" disabled>
@@ -61,15 +54,10 @@
                                 </div>
                             </div>
                         </div>
-            
-                     
-                    
-                
+
                     </form>
 
-                  
                 </div>
-              
 
             </div>
         </div>
@@ -89,11 +77,8 @@
         </div>
        </div>
 
-
-
     </div>
     </div>
-    <!-- Bootstrap JS and JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
    
     </x-app-layout>

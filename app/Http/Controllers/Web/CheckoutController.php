@@ -11,7 +11,6 @@ class CheckoutController extends Controller
 {
     public function store(Request $request, Property $property, CheckoutService $checkout)
     {
-        // Card number, expiry and CVV never reach the server: only the last 4 digits.
         $data = $request->validate([
             'card_last4' => ['required', 'digits:4'],
             'address' => ['nullable', 'string', 'max:255'],

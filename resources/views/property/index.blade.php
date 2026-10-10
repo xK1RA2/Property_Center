@@ -46,8 +46,6 @@
                           edit
                         </a>
 
-                   
-
                         <form class="d-inline"
                         id=""
                         action="{{route('Destroy',$Property)}}"
@@ -88,7 +86,6 @@
                 </table>
               </div>
 
-           
             </div>
           </div>
         </div>

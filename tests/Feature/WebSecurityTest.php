@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Schema;
 use Tests\Concerns\MakesMarketplaceData;
 use Tests\TestCase;
 
-/** Regression tests for the Blade site's access control and its payment handling. */
 class WebSecurityTest extends TestCase
 {
     use RefreshDatabase, MakesMarketplaceData;
@@ -27,7 +26,6 @@ class WebSecurityTest extends TestCase
         $this->property = $this->makeProperty($this->dealer);
     }
 
-    // ---------- admin area ----------
 
     public function test_guests_are_sent_to_login_for_admin_pages(): void
     {
@@ -86,7 +84,6 @@ class WebSecurityTest extends TestCase
         $this->assertModelExists($victim);
     }
 
-    // ---------- dealer actions ----------
 
     public function test_other_dealers_cannot_delete_or_update_my_property(): void
     {
@@ -131,7 +128,6 @@ class WebSecurityTest extends TestCase
         $this->assertEquals($this->dealer->id, $fresh->Dealer_id);
     }
 
-    // ---------- state changes need POST ----------
 
     public function test_booking_commenting_checkout_and_wishlist_reject_get(): void
     {
@@ -170,7 +166,6 @@ class WebSecurityTest extends TestCase
         $this->assertSame(1, Comment::where('user_id', $user->id)->count());
     }
 
-    // ---------- payments ----------
 
     public function test_card_secrets_have_no_column_to_live_in(): void
     {
@@ -187,7 +182,7 @@ class WebSecurityTest extends TestCase
 
         $this->post("/checkout/{$this->property->id}", [
             'card_last4' => '4242',
-            'CardNumber' => '4111111111114242', // legacy field, must be ignored
+            'CardNumber' => '4111111111114242',
             'cvv' => '123',
             'expDate' => '2099-01-01',
             'address' => '12 Buyer St',

@@ -14,7 +14,6 @@ class MapController extends Controller
         return view('home.maps', ['locations' => Location::with('property')->get()]);
     }
 
-    /** Pins the dealer's newly created listing (or, failing that, their most recent one). */
     public function store(Request $request)
     {
         $data = $request->validate([

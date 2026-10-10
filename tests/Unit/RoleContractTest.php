@@ -5,10 +5,6 @@ namespace Tests\Unit;
 use App\Models\User;
 use PHPUnit\Framework\TestCase;
 
-/**
- * The database stores role ids and the seeders/migrations/mobile app all assume them.
- * Changing a number here silently changes who can do what, so it is pinned.
- */
 class RoleContractTest extends TestCase
 {
     public function test_role_ids_are_stable(): void

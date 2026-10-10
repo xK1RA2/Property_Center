@@ -10,13 +10,6 @@ import type {
   User,
 } from './types';
 
-/**
- * Where the Laravel server lives.
- *  - Android emulator: http://10.0.2.2:8000
- *  - iOS simulator / web: http://127.0.0.1:8000
- *  - Physical phone: http://<your-pc-LAN-ip>:8000 (run `php artisan serve --host=0.0.0.0`)
- * Override with EXPO_PUBLIC_API_URL in mobile/.env
- */
 const DEFAULT_HOST = Platform.OS === 'android' ? 'http://10.0.2.2:8000' : 'http://127.0.0.1:8000';
 export const API_HOST = (process.env.EXPO_PUBLIC_API_URL ?? DEFAULT_HOST).replace(/\/$/, '');
 const BASE = `${API_HOST}/api/v1`;
@@ -30,7 +23,6 @@ export class ApiError extends Error {
     super(message);
   }
 
-  /** First validation message, or the generic one. */
   get detail(): string {
     const first = this.errors ? Object.values(this.errors)[0]?.[0] : undefined;
     return first ?? this.message;
@@ -68,7 +60,7 @@ async function request<T>(
 
   let body: BodyInit | undefined;
   if (opts.form) {
-    body = opts.form; // fetch sets the multipart boundary itself
+    body = opts.form;
   } else if (opts.body !== undefined) {
     headers['Content-Type'] = 'application/json';
     body = JSON.stringify(opts.body);
@@ -95,7 +87,6 @@ async function request<T>(
 const get = <T>(path: string, query?: Query) => request<T>('GET', path, { query });
 const send = <T>(method: string, path: string, body?: unknown) => request<T>(method, path, { body });
 
-// ---------- multipart helpers ----------
 export interface LocalImage {
   uri: string;
   name: string;
@@ -118,7 +109,6 @@ export interface PropertyInput {
 
 function propertyForm(input: Partial<PropertyInput>, images: LocalImage[], method?: 'PATCH') {
   const form = new FormData();
-  // PHP only parses multipart on POST, so updates are spoofed via _method
   if (method) form.append('_method', method);
 
   const add = (key: string, value: unknown) => {
@@ -139,9 +129,7 @@ function propertyForm(input: Partial<PropertyInput>, images: LocalImage[], metho
   return form;
 }
 
-// ---------- endpoints ----------
 export const api = {
-  // auth
   login: (email: string, password: string) =>
     send<{ user: User; token: string }>('POST', '/auth/login', { email, password }),
   register: (data: {
@@ -163,11 +151,9 @@ export const api = {
   changePassword: (data: { current_password: string; password: string; password_confirmation: string }) =>
     send<{ message: string }>('PUT', '/me/password', data),
 
-  // lookups
   cities: () => get<{ data: (Lookup & { state_id: number })[] }>('/cities').then((r) => r.data),
   propertyTypes: () => get<{ data: Lookup[] }>('/property-types').then((r) => r.data),
 
-  // properties
   properties: (page: number, filters: PropertyFilters = {}) =>
     get<Paginated<Property>>('/properties', { page, per_page: 10, ...filters }),
   myProperties: (page: number) => get<Paginated<Property>>('/my/properties', { page, per_page: 10 }),
@@ -180,7 +166,6 @@ export const api = {
     ),
   deleteProperty: (id: number) => send<void>('DELETE', `/properties/${id}`),
 
-  // interactions
   comments: (propertyId: number) =>
     get<Paginated<Comment>>(`/properties/${propertyId}/comments`).then((r) => r.data),
   addComment: (propertyId: number, description: string, anonymous: boolean) =>
@@ -194,7 +179,6 @@ export const api = {
   addFavorite: (id: number) => send<{ favorite: boolean }>('PUT', `/properties/${id}/favorite`),
   removeFavorite: (id: number) => send<void>('DELETE', `/properties/${id}/favorite`),
 
-  // bookings
   bookings: (page: number) => get<Paginated<Booking>>('/bookings', { page, per_page: 15 }),
   book: (propertyId: number, date: string, description?: string) =>
     send<{ data: Booking }>('POST', `/properties/${propertyId}/bookings`, { date, description }),
@@ -202,7 +186,6 @@ export const api = {
     send<{ data: Booking }>('PATCH', `/bookings/${id}`, { status }),
   requestDealer: () => send<{ id: number }>('POST', '/trader-requests'),
 
-  // push notifications
   registerDevice: (token: string, platform: 'ios' | 'android' | 'web') =>
     send<{ id: number }>('POST', '/devices', { token, platform }),
   unregisterDevice: (token: string) => send<void>('DELETE', '/devices', { token }),

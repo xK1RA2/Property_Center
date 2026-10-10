@@ -8,7 +8,7 @@
             
                  @foreach($Dealers as $Dealer)
                 <div class="col-md-3 mb-4">
-                      <a href="{{ route('Dealer_Profile',$Dealer) }}"class="text-decoration-none"><!--الرابط حط فيه البروفايل تاعه--> 
+                      <a href="{{ route('Dealer_Profile',$Dealer) }}"class="text-decoration-none"> 
                         <div class="card shadow-sm border-0">
     <img class="img-fluid" src="{{
                             asset('storage/'.$Dealer->profile_image) 
@@ -18,9 +18,7 @@
                                 <p class="card-text text-muted">{{$Dealer->email}}</p>
                                 <p class="text-muted">{{$Dealer->phone}}</p>
                                 <div class="text-warning">
-                                
-                    
-                    
+
 <div class=" text-warning ">
     
                     <?php $i=1 ;
@@ -34,10 +32,7 @@
                     <i class="fa-solid fa-star-half-stroke"></i>
                     @endif
                     </div>
- 
 
-          
-              
                                 </div>
                             </div>
                         </div>

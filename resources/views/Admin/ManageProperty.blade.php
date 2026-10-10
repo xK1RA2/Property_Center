@@ -4,7 +4,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <x-guest-layout :$Tailwind>
 
-
 <div class=" overflow-hidden flex flex-col  justify-center">
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
@@ -14,7 +13,6 @@
 
             <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
                 class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-[#00B98E] lg:translate-x-0 lg:static lg:inset-0">
-               
 
                 <x-layouts.admin-header :$active />
             </div>
@@ -29,8 +27,6 @@
                         </button>
 
                         <div class="relative mx-4 lg:mx-0">
-
-
 
                         </div>
                     </div>
@@ -113,13 +109,9 @@
                         <div class="container mt-4">
                         </div>
 
-
                         <div class="mt-6">
 
                         </div>
-
-
-                     
 
                         <div class="container mt-4 text-center">
                             <div class="table-responsive">
@@ -149,8 +141,6 @@
                                             <td class="py-4 px-8">{{$Property->created_at}}</td>
                                             <td class="py-4 px-4 flex flex-col space-y-3 md:flex-row md:space-y-0 md:space-x-3"
                                                 class="flex flex-col md:flex-row justify-center items-center gap-3 px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">
-                                               
-
 
                                                 <a href="{{route('EditProperty',$Property)}}" 
                           class="select-none rounded-lg bg-[#00B98E] py-3 px-8 text-center font-sans text-xs font-bold capitalize  text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 #  " >
@@ -158,18 +148,15 @@
                             Edit
                           </a>
                           <form action="{{route('DestroyProperty',$Property)}}" method="POST" onsubmit="return confirm('Delete this property?')">@csrf@method('DELETE')<button type="submit" class="select-none rounded-lg bg-red-700 py-3 px-6 text-center font-sans text-xs font-bold capitalize text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50">Delete</button></form>
-                        
 
                                             </td>
                                         </tr>
                                         @endforeach
-                                    
 
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
 
                     </div>
                 </main>

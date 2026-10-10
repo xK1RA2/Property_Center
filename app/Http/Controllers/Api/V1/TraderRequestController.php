@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class TraderRequestController extends Controller
 {
-    /** POST /trader-requests : a user asks to become a dealer */
     public function store(Request $request): JsonResponse
     {
         $trader = TraderRequest::firstOrCreate(['user_id' => $request->user()->id]);

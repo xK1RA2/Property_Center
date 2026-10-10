@@ -13,10 +13,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Concerns\MakesMarketplaceData;
 use Tests\TestCase;
 
-/**
- * Renders every screen of the website with realistic data (not empty tables),
- * so a template that breaks on a relation or a null shows up as a failing test.
- */
 class FeatureSweepTest extends TestCase
 {
     use RefreshDatabase, MakesMarketplaceData;
@@ -67,7 +63,7 @@ class FeatureSweepTest extends TestCase
         $this->get("/Details/{$this->property->id}")
             ->assertOk()
             ->assertSee('Public comment')
-            ->assertSee('Hidden comment'); // the text shows, the author does not (checked in Api tests)
+            ->assertSee('Hidden comment');
 
         $this->get("/Dealers/{$this->dealer->id}")->assertOk();
         $this->get('/Search?Purchase_Type=Rent&price_from=1&price_to=999999&sort=-price')->assertOk();
@@ -88,7 +84,6 @@ class FeatureSweepTest extends TestCase
             $this->get($url)->assertOk();
         }
 
-        // the order list shows the property that was bought
         $this->get('/orders')->assertOk()->assertViewHas('orders', fn ($o) => $o->count() === 1);
     }
 
@@ -170,12 +165,10 @@ class FeatureSweepTest extends TestCase
         $this->post("/Comments/{$property->id}", ['Description' => 'Interested'])->assertRedirect();
         $this->post("/Booking/{$property->id}", ['date' => now()->addDays(2)->toDateTimeString()])->assertRedirect();
 
-        // the dealer sees the request and approves it
         $booking = Booking::where('property_id', $property->id)->firstOrFail();
         $this->actingAs($this->dealer)->post("/BookAccept/{$booking->id}")->assertRedirect();
         $this->assertSame('Approved', $booking->fresh()->status);
 
-        // the buyer pays
         $this->actingAs($fresh)->post("/checkout/{$property->id}", ['card_last4' => '4242', 'address' => '1 Buyer St'])
             ->assertSessionHas('CheckoutSuccess');
         $this->assertSame('Not Available', $property->fresh()->status);

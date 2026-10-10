@@ -12,7 +12,6 @@ class Rating extends Model
         'user_id', 'Property_id', 'Rate', 'created_at', 'updated_at'
     ];
     protected $table = 'ratings';
-    //Relation With Property
     public function user():BelongsTo
     {
         return $this->belongsTo(User::class,'user_id'); 

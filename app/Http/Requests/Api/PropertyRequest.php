@@ -10,12 +10,11 @@ class PropertyRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // role / ownership are enforced by route middleware and PropertyPolicy
+        return true;
     }
 
     public function rules(): array
     {
-        // On update (PUT/PATCH) every field is optional.
         $required = $this->isMethod('POST') ? 'required' : 'sometimes';
 
         return [

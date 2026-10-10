@@ -19,7 +19,6 @@ class PropertyTest extends TestCase
         $this->seedLookups();
     }
 
-    // ---------- public listing ----------
 
     public function test_listing_shows_only_available_published_properties(): void
     {
@@ -101,7 +100,6 @@ class PropertyTest extends TestCase
             ->assertJsonPath('data.is_favorite', true);
     }
 
-    // ---------- create ----------
 
     public function test_dealer_can_create_a_property_with_features_location_and_photos(): void
     {
@@ -143,7 +141,6 @@ class PropertyTest extends TestCase
         $this->postJson('/api/v1/properties', $this->propertyPayload())->assertForbidden();
     }
 
-    // ---------- update / delete ----------
 
     public function test_owner_can_update_and_unspecified_fields_are_untouched(): void
     {

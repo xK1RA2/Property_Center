@@ -13,7 +13,6 @@ export default function RootLayout() {
     () => new QueryClient({ defaultOptions: { queries: { retry: 1, staleTime: 30_000 } } }),
   );
 
-  // tapping a push opens the right screen (also when the app was closed)
   useEffect(() => {
     const open = (response: Notifications.NotificationResponse | null) => {
       const target = screenFor(response?.notification.request.content.data);

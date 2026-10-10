@@ -6,11 +6,6 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Browser hardening. The Blade pages rely on inline scripts and third-party CDNs, so a strict
- * script-src would break them; the directives below are the ones that do NOT need that and still
- * remove whole classes of attack (framing, <base> hijacking, forms posting to other sites, plugins).
- */
 class SecurityHeaders
 {
     public function handle(Request $request, Closure $next): Response
@@ -33,13 +28,10 @@ class SecurityHeaders
             );
         }
 
-        // Laravel's session middleware already sends "no-cache, private", which still lets the browser
-        // STORE the page. Anything shown to a signed-in user must not be kept at all.
         if ($request->user()) {
             $headers->set('Cache-Control', 'no-store, private');
         }
 
-        // HSTS is only valid (and only safe) over HTTPS
         if ($request->isSecure()) {
             $headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
         }

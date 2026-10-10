@@ -4,13 +4,6 @@ namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * Git on Windows/macOS (core.ignorecase=true) silently keeps the OLD spelling when a file is renamed
- * only by letter case. The working copy then looks right locally while the repository, and therefore
- * every Linux clone, still has the old name (e.g. app/Models/checkout.php for class Checkout).
- *
- * This compares what git tracks with what is on disk and fails on any difference.
- */
 class TrackedFileCaseTest extends TestCase
 {
     public function test_every_tracked_file_is_spelled_on_disk_exactly_as_git_tracks_it(): void

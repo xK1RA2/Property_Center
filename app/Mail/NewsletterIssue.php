@@ -11,7 +11,6 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Mail\Mailables\Headers;
 use Illuminate\Queue\SerializesModels;
 
-/** One issue of the newsletter. Queued, so a large list does not tie up the command or the web server. */
 class NewsletterIssue extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
@@ -39,7 +38,6 @@ class NewsletterIssue extends Mailable implements ShouldQueue
         );
     }
 
-    /** Lets Gmail/Outlook show their own "Unsubscribe" button, which also protects deliverability. */
     public function headers(): Headers
     {
         return new Headers(text: [

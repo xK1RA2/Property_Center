@@ -18,9 +18,6 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
 
-        // Behind Caddy / a load balancer the request arrives as plain HTTP with
-        // X-Forwarded-* headers. Set TRUSTED_PROXIES=* (or a comma separated IP list)
-        // so Laravel builds https:// URLs and sees the real client IP.
         if ($proxies = env('TRUSTED_PROXIES')) {
             $middleware->trustProxies(at: $proxies === '*' ? '*' : array_map('trim', explode(',', $proxies)));
         }

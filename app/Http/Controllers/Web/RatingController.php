@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class RatingController extends Controller
 {
-    /** One rating per user and property; sending again changes your own rating only. */
     public function store(Request $request, Property $property)
     {
         $data = $request->validate(['rating' => ['required', 'integer', 'between:1,5']]);

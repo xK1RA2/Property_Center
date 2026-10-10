@@ -7,7 +7,6 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 
-/** "Please confirm your subscription". Sent immediately, never queued: the visitor is waiting for it. */
 class NewsletterConfirmation extends Mailable
 {
     public function __construct(public NewsletterSubscriber $subscriber)

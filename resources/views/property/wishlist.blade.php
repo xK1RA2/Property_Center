@@ -2,7 +2,6 @@
 
 <x-app-layout :$title>
 <main>
-        <!-- New Cars -->
         <section>
             <div class="container pt-10">
               <div class="flex justify-between items-center ">
@@ -26,6 +25,5 @@
             </div>
         
         </section>
-        <!--/ New Cars -->
       </main>
 </x-app-layout>

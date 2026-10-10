@@ -6,19 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/**
- * What a user looks like to other people.
- *
- * Public:           id, name, profile photo, role
- * Dealers' contact: phone and username (that is the point of a dealer listing)
- * Owner or admin:   email, phone, username of ANY user
- *
- * Commenters, requesters and bookers are ordinary users, so their phone number and
- * username must not appear in public responses.
- */
 class UserResource extends JsonResource
 {
-    /** Set by auth responses, where the viewer is the user but no token is resolved yet. */
     private bool $revealPrivate = false;
 
     public function withEmail(): static

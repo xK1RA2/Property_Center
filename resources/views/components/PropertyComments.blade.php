@@ -1,9 +1,7 @@
-<!-- التعليقات -->
 @props(['Comment'])
        
                 <ul class="list-group list-group-flush mb-4">
 
-                
                     <li class="list-group-item bg-light p-3 rounded mb-2 d-flex align-items-center gap-3 border">
                         <img id="profile-pic" 
                     

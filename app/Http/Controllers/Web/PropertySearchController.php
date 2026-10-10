@@ -34,7 +34,6 @@ class PropertySearchController extends Controller
             'sort' => ['nullable', 'in:' . implode(',', self::SORTABLE)],
         ]);
 
-        // "-column" means descending, the format the search form already submits
         $sort = $request->input('sort', '-published_at');
         $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
         $column = ltrim($sort, '-');

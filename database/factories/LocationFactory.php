@@ -15,7 +15,7 @@ class LocationFactory extends Factory
             'name' => $this->faker->city,
             'lat' => $this->faker->latitude,
             'lng' => $this->faker->longitude,
-            'property_id' => null, // optional if linked to property
+            'property_id' => null,
         ];
     }
 }

@@ -5,15 +5,6 @@ import { Platform } from 'react-native';
 
 import { api } from './api';
 
-/**
- * Push notifications (booking requests and decisions).
- *
- * Needs a real device and an EAS project id (`eas init` writes it to app.json under extra.eas.projectId).
- * Remote push is NOT available in Expo Go on Android since SDK 53: use a development build there.
- * Everything here fails soft; the app works fine without push.
- */
-
-// Show notifications as a banner even while the app is open.
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowBanner: true,
@@ -57,7 +48,6 @@ export async function registerForPush(): Promise<string | null> {
   }
 }
 
-/** Call before signing out so this phone stops receiving the account's notifications. */
 export async function unregisterFromPush(): Promise<void> {
   if (!registeredToken) return;
   const token = registeredToken;
@@ -65,11 +55,9 @@ export async function unregisterFromPush(): Promise<void> {
   try {
     await api.unregisterDevice(token);
   } catch {
-    // the server prunes dead tokens itself
   }
 }
 
-/** The screen name sent by the backend in the notification payload. */
 export function screenFor(data: unknown): '/bookings' | null {
   const screen = (data as { screen?: string } | null | undefined)?.screen;
   return screen === 'bookings' ? '/bookings' : null;

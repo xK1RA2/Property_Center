@@ -19,7 +19,6 @@ export default function Explore() {
   const [purchase, setPurchase] = useState<PropertyFilters['purchase_type']>();
   const [sort, setSort] = useState<PropertyFilters['sort']>('newest');
 
-  // wait for the user to stop typing before hitting the API
   useEffect(() => {
     const t = setTimeout(() => setDebounced(search.trim()), 350);
     return () => clearTimeout(t);

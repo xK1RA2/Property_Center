@@ -33,8 +33,7 @@
                         <td class="align-middle"><a href="{{ route('property.details',$order->Property) }}" class="btn btn-outline-primary btn-sm">View</a></td>
                     </tr>
                     @endforeach
-              
-                  
+
                 </tbody>
             </table>
         </div>

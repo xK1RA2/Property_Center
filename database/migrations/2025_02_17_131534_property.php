@@ -8,7 +8,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // referenced tables may be created by later migrations; MySQL needs the check off
         Schema::withoutForeignKeyConstraints(function () {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();

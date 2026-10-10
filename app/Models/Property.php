@@ -17,7 +17,6 @@ use App\Models\State;
 use App\Models\Storage;
 use Carbon\Carbon;
 
-
 class Property extends Model
 {
     use HasFactory , SoftDeletes;
@@ -34,43 +33,35 @@ class Property extends Model
             'description',
             'status',
           ];
-          //Relation With Property_Type
        
 public function propertyType():BelongsTo 
 {
     return $this->belongsTo(PropertyType::class,'property_type_id');
 }
 
-          //Relation With Book_Preview
           public function Book_Preview():HasMany{
             return $this->HasMany(Booking::class);
           }
-          //Relation With Property Features
           public function Features():HasOne{
             return $this->HasOne(PropertyFeature::class,'Property_id')->withDefault();
           }
          
-          //Relation With Dealer
           public function Dealer():BelongsTo
           {
                return $this->belongsTo(User::class, 'Dealer_id');
           }
-          //Relation With City
           public function City():BelongsTo
           {
                return $this->belongsTo(City::class);
           }
-          //Relation With Comment
           public function Comment():HasMany
           {
                return $this->HasMany(Comment::class);
           }
-           //Relation With Rate
           public function PropertyRate():HasMany
           {
                return $this->HasMany(Rating::class,'Property_id');
           }
-          //Relation With Property Images to get the primary image
           public function PrimaryImage(): HasOne 
           { 
                return $this->hasOne(PropertyImage::class,'property_id')
@@ -78,19 +69,16 @@ public function propertyType():BelongsTo
                ->withTrashed();
                
           }
-          //Relation With Property Images to get all images
           public function PropertyImages(): HasMany 
           { 
                return $this->hasMany(PropertyImage::class);
               
           }
-          //Relation With Orders
           public function Orders():HasMany 
           {
                     return $this->hasMany(Order::class);
           }
           
-          //Relation With users to get the Favourtie Property
           public function favouriteProperties():BelongsToMany
           {
                return $this->belongsToMany(User::class, 'favorites', 'property_id', 'user_id');
@@ -110,6 +98,4 @@ public function propertyType():BelongsTo
     return $this->hasOne(Location::class);
 }
 
-
-        
 }

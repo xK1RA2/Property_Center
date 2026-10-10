@@ -7,12 +7,6 @@ use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-/**
- * Windows and macOS file systems ignore letter case, Linux (the production server and CI) does not.
- * A view called 'property.create' that lives in Create.blade.php works on a developer PC and is a
- * "View not found" 500 on the server. This test compares every reference with the exact on-disk name,
- * so the mistake is caught on any machine.
- */
 class ViewCaseSensitivityTest extends TestCase
 {
     private string $root;
@@ -58,7 +52,6 @@ class ViewCaseSensitivityTest extends TestCase
                     $blade = "resources/views/{$path}.blade.php";
                     $index = "resources/views/{$path}/index.blade.php";
 
-                    // class based component: <x-dealers> -> App\View\Components\Dealers
                     $class = 'app/View/Components/' . str_replace(' ', '', ucwords(str_replace(['-', '.'], ' ', $name))) . '.php';
 
                     if ($this->existsExactly($blade) || $this->existsExactly($index) || $this->existsExactly($class)) {
@@ -75,12 +68,10 @@ class ViewCaseSensitivityTest extends TestCase
 
     public function test_the_checker_itself_detects_a_case_mismatch(): void
     {
-        // a path with the wrong case must be reported as missing even where the OS would open it
         $this->assertFalse($this->existsExactly('RESOURCES/views/home/index.blade.php'));
         $this->assertTrue($this->existsExactly('resources/views/home/index.blade.php'));
     }
 
-    /** @return iterable<string> */
     private function phpFiles(string $dir): iterable
     {
         $iterator = new RecursiveIteratorIterator(
@@ -94,7 +85,6 @@ class ViewCaseSensitivityTest extends TestCase
         }
     }
 
-    /** True only if every path segment exists with exactly this spelling. */
     private function existsExactly(string $relative): bool
     {
         $current = $this->root;

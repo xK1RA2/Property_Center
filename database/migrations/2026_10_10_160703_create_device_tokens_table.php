@@ -11,7 +11,6 @@ return new class extends Migration
         Schema::create('device_tokens', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            // Expo push token, e.g. ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
             $table->string('token')->unique();
             $table->string('platform', 16)->nullable();
             $table->timestamps();

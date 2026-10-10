@@ -23,7 +23,6 @@ class PushNotificationTest extends TestCase
         $this->seedLookups();
     }
 
-    // ---------- registering devices ----------
 
     public function test_device_registration_requires_authentication_and_a_real_expo_token(): void
     {
@@ -44,7 +43,6 @@ class PushNotificationTest extends TestCase
         $this->postJson('/api/v1/devices', ['token' => self::TOKEN, 'platform' => 'android'])->assertOk();
         $this->assertSame(1, DeviceToken::count());
 
-        // someone else signs in on the same phone
         Sanctum::actingAs($second);
         $this->postJson('/api/v1/devices', ['token' => self::TOKEN])->assertOk();
         $this->assertSame($second->id, DeviceToken::first()->user_id);
@@ -64,7 +62,6 @@ class PushNotificationTest extends TestCase
         $this->assertSame(0, DeviceToken::count());
     }
 
-    // ---------- sending ----------
 
     public function test_dealer_is_notified_when_someone_books_a_visit(): void
     {
@@ -133,7 +130,6 @@ class PushNotificationTest extends TestCase
             ['status' => 'ok'],
         ]])]);
 
-        // order of tokens in the request matches the order of tickets in the response
         $tokens = DeviceToken::where('user_id', $user->id)->orderBy('id')->pluck('token')->all();
         $this->assertSame([self::TOKEN, $live], $tokens);
 
@@ -162,6 +158,6 @@ class PushNotificationTest extends TestCase
 
         app(PushNotifier::class)->toUser($user, 'Hi', 'There');
 
-        $this->assertSame(1, DeviceToken::count()); // not pruned on a server error
+        $this->assertSame(1, DeviceToken::count());
     }
 }

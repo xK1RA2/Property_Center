@@ -17,7 +17,6 @@ class BookingService
     {
     }
 
-    /** One booking per user and property: asking again moves the request and resets it to Pending. */
     public function request(User $user, Property $property, CarbonInterface|string $date, ?string $note = null): Booking
     {
         $booking = Booking::updateOrCreate(
@@ -63,7 +62,6 @@ class BookingService
         return $booking;
     }
 
-    /** Sent once the HTTP response has gone out, so a slow push service never delays the user. */
     private function notifyAfterResponse(User $to, string $title, string $body, Booking $booking): void
     {
         $push = $this->push;

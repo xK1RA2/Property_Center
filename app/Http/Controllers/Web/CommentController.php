@@ -19,7 +19,6 @@ class CommentController extends Controller
         Comment::create([
             'user_id' => $request->user()->id,
             'Property_id' => $property->id,
-            // the form's checkbox posts the literal value "Ananymous"
             'comment_type_id' => $request->input('Ananymous') === 'Ananymous' ? self::TYPE_ANONYMOUS : self::TYPE_NORMAL,
             'Description' => $data['Description'],
         ]);

@@ -1,6 +1,5 @@
 @props(['Tailwind'=>1])
 <x-guest-layout :$Tailwind>
-    <!-- container -->
     <div class="flex flex-col items-center justify-center  p-8 bg-white min-h-screen">
         <div class="flex flex-col items-center rounded-3xl shadow-2xl shadow-gray-600/70 md:w-[500px] w-[300] p-6">
             <h1 class="text-3xl font-semibold text-gray-700 flex items-center p-4">
@@ -17,7 +16,6 @@
             @enderror
             <form class="mt-4 w-full" action="{{route('login.store')}}" method="POST">
             @csrf    
-            <!-- Email -->
                 <div class="mb-4">
                     <label class="block text-gray-600 text-md font-bold">Email</label>
                     <div class="flex items-center border-b-2 border-gray-300 focus-within:border-green-500">
@@ -26,7 +24,6 @@
                             class="w-full p-2 focus:outline-none">
                     </div>
                 </div>
-                <!-- Password -->
                 <div class="mb-4">
                     <label class="block text-gray-600 text-md font-bold">Password</label>
                     <div class="flex items-center border-b-2 border-gray-300 focus-within:border-green-500">
@@ -37,9 +34,7 @@
                             class="text-gray-500 hover:text-gray-700 p-2">👁</button>
                     </div>
                 </div>
-             
-             
-                
+
           @if(session('error'))
             {{ session('error') }}
           @endif
@@ -70,7 +65,6 @@
 
                     </a>
 
-
                     <button
                         class="mt-2 w-full h-[50px] rounded-[10px] flex justify-center items-center font-medium gap-2 border border-[#ededef] bg-white cursor-pointer hover:bg-gray-50 transition duration-600">
                         <svg version="1.1" width="20" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
@@ -85,7 +79,6 @@
                     </button>
 
                 </div>
-                   <!-- Button -->
                    <button type="submit"
                     class="mt-4 w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition">
                     Sign in
@@ -95,12 +88,10 @@
                         class="text-gray-500 hover:text-green-500 transition duration-300 hover:underline">Forgot
                         Password?</a>
                 </div>
-                  <!-- Sign up -->
             <div class="text-center mt-6 text-gray-600">
                 Don't have an account?
                 <a href="/signup" class="text-green-500 font-semibold hover:underline">Sign up</a>
             </div>
-            <!-- Footer -->
             </form>
     </div>
     <script>

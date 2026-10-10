@@ -22,13 +22,7 @@ use App\Http\Controllers\Web\SocialiteController;
 use App\Http\Controllers\Web\WishlistController;
 use Illuminate\Support\Facades\Route;
 
-/*
-| Blade website. Route NAMES are used all over the views, keep them stable.
-| Roles: 1 user, 2 dealer, 3 admin (see App\Models\User::ROLE_*).
-| Anything that changes data is POST / DELETE, never GET.
-*/
 
-// ---------- public ----------
 Route::get('/index', [HomeController::class, 'index'])->name('home');
 Route::get('/Dealers', [DealerController::class, 'index'])->name('Dealers');
 Route::get('/Dealers/{dealer}', [ProfileController::class, 'dealer'])->name('Dealer_Profile');
@@ -38,15 +32,12 @@ Route::get('/View', [PropertySearchController::class, 'index'])->name('Purchase'
 Route::get('/Search', [PropertySearchController::class, 'search'])->name('search');
 Route::get('/Maps', [MapController::class, 'index'])->name('maps');
 
-// newsletter: double opt-in, the links in the emails are signed
 Route::post('/newsletter', [NewsletterController::class, 'subscribe'])->middleware('throttle:5,1')->name('newsletter.subscribe');
 Route::get('/newsletter/confirm/{subscriber}', [NewsletterController::class, 'confirm'])->middleware('signed')->name('newsletter.confirm');
 Route::get('/newsletter/unsubscribe/{subscriber}', [NewsletterController::class, 'unsubscribe'])->middleware('signed')->name('newsletter.unsubscribe');
 
-// ---------- auth ----------
 Route::get('/login', [LoginController::class, 'create'])->name('login');
 Route::post('/login', [LoginController::class, 'store'])->middleware('throttle:login')->name('login.store');
-// POST + CSRF: a GET logout can be triggered by any page (an <img src="/logout"> signs you out)
 Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 Route::get('/signup', [SignupController::class, 'create'])->name('signup');
 Route::post('/signup', [SignupController::class, 'store'])->middleware('throttle:10,1')->name('signup.store');
@@ -59,7 +50,6 @@ Route::post('/reset-password', [PasswordResetController::class, 'reset'])->name(
 Route::get('/login/oauth/{provider}', [SocialiteController::class, 'redirectToProvider'])->whereIn('provider', ['google', 'facebook'])->name('login.oauth');
 Route::get('/callback/oauth/{provider}', [SocialiteController::class, 'handleCallback'])->whereIn('provider', ['google', 'facebook']);
 
-// ---------- any signed-in user ----------
 Route::middleware('auth')->group(function () {
     Route::get('/Profile', [ProfileController::class, 'show'])->name('user.profile');
     Route::post('/InformationUpdate', [ProfileController::class, 'updateInformation'])->name('InformationUpdate');
@@ -81,7 +71,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/wishList/{property}', [WishlistController::class, 'toggle'])->name('wishList.storeDestroy');
 });
 
-// ---------- dealer ----------
 Route::middleware(['auth', 'role:2'])->group(function () {
     Route::get('/dashboard', DealerDashboardController::class)->name('index.dashboard');
     Route::get('/Dealer/dashboard', DealerDashboardController::class)->name('dealer.dashboard');
@@ -98,13 +87,11 @@ Route::middleware(['auth', 'role:2'])->group(function () {
     Route::post('/locations', [MapController::class, 'store'])->name('locations.store');
 });
 
-// ---------- dealer (own listing) or admin; ownership is enforced by PropertyPolicy ----------
 Route::middleware(['auth', 'role:2,3'])->group(function () {
     Route::post('/property/update/{property}', [PropertyController::class, 'update'])->name('property.update');
     Route::post('/Destroy/{property}', [PropertyController::class, 'destroy'])->name('Destroy');
 });
 
-// ---------- admin ----------
 Route::middleware(['auth', 'role:3'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('Dashboard');
     Route::get('/ManageProperty', [AdminController::class, 'ManageProperty'])->name('ManageProperty');
@@ -117,5 +104,4 @@ Route::middleware(['auth', 'role:3'])->group(function () {
     Route::post('/admin/RequestAction', [AdminController::class, 'Request_Action'])->name('Request_Action');
 });
 
-// ---------- chatbot ----------
 Route::match(['get', 'post'], '/botman', ChatbotController::class);

@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password as PasswordRule;
 
-/**
- * Standard emailed-link reset. (The old "forgot" form changed ANY user's
- * password given only their email address.)
- */
 class PasswordResetController extends Controller
 {
     public function forgot()
@@ -27,7 +23,6 @@ class PasswordResetController extends Controller
 
         Password::sendResetLink($request->only('email'));
 
-        // same answer whether or not the account exists, so emails can't be enumerated
         return back()->with('status', 'If that email has an account, a reset link is on its way.');
     }
 
@@ -46,7 +41,6 @@ class PasswordResetController extends Controller
 
         $status = Password::reset($data, function (User $user, string $password) {
             $user->forceFill(['password' => $password, 'remember_token' => Str::random(60)])->save();
-            // revoke API tokens too: a reset means the old credentials may be compromised
             $user->tokens()->delete();
             event(new PasswordReset($user));
         });
