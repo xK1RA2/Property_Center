@@ -2,7 +2,6 @@
 .github
 .idea
 .vscode
-.claude
 
 # never bake secrets or local data into an image
 .env
