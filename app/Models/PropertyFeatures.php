@@ -12,6 +12,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class PropertyFeatures extends Model
 {
     use HasFactory , SoftDeletes;
+
+    // The table has no "id" column: Property_id is the primary key.
+    protected $primaryKey = 'Property_id';
+    public $incrementing = false;
     protected $fillable =[
         'Bedrooms',
         'Bathrooms',
@@ -19,7 +23,7 @@ class PropertyFeatures extends Model
         'Rooms',
         'Area',
         'Heating',
-        'Ait_Conditioner',
+        'Air_Conditioner',
         'Parking',
       ];
       public function Property():BelongsTo{

@@ -101,12 +101,7 @@
                                                     Edit
                                                 </button>
                                              
-                          <a 
-                             href="{{route('DestroyUsers',$user)}}"
-                          class="select-none rounded-lg bg-red-700 py-3 px-6 text-center font-sans text-xs font-bold capitalize text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50" >
-                           
-                            Delete
-                          </a>
+                          <form action="{{route('DestroyUsers',$user)}}" method="POST" onsubmit="return confirm('Delete this user?')">@csrf@method('DELETE')<button type="submit" class="select-none rounded-lg bg-red-700 py-3 px-6 text-center font-sans text-xs font-bold capitalize text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50">Delete</button></form>
                         
                                             </td>
                                         </tr>

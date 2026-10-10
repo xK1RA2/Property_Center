@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Buyer
-            $table->foreignId('Property_id')->constrained('property')->onDelete('cascade'); // Car being ordered
+            $table->foreignId('Property_id')->constrained('properties')->onDelete('cascade'); // Car being ordered
             $table->enum('status', ['Approved','Pending','Canceled'])->default('Approved');
             $table->integer('price'); 
             $table->timestamp('date');

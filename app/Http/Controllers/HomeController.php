@@ -54,7 +54,8 @@ class HomeController
         return view("home.dash",["Dealer" =>$user ,"Properties"=>$Properties,'Requests'=>$Requests ,'Checkouts'=>$checkouts ]);
 
     }
-    public function Details(Property $Property){
+    public function Details(Property $property){
+        $Property = $property;
         $comments = Comment::where(['Property_id'=>$Property->id])->with('user')
         ->get();
         return view("home.Details",['Property'=>$Property,'Comments'=>$comments]);
@@ -110,7 +111,8 @@ class HomeController
     }
 
     public function BookAccept(Request $request , book_preview $Req){
-        
+        abort_unless($Req->dealer_id == $request->user()->id, 403);
+
         $data=[
             'status'=>'Approved'
         ];
@@ -123,6 +125,8 @@ class HomeController
     }
    
     public function BookRefuse(Request $request , book_preview $Req){
+        abort_unless($Req->dealer_id == $request->user()->id, 403);
+
         $data=[
             'status'=>'Rejected'
         ];

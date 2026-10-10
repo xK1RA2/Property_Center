@@ -109,8 +109,8 @@
                                
                                 <td>{{$Req->description}}</td>
                                 @if($Req->status=="Pending" )
-                                <td><a class="btn btn-success text-white" href="{{ route('BookAccept',$Req) }}">Accept</a>
-                                <a class="btn btn-danger text-white" href="{{ route('BookRefuse',$Req) }}">Refuse</a></td>
+                                <td><form action="{{ route('BookAccept',$Req) }}" method="POST" class="d-inline">@csrf<button type="submit" class="btn btn-success text-white">Accept</button></form>
+                                <form action="{{ route('BookRefuse',$Req) }}" method="POST" class="d-inline">@csrf<button type="submit" class="btn btn-danger text-white">Refuse</button></form></td>
                                @else
                                <td></td>
                                 @endif

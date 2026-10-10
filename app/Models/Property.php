@@ -26,6 +26,7 @@ class Property extends Model
             'Dealer_id',
             'PurchaseType',
             'Property_type_id',
+            'property_type_id',
             'city_id',
             'year',
             'price',

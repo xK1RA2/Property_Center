@@ -141,14 +141,8 @@
                     
                                             <td class="py-4 px-4">{{ $Req->created_at }}</td>
                                             <td class="py-4 px-4 text-center space-y-3">
-                                                <a data-ripple-light="true" type="button" href="{{ route('Request_Action',['Action'=>'Accept','Request_id'=>$Req->id]) }}"
-                                                    class="select-none rounded-lg bg-[#00B98E] py-3 px-8 text-center font-sans text-xs font-bold capitalize  text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50">
-                                                    Accept
-                                                </a>
-                                                <a data-ripple-light="true" type="button" href="{{ route('Request_Action',['Action'=>'Reguse','Request_id'=>$Req->id]) }}"
-                                                    class="select-none rounded-lg bg-red-700 py-3 px-6 text-center font-sans text-xs font-bold capitalize text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50">
-                                                    Reject
-                                                </a>
+                                                <form action="{{ route('Request_Action') }}" method="POST" class="d-inline">@csrf<input type="hidden" name="Action" value="Accept"><input type="hidden" name="Request_id" value="{{ $Req->id }}"><button type="submit" class="select-none rounded-lg bg-[#00B98E] py-3 px-8 text-center font-sans text-xs font-bold capitalize  text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50">Accept</button></form>
+                                                <form action="{{ route('Request_Action') }}" method="POST" class="d-inline">@csrf<input type="hidden" name="Action" value="Reject"><input type="hidden" name="Request_id" value="{{ $Req->id }}"><button type="submit" class="select-none rounded-lg bg-red-700 py-3 px-6 text-center font-sans text-xs font-bold capitalize text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50">Reject</button></form>
                                             </td>
                                             </tr>
                                             @endforeach

@@ -49,10 +49,8 @@ class propertyController
 
     public function update(Request $request, Property $property)
     {
+        Gate::authorize('update', $property);
         $user = $request->user()->role_id;
-        if($user == 1){
-            return redirect()->route("login");
-        }
         $validatedData = $request->validate([
             'PropertyPurchase' => 'required|string',  // Ensure it's required and a string
             'PropertyName' => 'required|integer',
@@ -66,13 +64,7 @@ class propertyController
         'Property_type_id' => $request->input('PropertyName'),
         'city_id' => $request->input('city_id'),
         'price' => $request->input('price'),
-        'Dealer_id' => 2,
-        'year' => 2000,
         'description' => $request->input('Description'),
-        'address' => "hello",
-        'status' => "Available",
-        'created_at' => now(),
-        'updated_at' => now(),
         ];
        
        $featuresData = [
@@ -179,12 +171,13 @@ class propertyController
         return view("property.Edit",['Property'=>$property,'propertyType'=>$propertyType , 'Cities' => $Cities ,'Purchases' => $Purchases]);
     }
 
-    public function show(Property $Property){
-        return view("property.details",['Property'=>$Property]);
+    public function show(Property $property){
+        return view("property.details",['Property'=>$property]);
     }
 
     public function Destroy(Property $property, Request $request){
-       
+        Gate::authorize('delete', $property);
+
         $property->delete();
         $property->location()->delete();
         return redirect()->route('myProperties')

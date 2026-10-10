@@ -14,7 +14,11 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, \Laravel\Sanctum\HasApiTokens;
+
+    public const ROLE_USER = 1;
+    public const ROLE_DEALER = 2;
+    public const ROLE_ADMIN = 3;
 
     protected $fillable = [
         'name',

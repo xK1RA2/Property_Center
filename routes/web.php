@@ -21,7 +21,7 @@ use BotMan\BotMan\Drivers\DriverManager;
 
 
 Route::get('/index',[HomeController::class,'index'])->name('home');
-Route::get('/dashboard',[HomeController::class,'dashboard'])->name('index.dashboard');
+Route::get('/dashboard',[HomeController::class,'dashboard'])->middleware('role:2')->name('index.dashboard');
 Route::get("/orders",[HomeController::class,'Orders'])->name('orders');
 
 //Property Controllers
@@ -41,28 +41,28 @@ Route::post('/Request',[UserController::class,'Request_Trader'])->name('Request'
 Route::post('/UpdatePassword',[UserController::class,'UpdatePassword'])->name('UpdatePassword');
 
 
-Route::get('/property',[propertyController::class,'create'])->name('property');
-Route::post('/property', [propertyController::class ,'store'])->name('property.store');
-Route::get('/property{property}', [propertyController::class ,'Edit'])->name('property.edit');
-Route::post('/property/update/{property}', [propertyController::class ,'update'])->name('property.update');
-Route::get('/Details{property}', [HomeController::class ,'Details'])->name('property.details');
+Route::get('/property',[propertyController::class,'create'])->middleware('role:2')->name('property');
+Route::post('/property', [propertyController::class ,'store'])->middleware('role:2')->name('property.store');
+Route::get('/property{property}', [propertyController::class ,'Edit'])->middleware('role:2')->name('property.edit');
+Route::post('/property/update/{property}', [propertyController::class ,'update'])->middleware('role:2,3')->name('property.update');
+Route::get('/Details/{property}', [HomeController::class ,'Details'])->name('property.details');
 Route::get('/Booking{property}', [HomeController::class ,'Booking'])->name('Booking');
 Route::get('/checkout{property}', [propertyController::class ,'checkout'])->name('checkout');
-Route::get('/BookAccept{Req}', [HomeController::class ,'BookAccept'])->name('BookAccept');
-Route::get('/BookRefuse{Req}', [HomeController::class ,'BookRefuse'])->name('BookRefuse');
+Route::post('/BookAccept/{Req}', [HomeController::class ,'BookAccept'])->middleware('role:2')->name('BookAccept');
+Route::post('/BookRefuse/{Req}', [HomeController::class ,'BookRefuse'])->middleware('role:2')->name('BookRefuse');
 Route::get('/checkout{property}', [propertyController::class ,'checkout'])->name('checkout');
 
 Route::get('/Book/{id}', [HomeController::class ,'Book'])->name('Book');
 Route::get('/property/{property}', [propertyController::class, 'show'])->name('home.show');
 Route::get('/Comments/{property}', [propertyController::class, 'Comments'])->name('Comments');
-Route::get('/CommentDelete{Comment}', [propertyController::class, 'CommentDelete'])->name('CommentDelete');
+Route::delete('/CommentDelete/{Comment}', [propertyController::class, 'CommentDelete'])->middleware('auth')->name('CommentDelete');
 
 Route::post('/property/{property}/rating',[RatingController::class ,'store'])->name('rate.store');
 
 
-Route::get("/myProperties",[propertyController::class,'index'])->name("myProperties");
+Route::get("/myProperties",[propertyController::class,'index'])->middleware('role:2')->name("myProperties");
 
-Route::post("/Destroy/{property}",[propertyController::class,'Destroy'])->name('Destroy');
+Route::post("/Destroy/{property}",[propertyController::class,'Destroy'])->middleware('role:2,3')->name('Destroy');
 
 Route::get("/addproperty ",[propertyController::class,'create']);
 
@@ -91,15 +91,17 @@ Route::get('/callback/oauth/{provider}', [SocialiteController::class, 'handleCal
 
 Route::get('/Maps',[mapsController::class,'index'])->name('maps');
 
+Route::middleware(["auth", "role:3"])->group(function () {
 Route::get('/admin',[AdminController::class,'index'])->name('Dashboard');
 Route::get('/ManageProperty',[AdminController::class,'ManageProperty'])->name('ManageProperty');
-Route::get('/admin/ManageProperty/{property}',[AdminController::class,'DestroyProperty'])->name('DestroyProperty');
+Route::delete('/admin/ManageProperty/{property}',[AdminController::class,'DestroyProperty'])->name('DestroyProperty');
 Route::get('/admin/EditProperty/{property}',[AdminController::class,'EditProperty'])->name('EditProperty');
 Route::get('/admin/UpdateProperty/{property}',[AdminController::class,'UpdateProperty'])->name('UpdateProperty');
 Route::get('/admin/ManageUsers',[AdminController::class,'ManageUsers'])->name('ManageUsers');
-Route::get('/admin/ManageUsers/{user}',[AdminController::class,'DestroyUsers'])->name('DestroyUsers');
+Route::delete('/admin/ManageUsers/{user}',[AdminController::class,'DestroyUsers'])->name('DestroyUsers');
 Route::get('/admin/ManageRequests',[AdminController::class,'ManageRequests'])->name('ManageRequests');
-Route::get('/admin/RequestAction',[AdminController::class,'Request_Action'])->name('Request_Action');
+Route::post('/admin/RequestAction',[AdminController::class,'Request_Action'])->name('Request_Action');
+});
 
 Route::get('/locations', function () {
     return view('property.location');

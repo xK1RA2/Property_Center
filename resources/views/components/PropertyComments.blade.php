@@ -24,7 +24,7 @@
                             @auth
                             @if($Comment->user->id == request()->user()->id)
                             
-                               <form action="{{route('CommentDelete',$Comment)}}" class=" " style="float:right">
+                               <form action="{{route('CommentDelete',$Comment)}}" method="POST" class=" " style="float:right">@csrf@method('DELETE')
                                 <button class="btn-danger border-none btn">Delete</button>
                             </form>
                        
