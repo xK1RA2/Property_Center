@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Route;
 | REST API, served under /api/v1 (JSON only, Sanctum bearer-token auth).
 | Send "Accept: application/json" and "Authorization: Bearer <token>".
 */
-Route::prefix('v1')->group(function () {
+Route::prefix('v1')->middleware('throttle:api')->group(function () {
 
     // ---- Public ----
     Route::post('auth/register', [AuthController::class, 'register'])->middleware('throttle:10,1');
-    Route::post('auth/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
+    Route::post('auth/login', [AuthController::class, 'login'])->middleware('throttle:login');
 
     Route::get('properties', [PropertyController::class, 'index']);
     Route::get('properties/{property}', [PropertyController::class, 'show']);
@@ -39,7 +39,7 @@ Route::prefix('v1')->group(function () {
         Route::post('me/photo', [AuthController::class, 'updatePhoto']);
         Route::put('me/password', [AuthController::class, 'updatePassword']);
 
-        Route::post('properties/{property}/comments', [CommentController::class, 'store']);
+        Route::post('properties/{property}/comments', [CommentController::class, 'store'])->middleware('throttle:writes');
         Route::delete('comments/{comment}', [CommentController::class, 'destroy']);
         Route::put('properties/{property}/rating', [RatingController::class, 'upsert']);
 
@@ -51,7 +51,7 @@ Route::prefix('v1')->group(function () {
         Route::delete('devices', [DeviceController::class, 'destroy']);
 
         Route::get('bookings', [BookingController::class, 'index']);
-        Route::post('properties/{property}/bookings', [BookingController::class, 'store']);
+        Route::post('properties/{property}/bookings', [BookingController::class, 'store'])->middleware('throttle:writes');
 
         Route::post('trader-requests', [TraderRequestController::class, 'store'])
             ->middleware('role:' . \App\Models\User::ROLE_USER);

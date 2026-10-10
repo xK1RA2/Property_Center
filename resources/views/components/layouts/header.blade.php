@@ -55,7 +55,7 @@
                             
                             <a href="{{route('orders')}}" class="dropdown-item">My Orders</a>
                               
-                                <a href="{{route('logout')}}" class="dropdown-item">Logout</a>
+                                <form method="POST" action="{{ route('logout') }}" style="display:inline">@csrf<button type="submit" class="dropdown-item" style="background:none;border:0;width:100%;text-align:left">Logout</button></form>
                                 
                                
                             </div>

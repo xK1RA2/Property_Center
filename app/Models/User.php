@@ -27,9 +27,9 @@ class User extends Authenticatable
         'password',
         'profile_image',
         'phone',
-        'role_id',
-        'google_id',
-        'facebook_id',
+        // role_id, google_id and facebook_id are deliberately NOT fillable: a request that reaches
+        // User::create()/update() must never be able to change who is an admin or which social
+        // account is linked. Set them explicitly with forceFill().
     ];
 
     /**

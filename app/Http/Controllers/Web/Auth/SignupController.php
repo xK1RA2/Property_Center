@@ -21,11 +21,12 @@ class SignupController extends Controller
             'username' => ['required', 'string', 'max:255', 'unique:users,username'],
             'email' => ['required', 'email', 'unique:users,email'],
             'phone' => ['required', 'string', 'size:10', 'unique:users,phone'],
-            'password' => ['required', 'confirmed', Password::min(8)],
+            'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
         // role is never taken from the request: everyone starts as a regular user
-        User::create($data + ['role_id' => User::ROLE_USER]);
+        $user = new User($data);
+        $user->forceFill(['role_id' => User::ROLE_USER])->save();
 
         return redirect()->route('login')->with('success', 'Account Created Successfully');
     }

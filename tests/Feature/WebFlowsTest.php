@@ -242,14 +242,14 @@ class WebFlowsTest extends TestCase
         $user = $this->makeUser(attrs: ['password' => 'current-pass']);
         $this->actingAs($user);
 
-        $this->post('/UpdatePassword', ['password' => 'wrong', 'newPassword' => 'brand-new-pass'])
+        $this->post('/UpdatePassword', ['password' => 'wrong', 'newPassword' => 'brand-new-pass1'])
             ->assertSessionHas('error');
         $this->post('/UpdatePassword', ['password' => 'current-pass', 'newPassword' => 'short'])
             ->assertSessionHasErrors('newPassword');
-        $this->post('/UpdatePassword', ['password' => 'current-pass', 'newPassword' => 'brand-new-pass'])
+        $this->post('/UpdatePassword', ['password' => 'current-pass', 'newPassword' => 'brand-new-pass1'])
             ->assertSessionHas('PasswordUpdated');
 
-        $this->assertTrue(Hash::check('brand-new-pass', $user->fresh()->password));
+        $this->assertTrue(Hash::check('brand-new-pass1', $user->fresh()->password));
     }
 
     public function test_dealer_request_is_not_duplicated(): void
@@ -288,7 +288,7 @@ class WebFlowsTest extends TestCase
         $this->post('/login', ['email' => 'in@example.com', 'password' => 'secret-pass'])->assertRedirect();
         $this->assertAuthenticatedAs($user);
 
-        $this->get('/logout')->assertRedirect();
+        $this->post('/logout')->assertRedirect();
         $this->assertGuest();
     }
 

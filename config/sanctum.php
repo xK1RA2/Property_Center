@@ -50,7 +50,8 @@ return [
     |
     */
 
-    'expiration' => null,
+    // API tokens stop working after 30 days (the mobile app signs in again on a 401)
+    'expiration' => (int) env('SANCTUM_TOKEN_EXPIRATION_MINUTES', 60 * 24 * 30),
 
     /*
     |--------------------------------------------------------------------------

@@ -114,7 +114,7 @@ class PropertyController extends Controller
             'year' => ['nullable', 'integer', 'between:1800,' . (date('Y') + 5)],
             'Description' => ['nullable', 'string'],
             'images' => ['nullable', 'array', 'max:10'],
-            'images.*' => ['image', 'max:2048'],
+            'images.*' => ['image', 'max:2048', 'dimensions:max_width=6000,max_height=6000'],
         ]);
     }
 

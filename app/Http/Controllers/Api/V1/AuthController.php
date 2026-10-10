@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -21,10 +22,11 @@ class AuthController extends Controller
             'username' => ['nullable', 'string', 'max:255', 'unique:users,username'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'phone' => ['nullable', 'string', 'max:30'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
-        $user = User::create($data + ['role_id' => User::ROLE_USER]);
+        $user = new User($data);
+        $user->forceFill(['role_id' => User::ROLE_USER])->save();
 
         return $this->tokenResponse($user, 201);
     }
@@ -74,7 +76,7 @@ class AuthController extends Controller
 
     public function updatePhoto(Request $request): UserResource
     {
-        $request->validate(['photo' => ['required', File::image()->max(2048)]]);
+        $request->validate(['photo' => ['required', File::image()->max(2048)->dimensions(Rule::dimensions()->maxWidth(6000)->maxHeight(6000))]]);
 
         $user = $request->user();
         $user->update(['profile_image' => $request->file('photo')->store('profiles', 'public')]);
@@ -86,7 +88,7 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             'current_password' => ['required', 'string'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
         $user = $request->user();
@@ -96,6 +98,9 @@ class AuthController extends Controller
         }
 
         $user->update(['password' => $data['password']]);
+
+        // every other phone/browser that held a token must sign in again with the new password
+        $user->tokens()->where('id', '!=', $user->currentAccessToken()->id)->delete();
 
         return response()->json(['message' => 'Password updated']);
     }

@@ -66,3 +66,12 @@ Sent through Expo's push service after the HTTP response is returned, so they ne
 | Dealer approves / rejects | the person who asked | Visit approved / Visit declined |
 
 Payload `data`: `{screen: "bookings", booking_id}`.
+
+## Security notes
+
+- Tokens expire after 30 days (`SANCTUM_TOKEN_EXPIRATION_MINUTES`); a `401` means sign in again.
+- Changing your password (`PUT /me/password`) signs every other device out.
+- Login is limited to 5 attempts per minute per account and address (`429`); the API as a whole to 120 requests per minute.
+- Passwords need 8+ characters with letters and numbers.
+- Other users' `email` / `phone` / `username` are never returned, except a dealer's contact details.
+- Browsers on other origins are refused unless listed in `CORS_ALLOWED_ORIGINS`.

@@ -138,8 +138,12 @@ Test a restore at least once. A backup you have never restored is a hope, not a 
 - [ ] Backups scheduled and one restore tested
 - [ ] A real payment provider integrated in `App\Services\CheckoutService` before taking money
       (today checkout only records a purchase; no card data is stored)
-- [ ] Rate limits reviewed (`throttle:` on login/register) and a Content-Security-Policy added
-      (`App\Http\Middleware\SecurityHeaders` documents why it is not there yet)
+- [ ] Run `composer audit` before every release (CI does not fail on advisories yet)
+- [ ] Set `CORS_ALLOWED_ORIGINS` only if a browser front end on another domain must call `/api`
+- [ ] `SESSION_ENCRYPT=true`, `SESSION_SECURE_COOKIE=true` (already in `.env.production.example`)
+- [ ] Full script-level Content-Security-Policy: the site's inline scripts and CDNs need nonces first
+      (a baseline policy against framing, `<base>` hijacking and form hijacking is already sent)
+- [ ] Email verification for new accounts and 2FA for admins are not implemented
 
 ## 7. Without Docker
 

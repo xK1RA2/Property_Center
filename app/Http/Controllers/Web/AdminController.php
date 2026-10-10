@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\City;
 use App\Models\Checkout;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 // Access is restricted to admins by the "role:3" middleware group in routes/web.php.
 class AdminController extends Controller
@@ -44,7 +45,8 @@ class AdminController extends Controller
         return view('Admin.UpdateProperty',['Property'=>$property,'propertyType'=>$propertyType ,'Cities'=>$Cities,'Purchases'=>$Purchases]);
     }
 
-    public function DestroyProperty(Property $property){
+    public function DestroyProperty(Request $request, Property $property){
+        Log::notice('admin.property.deleted', ['admin_id' => $request->user()->id, 'property_id' => $property->id, 'dealer_id' => $property->Dealer_id]);
         $property->delete();
         return redirect()->route('ManageProperty');
     }
@@ -61,6 +63,7 @@ class AdminController extends Controller
         ]);
 
         $trader = TraderRequest::findOrFail($request->Request_id);
+        Log::notice('admin.dealer_request.' . strtolower($request->Action), ['admin_id' => $request->user()->id, 'user_id' => $trader->user_id]);
 
         if($request->Action === "Accept"){
             User::where('id', $trader->user_id)->update(['role_id' => User::ROLE_DEALER]);
@@ -86,6 +89,7 @@ class AdminController extends Controller
             return redirect()->route('ManageUsers')->with('error','This dealer still has listings; remove them first.');
         }
 
+        Log::notice('admin.user.deleted', ['admin_id' => $request->user()->id, 'user_id' => $user->id, 'email' => $user->email]);
         $user->delete();
         return redirect()->route('ManageUsers');
     }

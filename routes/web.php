@@ -45,8 +45,9 @@ Route::get('/newsletter/unsubscribe/{subscriber}', [NewsletterController::class,
 
 // ---------- auth ----------
 Route::get('/login', [LoginController::class, 'create'])->name('login');
-Route::post('/login', [LoginController::class, 'store'])->middleware('throttle:10,1')->name('login.store');
-Route::get('/logout', [LoginController::class, 'destroy'])->name('logout');
+Route::post('/login', [LoginController::class, 'store'])->middleware('throttle:login')->name('login.store');
+// POST + CSRF: a GET logout can be triggered by any page (an <img src="/logout"> signs you out)
+Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 Route::get('/signup', [SignupController::class, 'create'])->name('signup');
 Route::post('/signup', [SignupController::class, 'store'])->middleware('throttle:10,1')->name('signup.store');
 
@@ -55,8 +56,8 @@ Route::post('/ForgotUpdate', [PasswordResetController::class, 'sendLink'])->midd
 Route::get('/reset-password/{token}', [PasswordResetController::class, 'showReset'])->name('password.reset');
 Route::post('/reset-password', [PasswordResetController::class, 'reset'])->name('password.update');
 
-Route::get('/login/oauth/{provider}', [SocialiteController::class, 'redirectToProvider'])->name('login.oauth');
-Route::get('/callback/oauth/{provider}', [SocialiteController::class, 'handleCallback']);
+Route::get('/login/oauth/{provider}', [SocialiteController::class, 'redirectToProvider'])->whereIn('provider', ['google', 'facebook'])->name('login.oauth');
+Route::get('/callback/oauth/{provider}', [SocialiteController::class, 'handleCallback'])->whereIn('provider', ['google', 'facebook']);
 
 // ---------- any signed-in user ----------
 Route::middleware('auth')->group(function () {
@@ -69,9 +70,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders');
     Route::post('/checkout/{property}', [CheckoutController::class, 'store'])->name('checkout');
 
-    Route::post('/Booking/{property}', [BookingController::class, 'store'])->name('Booking');
+    Route::post('/Booking/{property}', [BookingController::class, 'store'])->middleware('throttle:writes')->name('Booking');
 
-    Route::post('/Comments/{property}', [CommentController::class, 'store'])->name('Comments');
+    Route::post('/Comments/{property}', [CommentController::class, 'store'])->middleware('throttle:writes')->name('Comments');
     Route::delete('/CommentDelete/{comment}', [CommentController::class, 'destroy'])->name('CommentDelete');
 
     Route::post('/property/{property}/rating', [RatingController::class, 'store'])->name('rate.store');

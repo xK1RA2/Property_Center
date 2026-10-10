@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 
 class PropertyRequest extends FormRequest
@@ -44,7 +45,7 @@ class PropertyRequest extends FormRequest
             'location.lng' => ['required_with:location', 'numeric', 'between:-180,180'],
 
             'images' => ['sometimes', 'array', 'max:10'],
-            'images.*' => [File::image()->max(2048)],
+            'images.*' => [File::image()->max(2048)->dimensions(Rule::dimensions()->maxWidth(6000)->maxHeight(6000))],
         ];
     }
 }

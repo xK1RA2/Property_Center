@@ -25,7 +25,7 @@ class CreateAdmin extends Command
 
         $validator = Validator::make(
             ['email' => $email, 'password' => $password],
-            ['email' => ['required', 'email'], 'password' => ['required', Password::min(8)]]
+            ['email' => ['required', 'email'], 'password' => ['required', Password::defaults()]]
         );
 
         if ($validator->fails()) {

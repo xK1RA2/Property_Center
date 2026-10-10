@@ -23,6 +23,9 @@ class ProfileController extends Controller
 
     public function dealer(User $dealer)
     {
+        // only dealers have a public profile; this must not be a way to read any user's details
+        abort_unless($dealer->role_id === User::ROLE_DEALER, 404);
+
         return view('home.DealerProfile', [
             'user' => $dealer,
             'Properties' => Property::where('Dealer_id', $dealer->id)->get(),
@@ -47,7 +50,7 @@ class ProfileController extends Controller
 
     public function updatePhoto(Request $request)
     {
-        $request->validate(['image' => ['required', 'image', 'max:2048']]);
+        $request->validate(['image' => ['required', 'image', 'max:2048', 'dimensions:max_width=6000,max_height=6000']]);
         $user = $request->user();
 
         if ($user->profile_image && !str_starts_with($user->profile_image, 'http')) {
@@ -61,7 +64,7 @@ class ProfileController extends Controller
 
     public function updatePassword(Request $request)
     {
-        $request->validate(['newPassword' => ['required', Password::min(8)]]);
+        $request->validate(['newPassword' => ['required', Password::defaults()]]);
         $user = $request->user();
 
         if (!Hash::check((string) $request->input('password'), $user->password)) {
@@ -69,6 +72,10 @@ class ProfileController extends Controller
         }
 
         $user->update(['password' => $request->input('newPassword')]);
+
+        // a changed password signs the phone app (API tokens) out everywhere
+        $user->tokens()->delete();
+        $request->session()->regenerate();
 
         return redirect()->back()->with('PasswordUpdated', 'Password Has Been Updated');
     }
