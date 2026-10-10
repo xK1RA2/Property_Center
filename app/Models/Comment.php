@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Comment extends Model
 {
+    protected $table = 'comments';
+
     //Relation With Property
     protected $fillable = [
     
@@ -26,7 +28,7 @@ class Comment extends Model
          return $this->belongsTo(User::class,'user_id');
     }     
     public function Replay():HasMany{
-     return $this->HasMany(Replay::class);
+     return $this->HasMany(Reply::class);
     }
 
     public function CommentType():HasOne

@@ -9,7 +9,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="bookingForm" action="{{ route('Booking',$Property) }}">
+                    <form id="bookingForm" method="POST" action="{{ route('Booking',$Property) }}">@csrf
                      
                         <div class="mb-3">
                             <label for="appointmentDate" class="form-label">Preferred Date</label>
@@ -35,7 +35,7 @@
                     <div class="carousel-inner">
                     <div class="carousel-item active">
                        
-                        <img src="{{$Property->PrimaryImage->getUrl()}}" height="100%" width="100%" alt="" />
+                        <img src="{{ $Property->PrimaryImage?->getUrl() ?? asset('img/property-1.jpg') }}" height="100%" width="100%" alt="" />
                         </div>
                     @foreach ($Property->PropertyImages as $image)
                             @if($image->position ==1)
@@ -135,7 +135,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <!-- الاسم -->
-                 <form action="{{ route('checkout',$Property) }}" >
+                 <form method="POST" action="{{ route('checkout',$Property) }}">@csrf
+                    {{-- Only the last 4 digits ever reach the server (see propertyController::checkout) --}}
+                    <input type="hidden" name="card_last4" id="cardLast4">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="name" class="form-label">Full Name</label>
@@ -151,20 +153,20 @@
                     <div class="mb-3">
                         <label for="cardNumber" class="form-label">Card Number</label>
                         <div class="card-number-container">
-                            <input type="text" class="form-control" name="CardNumber" id="cardNumber" placeholder="xxxx xxxx xxxx xxxx" maxlength="19" required>
+                            <input type="text" class="form-control" id="cardNumber" autocomplete="off" placeholder="xxxx xxxx xxxx xxxx" maxlength="19" required>
                             <i class="fa-solid fa-credit-card card-icon" id="cardIcon"></i>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col">
                             <label for="expiry" class="form-label">Expiry Date</label>
-                            <input type="date" name="expDate" class="form-control" id="expiry" placeholder="MM/YY" required>
+                            <input type="date" class="form-control" id="expiry" autocomplete="off" placeholder="MM/YY" required>
                             <!-- رسالة الخطا لتاريخ البطاقة -->
                             <div id="expiry-error" class="error-message">Please enter a valid expiry date (MM/YY) that is not expired.</div>
                         </div>
                         <div class="col">
                             <label for="cvv" class="form-label">CVV</label>
-                            <input type="text" class="form-control" name="cvv" id="cvv" placeholder="123" maxlength="3" required>
+                            <input type="text" class="form-control" id="cvv" autocomplete="off" placeholder="123" maxlength="3" required>
                             <!-- رسالة خطا اذا غير 3 ارقام -->
                             <div id="cvv-error" class="error-message">CVV must be exactly 3 digits.</div>
                         </div>
@@ -280,7 +282,7 @@
                 @foreach($Comments as $Comment)
 <x-PropertyComments :$Comment />
     @endforeach
-    <form action="{{ route('Comments',$Property) }}">
+    <form method="POST" action="{{ route('Comments',$Property) }}">@csrf
                  
                     <div class="mb-3">
                         <textarea class="form-control" rows="3" placeholder="Add your comment..." required name="Description"></textarea>
@@ -297,9 +299,9 @@
     <script src="./js/bootstrap.bundle.min.js"></script>
    
     <script>
-      
-
-       
-        
+        // Only the last 4 digits are submitted; the full number never leaves the browser.
+        document.getElementById('cardNumber')?.addEventListener('input', function () {
+            document.getElementById('cardLast4').value = this.value.replace(/\D/g, '').slice(-4);
+        });
     </script>
 </x-app-layout>

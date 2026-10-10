@@ -8,10 +8,12 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // referenced tables may be created by later migrations; MySQL needs the check off
+        Schema::withoutForeignKeyConstraints(function () {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
             $table->foreignId('Dealer_id')->references('id')->on('users')->onDelete('cascade');;
-            $table->foreignId('property_type_id')->constrained('Property_Type');
+            $table->foreignId('property_type_id')->constrained('Property_type');
             $table->foreignId('city_id')->constrained('cities');
           $table->string('PurchaseType');
             $table->integer('year');
@@ -23,6 +25,7 @@ return new class extends Migration
             $table->timestamp('published_at')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
+        });
         });
     }
 

@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // referenced tables may be created by later migrations; MySQL needs the check off
+        Schema::withoutForeignKeyConstraints(function () {
         Schema::create('faivorate_property', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('property_id')->constrained('properties')->onDelete('cascade');
+        });
         });
         
     }

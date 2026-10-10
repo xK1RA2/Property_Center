@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BookingResource;
-use App\Models\book_preview;
+use App\Models\Booking;
 use App\Models\Property;
 use App\Models\User;
+use App\Services\BookingService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -17,10 +18,10 @@ class BookingController extends Controller
     {
         $user = $request->user();
 
-        $bookings = book_preview::query()
+        $bookings = Booking::query()
             ->when($user->role_id == User::ROLE_USER, fn ($q) => $q->where('user_id', $user->id))
             ->when($user->role_id == User::ROLE_DEALER, fn ($q) => $q->where('dealer_id', $user->id))
-            ->with('User')
+            ->with(['User', 'propertyRef'])
             ->latest()
             ->paginate($request->integer('per_page', 15));
 
@@ -28,30 +29,21 @@ class BookingController extends Controller
     }
 
     /** POST /properties/{property}/bookings : create, or update the user's existing booking */
-    public function store(Request $request, Property $property): JsonResponse
+    public function store(Request $request, Property $property, BookingService $bookings): JsonResponse
     {
         $data = $request->validate([
             'date' => ['required', 'date', 'after:now'],
             'description' => ['nullable', 'string', 'max:255'],
         ]);
 
-        $booking = book_preview::updateOrCreate(
-            ['property_id' => $property->id, 'user_id' => $request->user()->id],
-            [
-                'dealer_id' => $property->Dealer_id,
-                'date' => $data['date'],
-                'description' => $data['description'] ?? 'Empty',
-                'status' => 'Pending',
-            ]
-        );
+        $booking = $bookings->request($request->user(), $property, $data['date'], $data['description'] ?? null);
 
         return (new BookingResource($booking))
             ->response()
             ->setStatusCode($booking->wasRecentlyCreated ? 201 : 200);
     }
-
     /** PATCH /bookings/{booking} : the property's dealer approves or rejects */
-    public function update(Request $request, book_preview $booking): BookingResource
+    public function update(Request $request, Booking $booking, BookingService $bookings): BookingResource
     {
         abort_unless($booking->dealer_id == $request->user()->id, 403);
 
@@ -59,8 +51,5 @@ class BookingController extends Controller
             'status' => ['required', 'in:Approved,Rejected'],
         ]);
 
-        $booking->update($data);
-
-        return new BookingResource($booking->load('User'));
-    }
-}
+        return new BookingResource($bookings->decide($booking, $data['status'])->load(['User', 'propertyRef']));
+    }}

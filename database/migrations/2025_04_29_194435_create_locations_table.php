@@ -11,6 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // referenced tables may be created by later migrations; MySQL needs the check off
+        Schema::withoutForeignKeyConstraints(function () {
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -18,6 +20,7 @@ return new class extends Migration
             $table->decimal('lat', 10, 7);
             $table->decimal('lng', 10, 7);
             $table->timestamps();
+        });
         });
         
     }

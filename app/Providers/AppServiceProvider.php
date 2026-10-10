@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Generate https:// links even if the proxy forgets X-Forwarded-Proto.
+        if (config('app.force_https')) {
+            URL::forceScheme('https');
+        }
     }
 }

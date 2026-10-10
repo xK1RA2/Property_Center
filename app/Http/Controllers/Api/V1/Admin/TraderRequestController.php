@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use App\Models\request_trader;
+use App\Models\TraderRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ class TraderRequestController extends Controller
 {
     public function index(): JsonResponse
     {
-        $requests = request_trader::with('user')->latest()->get()->map(fn ($r) => [
+        $requests = TraderRequest::with('user')->latest()->get()->map(fn ($r) => [
             'id' => $r->id,
             'user' => new UserResource($r->user),
             'created_at' => $r->created_at,
@@ -23,7 +23,7 @@ class TraderRequestController extends Controller
     }
 
     /** PATCH /admin/trader-requests/{id} {action: approve|reject} */
-    public function update(Request $request, request_trader $traderRequest): JsonResponse
+    public function update(Request $request, TraderRequest $traderRequest): JsonResponse
     {
         $data = $request->validate(['action' => ['required', 'in:approve,reject']]);
 

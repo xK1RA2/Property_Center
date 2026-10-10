@@ -11,6 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // referenced tables may be created by later migrations; MySQL needs the check off
+        Schema::withoutForeignKeyConstraints(function () {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
@@ -40,6 +42,7 @@ return new class extends Migration
             $table->text('user_agent')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
+        });
         });
     }
 

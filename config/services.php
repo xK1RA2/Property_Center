@@ -14,6 +14,11 @@ return [
     |
     */
 
+    'expo' => [
+        // only needed when "enhanced push security" is turned on for the Expo project
+        'access_token' => env('EXPO_ACCESS_TOKEN'),
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

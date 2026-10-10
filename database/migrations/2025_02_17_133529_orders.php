@@ -11,6 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // referenced tables may be created by later migrations; MySQL needs the check off
+        Schema::withoutForeignKeyConstraints(function () {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Buyer
@@ -18,6 +20,7 @@ return new class extends Migration
             $table->enum('status', ['Approved','Pending','Canceled'])->default('Approved');
             $table->integer('price'); 
             $table->timestamp('date');
+        });
         });
     }
 

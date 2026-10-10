@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\Admin;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BookingController;
 use App\Http\Controllers\Api\V1\CommentController;
+use App\Http\Controllers\Api\V1\DeviceController;
 use App\Http\Controllers\Api\V1\FavoriteController;
 use App\Http\Controllers\Api\V1\LookupController;
 use App\Http\Controllers\Api\V1\PropertyController;
@@ -34,6 +35,8 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('auth/logout', [AuthController::class, 'logout']);
         Route::get('me', [AuthController::class, 'me']);
+        Route::put('me', [AuthController::class, 'updateProfile']);
+        Route::post('me/photo', [AuthController::class, 'updatePhoto']);
         Route::put('me/password', [AuthController::class, 'updatePassword']);
 
         Route::post('properties/{property}/comments', [CommentController::class, 'store']);
@@ -43,6 +46,9 @@ Route::prefix('v1')->group(function () {
         Route::get('favorites', [FavoriteController::class, 'index']);
         Route::put('properties/{property}/favorite', [FavoriteController::class, 'store']);
         Route::delete('properties/{property}/favorite', [FavoriteController::class, 'destroy']);
+
+        Route::post('devices', [DeviceController::class, 'store']);
+        Route::delete('devices', [DeviceController::class, 'destroy']);
 
         Route::get('bookings', [BookingController::class, 'index']);
         Route::post('properties/{property}/bookings', [BookingController::class, 'store']);

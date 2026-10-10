@@ -12,7 +12,7 @@
                 Forgot Password
             </h1>
             @error('email')
-            <div class="text-red-500">Email or Password Doesn't Match</div>
+            <div class="text-red-500">{{ $message }}</div>
           
             @enderror
             <form class="mt-4 w-full" action="{{route('ForgotUpdate')}}" method="POST">
@@ -26,30 +26,11 @@
                             class="w-full p-2 focus:outline-none">
                     </div>
                 </div>
-                <!-- Password -->
-                <div class="mb-4">
-                    <label class="block text-gray-600 text-md font-bold">New Password</label>
-                    <div class="flex items-center border-b-2 border-gray-300 focus-within:border-green-500">
-                        <span class="text-gray-400 p-2"><i class="fa-solid fa-lock"></i></span>
-                        <input id="password" type="password" required placeholder="••••••••"
-                            class="w-full p-2 focus:outline-none" name="password">
-                        <button type="button" onclick="togglePassword()"
-                            class="text-gray-500 hover:text-gray-700 p-2">👁</button>
-                    </div>
-                </div>
-              <div class="mb-4">
-                    <label class="block text-gray-600 text-md font-bold">Confirm Password</label>
-                    <div class="flex items-center border-b-2 border-gray-300 focus-within:border-green-500">
-                        <span class="text-gray-400 p-2"><i class="fa-solid fa-lock"></i></span>
-                        <input id="password" type="password" required placeholder="••••••••"
-                            class="w-full p-2 focus:outline-none" name="Confirmpassword">
-                        <button type="button" onclick="togglePassword()"
-                            class="text-gray-500 hover:text-gray-700 p-2">👁</button>
-                    </div>
-                </div>
-             
-                
-          @if(session('error'))
+                @if(session('status'))
+                <div class="text-green-600 mb-2">{{ session('status') }}</div>
+                @endif
+
+                @if(session('error'))
             {{ session('error') }}
           @endif
          

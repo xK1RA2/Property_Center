@@ -22,6 +22,28 @@
                         <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
                         <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
                     </div>
+                    <div class="col-lg-4 col-md-6" id="newsletter">
+                        <h5 class="text-white mb-4">Newsletter</h5>
+                        <p>New listings and offers, straight to your inbox.</p>
+
+                        @if (session('newsletter_status'))
+                            <div class="alert alert-success py-2 px-3" role="status">{{ session('newsletter_status') }}</div>
+                        @endif
+                        @if (session('newsletter_error'))
+                            <div class="alert alert-danger py-2 px-3" role="alert">{{ session('newsletter_error') }}</div>
+                        @endif
+                        @error('newsletter_email')
+                            <div class="alert alert-danger py-2 px-3" role="alert">{{ $message }}</div>
+                        @enderror
+
+                        <form method="POST" action="{{ route('newsletter.subscribe') }}" class="position-relative mx-auto" style="max-width: 400px;">
+                            @csrf
+                            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5 text-white" type="email"
+                                   name="newsletter_email" value="{{ old('newsletter_email') }}"
+                                   placeholder="Your email" required maxlength="255" autocomplete="email">
+                            <button type="submit" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">Subscribe</button>
+                        </form>
+                    </div>
                     <div class="col-lg-4 col-md-6">
                         <h5 class="text-white mb-4">Photo Gallery</h5>
                         <div class="row g-2 pt-2">

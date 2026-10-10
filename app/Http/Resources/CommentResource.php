@@ -20,7 +20,7 @@ class CommentResource extends JsonResource
             'anonymous' => $anonymous,
             // never leak the author of an anonymous comment
             'author' => $anonymous ? null : new UserResource($this->whenLoaded('user')),
-            'is_mine' => $request->user()?->id === $this->user_id,
+            'is_mine' => $request->user('sanctum')?->id === $this->user_id,
             'created_at' => $this->created_at,
         ];
     }

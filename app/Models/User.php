@@ -65,7 +65,7 @@ class User extends Authenticatable
     }
     public function Favourite_Property():BelongsToMany
     {
-        return $this->belongsToMany(Property::class, 'faivorate_property', 'user_id', 'property_id');
+        return $this->belongsToMany(Property::class, 'favorites', 'user_id', 'property_id');
 
        
     }
@@ -85,11 +85,11 @@ class User extends Authenticatable
      //Relation With Rate
     public function Rate():HasMany
     {
-         return $this->HasMany(Rate::class);
+         return $this->HasMany(Rating::class);
     }
     public function Request():BelongsTo
     {
-         return $this->BelongsTo(request_trader::class,'user_id');
+         return $this->BelongsTo(TraderRequest::class,'user_id');
     }
  
 

@@ -60,6 +60,14 @@
                     <label class="form-label">Area(m²)</label>
                     <input type="number" name="area" value="old('area')"  class="form-control shadow-sm" placeholder="Enter area"min="100"required>
                 </div>
+                <div class="col-md-8">
+                    <label class="form-label">Address</label>
+                    <input type="text" name="address" value="{{ old('address') }}" maxlength="255" class="form-control shadow-sm" placeholder="Street, building">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Year built</label>
+                    <input type="number" name="year" value="{{ old('year', date('Y')) }}" min="1800" max="2031" class="form-control shadow-sm">
+                </div>
  
              
           

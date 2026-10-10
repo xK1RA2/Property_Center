@@ -30,8 +30,8 @@ class PropertyResource extends JsonResource
             'features' => $this->whenLoaded('Features', fn () => $this->Features),
             'images' => $this->whenLoaded('PropertyImages', fn () => $this->PropertyImages
                 ->sortBy('position')->values()
-                ->map(fn ($img) => ['id' => $img->id, 'url' => $img->getUrl(), 'position' => $img->position])),
-            'primary_image' => $this->whenLoaded('PrimaryImage', fn () => $this->PrimaryImage?->getUrl()),
+                ->map(fn ($img) => ['id' => $img->id, 'url' => url($img->getUrl()), 'position' => $img->position])),
+            'primary_image' => $this->whenLoaded('PrimaryImage', fn () => $this->PrimaryImage ? url($this->PrimaryImage->getUrl()) : null),
             'location' => $this->whenLoaded('location', fn () => $this->location
                 ? ['name' => $this->location->name, 'lat' => (float) $this->location->lat, 'lng' => (float) $this->location->lng]
                 : null),
@@ -43,6 +43,9 @@ class PropertyResource extends JsonResource
                 array_key_exists('property_rate_count', $this->resource->getAttributes()),
                 fn () => (int) $this->property_rate_count
             ),
+            // only set by show() for a signed-in viewer
+            'is_favorite' => $this->when(array_key_exists('is_favorite', $this->resource->getAttributes()), fn () => (bool) $this->is_favorite),
+            'my_rating' => $this->when(array_key_exists('my_rating', $this->resource->getAttributes()), fn () => $this->my_rating),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

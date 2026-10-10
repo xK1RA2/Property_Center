@@ -21,7 +21,7 @@ return new class extends Migration
             $table->boolean('Heating')->default(1);
             $table->boolean('Air_Conditioner')->default(1);
             $table->boolean('Parking')->default(1);
-            $table->timestamps('updated_at');
+            $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
             
         });

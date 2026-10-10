@@ -63,7 +63,7 @@
                   @if(session('Personal'))
                                 <div class="alert alert-success">{{ session('Personal') }}</div>
                   @endif
-                    <form id="profileForm" action="{{ route('InformationUpdate') }}" >
+                    <form id="profileForm" method="POST" action="{{ route('InformationUpdate') }}">@csrf
                         <div class="row mb-4">
                             <div class="col-md-6">
                                

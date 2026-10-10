@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\PropertyRequest;
 use App\Http\Resources\PropertyResource;
 use App\Models\Property;
+use App\Services\PropertyService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -71,88 +72,85 @@ class PropertyController extends Controller
             ->loadAvg('PropertyRate', 'Rate')
             ->loadCount('PropertyRate');
 
+        if ($viewer = request()->user('sanctum')) {
+            $property->setAttribute('is_favorite', $viewer->Favourite_Property()->whereKey($property->id)->exists());
+            $property->setAttribute('my_rating', \App\Models\Rating::where(['user_id' => $viewer->id, 'Property_id' => $property->id])->value('Rate'));
+        }
+
         return new PropertyResource($property);
     }
 
-    public function store(PropertyRequest $request): JsonResponse
+    public function store(PropertyRequest $request, PropertyService $properties): JsonResponse
     {
         $data = $request->validated();
 
-        $property = Property::create([
-            'Dealer_id' => $request->user()->id,
-            'PurchaseType' => $data['purchase_type'],
-            'property_type_id' => $data['property_type_id'],
-            'city_id' => $data['city_id'],
-            'price' => $data['price'],
-            'year' => $data['year'],
-            'address' => $data['address'],
-            'description' => $data['description'] ?? null,
-            'status' => $data['status'] ?? 'Available',
-        ]);
-        // published_at is not mass-assignable on the model
-        $property->forceFill(['published_at' => $data['published_at'] ?? now()])->save();
-
-        $property->Features()->create($data['features'] ?? []);
-        $this->storeImages($property, $request->file('images', []));
+        $property = $properties->create(
+            $request->user(),
+            $this->attributes($data) + ['status' => $data['status'] ?? 'Available'],
+            $data['features'] ?? [],
+            $request->file('images', []),
+            $data['location'] ?? null,
+        );
 
         return (new PropertyResource($this->loadFull($property)))
             ->response()->setStatusCode(201);
     }
 
-    public function update(PropertyRequest $request, Property $property): PropertyResource
+    public function update(PropertyRequest $request, Property $property, PropertyService $properties): PropertyResource
     {
         Gate::authorize('update', $property);
         $data = $request->validated();
 
-        $fields = array_filter([
-            'PurchaseType' => $data['purchase_type'] ?? null,
-            'property_type_id' => $data['property_type_id'] ?? null,
-            'city_id' => $data['city_id'] ?? null,
-            'price' => $data['price'] ?? null,
-            'year' => $data['year'] ?? null,
-            'address' => $data['address'] ?? null,
-            'status' => $data['status'] ?? null,
-        ], fn ($v) => $v !== null);
-
-        if (array_key_exists('description', $data)) {
-            $fields['description'] = $data['description'];
-        }
-
-        $property->update($fields);
-
-        if (array_key_exists('published_at', $data)) {
-            $property->forceFill(['published_at' => $data['published_at']])->save();
-        }
-        if (!empty($data['features'])) {
-            $property->Features()->updateOrCreate([], $data['features']);
-        }
-        $this->storeImages($property, $request->file('images', []));
+        $properties->update(
+            $property,
+            $this->attributes($data, onlyPresent: true),
+            $data['features'] ?? [],
+            $request->file('images', []),
+            $data['location'] ?? null,
+        );
 
         return new PropertyResource($this->loadFull($property));
     }
 
-    public function destroy(Property $property): JsonResponse
+    public function destroy(Property $property, PropertyService $properties): JsonResponse
     {
         Gate::authorize('delete', $property);
-        $property->delete();
+        $properties->delete($property);
 
         return response()->json(null, 204);
     }
 
-    private function storeImages(Property $property, array $images): void
+    /** API field names -> column names. */
+    private function attributes(array $data, bool $onlyPresent = false): array
     {
-        $position = (int) $property->PropertyImages()->max('position');
+        $map = [
+            'purchase_type' => 'PurchaseType',
+            'property_type_id' => 'property_type_id',
+            'city_id' => 'city_id',
+            'price' => 'price',
+            'year' => 'year',
+            'address' => 'address',
+            'description' => 'description',
+            'status' => 'status',
+            'published_at' => 'published_at',
+        ];
 
-        foreach ($images as $image) {
-            $property->PropertyImages()->create([
-                'image_path' => $image->store('images', 'public'),
-                'position' => ++$position,
-            ]);
+        $out = [];
+        foreach ($map as $field => $column) {
+            if (array_key_exists($field, $data)) {
+                $out[$column] = $data[$field];
+            }
         }
+
+        if (!$onlyPresent) {
+            unset($out['status']); // create() sets it explicitly
+        }
+
+        return $out;
     }
 
     private function loadFull(Property $property): Property
     {
-        return $property->refresh()->load(['City', 'propertyType', 'Dealer', 'Features', 'PropertyImages']);
+        return $property->refresh()->load(['City', 'propertyType', 'Dealer', 'Features', 'PropertyImages', 'location']);
     }
 }

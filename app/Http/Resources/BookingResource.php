@@ -17,6 +17,11 @@ class BookingResource extends JsonResource
             'date' => $this->date,
             'description' => $this->description,
             'status' => $this->status,
+            'property' => $this->whenLoaded('propertyRef', fn () => $this->propertyRef ? [
+                'id' => $this->propertyRef->id,
+                'address' => $this->propertyRef->address,
+                'price' => $this->propertyRef->price,
+            ] : null),
             'user' => new UserResource($this->whenLoaded('User')),
             'created_at' => $this->created_at,
         ];

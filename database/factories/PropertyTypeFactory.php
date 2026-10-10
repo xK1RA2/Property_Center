@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PropertyTypeFactory extends Factory
 {
   
-    protected $table ='Property_type';
+    protected $table = 'property_types';
     public function definition(): array
     {
         return [

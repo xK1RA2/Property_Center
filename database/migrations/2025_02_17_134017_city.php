@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // referenced tables may be created by later migrations; MySQL needs the check off
+        Schema::withoutForeignKeyConstraints(function () {
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('state_id')->constrained()->onDelete('cascade');
             $table->timestamps();
             $table->string('name',45);
+        });
         });
     }
 

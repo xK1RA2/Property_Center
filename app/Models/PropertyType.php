@@ -12,7 +12,7 @@ class PropertyType extends Model // Change to PascalCase
 {
     use HasFactory, SoftDeletes;
     public $timestamps = false;
-    protected  $table = 'Property_type';
+    protected $table = 'property_types';
     protected $fillable = [
         'name',
     ];

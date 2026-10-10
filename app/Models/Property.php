@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\PropertyFeatures;
+use App\Models\PropertyFeature;
 use App\Models\PropertyImage;
 use App\Models\PropertyType;
 use App\Models\State;
@@ -43,11 +43,11 @@ public function propertyType():BelongsTo
 
           //Relation With Book_Preview
           public function Book_Preview():HasMany{
-            return $this->HasMany(Book_Preview::class);
+            return $this->HasMany(Booking::class);
           }
           //Relation With Property Features
           public function Features():HasOne{
-            return $this->HasOne(PropertyFeatures::class,'Property_id');
+            return $this->HasOne(PropertyFeature::class,'Property_id')->withDefault();
           }
          
           //Relation With Dealer
@@ -68,12 +68,12 @@ public function propertyType():BelongsTo
            //Relation With Rate
           public function PropertyRate():HasMany
           {
-               return $this->HasMany(Rate::class,'Property_id');
+               return $this->HasMany(Rating::class,'Property_id');
           }
           //Relation With Property Images to get the primary image
           public function PrimaryImage(): HasOne 
           { 
-               return $this->hasOne(PropertyImages::class,'property_id')
+               return $this->hasOne(PropertyImage::class,'property_id')
                ->orderBy('position', 'asc')
                ->withTrashed();
                
@@ -81,7 +81,7 @@ public function propertyType():BelongsTo
           //Relation With Property Images to get all images
           public function PropertyImages(): HasMany 
           { 
-               return $this->hasMany(PropertyImages::class);
+               return $this->hasMany(PropertyImage::class);
               
           }
           //Relation With Orders
@@ -93,7 +93,7 @@ public function propertyType():BelongsTo
           //Relation With users to get the Favourtie Property
           public function favouriteProperties():BelongsToMany
           {
-               return $this->belongsToMany(User::class, 'faivorate_property', 'property_id', 'user_id');
+               return $this->belongsToMany(User::class, 'favorites', 'property_id', 'user_id');
           }    
 
            public function getCreateDate():string

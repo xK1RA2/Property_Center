@@ -11,6 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // referenced tables may be created by later migrations; MySQL needs the check off
+        Schema::withoutForeignKeyConstraints(function () {
         Schema::create('Property_images', function (Blueprint $table) {
             $table->id();
             $table->foreignId('property_id')->constrained('properties');
@@ -18,6 +20,7 @@ return new class extends Migration
             $table->integer('position');
             $table->timestamp('deleted_at')->nullable();
         $table->timestamps();
+        });
         });
     }
 

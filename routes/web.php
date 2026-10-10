@@ -1,173 +1,120 @@
 <?php
 
+use App\Http\Controllers\Web\AdminController;
+use App\Http\Controllers\Web\Auth\LoginController;
+use App\Http\Controllers\Web\Auth\PasswordResetController;
+use App\Http\Controllers\Web\Auth\SignupController;
+use App\Http\Controllers\Web\BookingController;
+use App\Http\Controllers\Web\ChatbotController;
+use App\Http\Controllers\Web\CheckoutController;
+use App\Http\Controllers\Web\CommentController;
+use App\Http\Controllers\Web\DealerController;
+use App\Http\Controllers\Web\DealerDashboardController;
+use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\MapController;
+use App\Http\Controllers\Web\NewsletterController;
+use App\Http\Controllers\Web\OrderController;
+use App\Http\Controllers\Web\ProfileController;
+use App\Http\Controllers\Web\PropertyController;
+use App\Http\Controllers\Web\PropertySearchController;
+use App\Http\Controllers\Web\RatingController;
+use App\Http\Controllers\Web\SocialiteController;
+use App\Http\Controllers\Web\WishlistController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use App\Http\Controllers\propertyController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\mapsController;
-use App\Http\Controllers\SocialiteController;
-use App\Http\Controllers\ViewProperty;
-use App\Models\Location;
-use App\Http\Controllers\dealerController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\signupController;
-use App\Http\Controllers\loginController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\WhislistController;
-use App\Http\Controllers\RatingController;
-use BotMan\BotMan\BotManFactory;
-use BotMan\BotMan\Drivers\DriverManager;
 
+/*
+| Blade website. Route NAMES are used all over the views, keep them stable.
+| Roles: 1 user, 2 dealer, 3 admin (see App\Models\User::ROLE_*).
+| Anything that changes data is POST / DELETE, never GET.
+*/
 
+// ---------- public ----------
+Route::get('/index', [HomeController::class, 'index'])->name('home');
+Route::get('/Dealers', [DealerController::class, 'index'])->name('Dealers');
+Route::get('/Dealers/{dealer}', [ProfileController::class, 'dealer'])->name('Dealer_Profile');
+Route::get('/Details/{property}', [PropertyController::class, 'details'])->name('property.details');
+Route::get('/property/{property}', [PropertyController::class, 'show'])->whereNumber('property')->name('home.show');
+Route::get('/View', [PropertySearchController::class, 'index'])->name('Purchase');
+Route::get('/Search', [PropertySearchController::class, 'search'])->name('search');
+Route::get('/Maps', [MapController::class, 'index'])->name('maps');
 
-Route::get('/index',[HomeController::class,'index'])->name('home');
-Route::get('/dashboard',[HomeController::class,'dashboard'])->middleware('role:2')->name('index.dashboard');
-Route::get("/orders",[HomeController::class,'Orders'])->name('orders');
+// newsletter: double opt-in, the links in the emails are signed
+Route::post('/newsletter', [NewsletterController::class, 'subscribe'])->middleware('throttle:5,1')->name('newsletter.subscribe');
+Route::get('/newsletter/confirm/{subscriber}', [NewsletterController::class, 'confirm'])->middleware('signed')->name('newsletter.confirm');
+Route::get('/newsletter/unsubscribe/{subscriber}', [NewsletterController::class, 'unsubscribe'])->middleware('signed')->name('newsletter.unsubscribe');
 
-//Property Controllers
-Route::controller(propertyController::class)->group(function(){
-    Route::get('/property', 'index');
-});
+// ---------- auth ----------
+Route::get('/login', [LoginController::class, 'create'])->name('login');
+Route::post('/login', [LoginController::class, 'store'])->middleware('throttle:10,1')->name('login.store');
+Route::get('/logout', [LoginController::class, 'destroy'])->name('logout');
+Route::get('/signup', [SignupController::class, 'create'])->name('signup');
+Route::post('/signup', [SignupController::class, 'store'])->middleware('throttle:10,1')->name('signup.store');
 
-Route::get('/Dealers',[dealerController::class,'index'])->name('Dealers');
-Route::get('/Dealer/dashboard',[dealerController::class,'dashboard'])->name('dealer.dashboard');
+Route::get('/forgot', [PasswordResetController::class, 'forgot'])->name('forgot');
+Route::post('/ForgotUpdate', [PasswordResetController::class, 'sendLink'])->middleware('throttle:5,1')->name('ForgotUpdate');
+Route::get('/reset-password/{token}', [PasswordResetController::class, 'showReset'])->name('password.reset');
+Route::post('/reset-password', [PasswordResetController::class, 'reset'])->name('password.update');
 
-
-Route::get('/Profile',[UserController::class,'index'])->name('user.profile');
-Route::post('/ImageEdit',[UserController::class,'EditImage'])->name('EditImage');
-Route::get('/InformationUpdate',[UserController::class,'InformationUpdate'])->name('InformationUpdate');
-Route::get('/Dealer_Profile{Dealer}',[UserController::class,'Dealer_Profile'])->name('Dealer_Profile');
-Route::post('/Request',[UserController::class,'Request_Trader'])->name('Request');
-Route::post('/UpdatePassword',[UserController::class,'UpdatePassword'])->name('UpdatePassword');
-
-
-Route::get('/property',[propertyController::class,'create'])->middleware('role:2')->name('property');
-Route::post('/property', [propertyController::class ,'store'])->middleware('role:2')->name('property.store');
-Route::get('/property{property}', [propertyController::class ,'Edit'])->middleware('role:2')->name('property.edit');
-Route::post('/property/update/{property}', [propertyController::class ,'update'])->middleware('role:2,3')->name('property.update');
-Route::get('/Details/{property}', [HomeController::class ,'Details'])->name('property.details');
-Route::get('/Booking{property}', [HomeController::class ,'Booking'])->name('Booking');
-Route::get('/checkout{property}', [propertyController::class ,'checkout'])->name('checkout');
-Route::post('/BookAccept/{Req}', [HomeController::class ,'BookAccept'])->middleware('role:2')->name('BookAccept');
-Route::post('/BookRefuse/{Req}', [HomeController::class ,'BookRefuse'])->middleware('role:2')->name('BookRefuse');
-Route::get('/checkout{property}', [propertyController::class ,'checkout'])->name('checkout');
-
-Route::get('/Book/{id}', [HomeController::class ,'Book'])->name('Book');
-Route::get('/property/{property}', [propertyController::class, 'show'])->name('home.show');
-Route::get('/Comments/{property}', [propertyController::class, 'Comments'])->name('Comments');
-Route::delete('/CommentDelete/{Comment}', [propertyController::class, 'CommentDelete'])->middleware('auth')->name('CommentDelete');
-
-Route::post('/property/{property}/rating',[RatingController::class ,'store'])->name('rate.store');
-
-
-Route::get("/myProperties",[propertyController::class,'index'])->middleware('role:2')->name("myProperties");
-
-Route::post("/Destroy/{property}",[propertyController::class,'Destroy'])->middleware('role:2,3')->name('Destroy');
-
-Route::get("/addproperty ",[propertyController::class,'create']);
-
-Route::controller(ViewProperty::class)->group(function(){
-    Route::get("/View",'index')->name('Purchase');
-
-   
-});
-
-Route::get('/Search',[ViewProperty::class,'search'])->name('search');
-
-
-
-Route::get('/wishList',[WhislistController::class,'index'])->name('wishList.index');
-Route::get('/wishList/{property}',[WhislistController::class,'storeDestroy'])->name('wishList.storeDestroy');
-
-Route::get('/login',[loginController::class,'create'])->name('login');
-Route::get('/forgot',[loginController::class,'forgot'])->name('forgot');
-Route::Post('/ForgotUpdate',[loginController::class,'ForgotUpdate'])->name('ForgotUpdate');
-Route::get('/logout',[loginController::class,'logout'])->name('logout');
-Route::post('/login',[loginController::class,'store'])->name('login.store');
-Route::get('/signup',[signupController::class,'create'])->name('signup');
-Route::post('/signup',[signupController::class,'store'])->name('signup.store');
 Route::get('/login/oauth/{provider}', [SocialiteController::class, 'redirectToProvider'])->name('login.oauth');
-Route::get('/callback/oauth/{provider}', [SocialiteController::class, 'handleCallback']); 
+Route::get('/callback/oauth/{provider}', [SocialiteController::class, 'handleCallback']);
 
-Route::get('/Maps',[mapsController::class,'index'])->name('maps');
+// ---------- any signed-in user ----------
+Route::middleware('auth')->group(function () {
+    Route::get('/Profile', [ProfileController::class, 'show'])->name('user.profile');
+    Route::post('/InformationUpdate', [ProfileController::class, 'updateInformation'])->name('InformationUpdate');
+    Route::post('/ImageEdit', [ProfileController::class, 'updatePhoto'])->name('EditImage');
+    Route::post('/UpdatePassword', [ProfileController::class, 'updatePassword'])->name('UpdatePassword');
+    Route::post('/Request', [ProfileController::class, 'requestDealer'])->name('Request');
 
-Route::middleware(["auth", "role:3"])->group(function () {
-Route::get('/admin',[AdminController::class,'index'])->name('Dashboard');
-Route::get('/ManageProperty',[AdminController::class,'ManageProperty'])->name('ManageProperty');
-Route::delete('/admin/ManageProperty/{property}',[AdminController::class,'DestroyProperty'])->name('DestroyProperty');
-Route::get('/admin/EditProperty/{property}',[AdminController::class,'EditProperty'])->name('EditProperty');
-Route::get('/admin/UpdateProperty/{property}',[AdminController::class,'UpdateProperty'])->name('UpdateProperty');
-Route::get('/admin/ManageUsers',[AdminController::class,'ManageUsers'])->name('ManageUsers');
-Route::delete('/admin/ManageUsers/{user}',[AdminController::class,'DestroyUsers'])->name('DestroyUsers');
-Route::get('/admin/ManageRequests',[AdminController::class,'ManageRequests'])->name('ManageRequests');
-Route::post('/admin/RequestAction',[AdminController::class,'Request_Action'])->name('Request_Action');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+    Route::post('/checkout/{property}', [CheckoutController::class, 'store'])->name('checkout');
+
+    Route::post('/Booking/{property}', [BookingController::class, 'store'])->name('Booking');
+
+    Route::post('/Comments/{property}', [CommentController::class, 'store'])->name('Comments');
+    Route::delete('/CommentDelete/{comment}', [CommentController::class, 'destroy'])->name('CommentDelete');
+
+    Route::post('/property/{property}/rating', [RatingController::class, 'store'])->name('rate.store');
+
+    Route::get('/wishList', [WishlistController::class, 'index'])->name('wishList.index');
+    Route::post('/wishList/{property}', [WishlistController::class, 'toggle'])->name('wishList.storeDestroy');
 });
 
-Route::get('/locations', function () {
-    return view('property.location');
-})->name('locations.create');
+// ---------- dealer ----------
+Route::middleware(['auth', 'role:2'])->group(function () {
+    Route::get('/dashboard', DealerDashboardController::class)->name('index.dashboard');
+    Route::get('/Dealer/dashboard', DealerDashboardController::class)->name('dealer.dashboard');
 
-Route::post('/locations', [mapsController::class,'LocationStore'])->name('locations.store');
+    Route::get('/myProperties', [PropertyController::class, 'index'])->name('myProperties');
+    Route::get('/property', [PropertyController::class, 'create'])->name('property');
+    Route::post('/property', [PropertyController::class, 'store'])->name('property.store');
+    Route::get('/property/{property}/edit', [PropertyController::class, 'edit'])->name('property.edit');
 
+    Route::post('/BookAccept/{booking}', [BookingController::class, 'accept'])->name('BookAccept');
+    Route::post('/BookRefuse/{booking}', [BookingController::class, 'refuse'])->name('BookRefuse');
 
-Route::match(['get', 'post'], '/botman', function () {
-    DriverManager::loadDriver(\BotMan\Drivers\Web\WebDriver::class);
-
-    $config = [];
-    $botman = BotManFactory::create($config);
-
-
-    // Greeting handler
-    $botman->hears('.*\bprofile\b.*', callback: function ($bot) {
-        $purchaseLink = route('user.profile');
-        $bot->reply(" Visit the Profile page:<a href='$purchaseLink' target='_blank'>Profile</a> .");
-    });
-    $botman->hears('.*\bWhishlist\b.*', callback: function ($bot) {
-        $purchaseLink = route('wishList.index');
-        $bot->reply(" Visit WishList Page:<a href='$purchaseLink' target='_blank'>WishList</a>. ");
-    });
-    $botman->hears('.*\bMap\b.*', callback: function ($bot) {
-        $purchaseLink = route('maps');
-        $bot->reply(" Visit Page:<a href='$purchaseLink' target='_blank'>Map</a>. ");
-    });
-    $botman->hears('.*\bDealers\b.*', callback: function ($bot) {
-        $purchaseLink = route('Dealers');
-        $bot->reply(" Visit Page:<a href='$purchaseLink' target='_blank'>Dealers</a>. ");
-    });
-    $botman->hears('.*\bMy Orders\b.*', callback: function ($bot) {
-        $purchaseLink = route('orders');
-        $bot->reply(" Visit Page:<a href='$purchaseLink' target='_blank'>My Order</a>. ");
-    });
-    $botman->hears('.*\bBuy|Rent|Purchase\b.*', function ($bot) {
-        $purchaseLink = route('Purchase');
-        $bot->reply(" Sure! <br> <br> Visit <a href='$purchaseLink' target='_blank'>PurchaseProperty</a> Page. ");
-    });
-    $botman->hears('.*\bSell\b.*', function ($bot) {
-        $purchaseLink = route('property');
-        $bot->reply(" Sure! <br> <br> If you are a Dealer visit <a href='$purchaseLink' target='_blank'>Add Property</a> Page.If you are not you must become a trader, you have to send a request from Profile Page. ");
-    });
-     $botman->hears('.*\bMy Proper|Own Property\b.*', function ($bot) {
-        $purchaseLink = route('myProperties');
-        $bot->reply(" Sure! <br> <br> If you are a Dealer visit <a href='$purchaseLink' target='_blank'>My Properties</a> Page. <br> <br>If you are not you must become a trader, you have to send a request from Profile Page. ");
-    });
-$botman->hears('.*\bDashboard\b.*', function ($bot) {
-        $purchaseLink = route('dealer.dashboard');
-        $bot->reply(" Sure! <br> <br> If you are a Dealer visit <a href='$purchaseLink' target='_blank'>Dashboard</a> Page. <br> <br> If you are not you must become a trader, you have to send a request from Profile Page.");
-    });
-    // Fallback handler
-    $botman->fallback(function ($bot) {
-        $message = strtolower($bot->getMessage()->getText());
-
-        if (str_contains($message, 'hello') || str_contains($message, 'مرحبا') || str_contains($message, 'اهلا')) {
-            $bot->reply("👋 Hey! How can I help? ");
-        } else {
-            $bot->reply("🤖 Sorry, I didn't understand that.");
-        }
-    });
-
-    $botman->listen();
+    Route::get('/locations', fn () => view('property.location'))->name('locations.create');
+    Route::post('/locations', [MapController::class, 'store'])->name('locations.store');
 });
 
+// ---------- dealer (own listing) or admin; ownership is enforced by PropertyPolicy ----------
+Route::middleware(['auth', 'role:2,3'])->group(function () {
+    Route::post('/property/update/{property}', [PropertyController::class, 'update'])->name('property.update');
+    Route::post('/Destroy/{property}', [PropertyController::class, 'destroy'])->name('Destroy');
+});
 
+// ---------- admin ----------
+Route::middleware(['auth', 'role:3'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('Dashboard');
+    Route::get('/ManageProperty', [AdminController::class, 'ManageProperty'])->name('ManageProperty');
+    Route::delete('/admin/ManageProperty/{property}', [AdminController::class, 'DestroyProperty'])->name('DestroyProperty');
+    Route::get('/admin/EditProperty/{property}', [AdminController::class, 'EditProperty'])->name('EditProperty');
+    Route::get('/admin/UpdateProperty/{property}', [AdminController::class, 'UpdateProperty'])->name('UpdateProperty');
+    Route::get('/admin/ManageUsers', [AdminController::class, 'ManageUsers'])->name('ManageUsers');
+    Route::delete('/admin/ManageUsers/{user}', [AdminController::class, 'DestroyUsers'])->name('DestroyUsers');
+    Route::get('/admin/ManageRequests', [AdminController::class, 'ManageRequests'])->name('ManageRequests');
+    Route::post('/admin/RequestAction', [AdminController::class, 'Request_Action'])->name('Request_Action');
+});
 
-
+// ---------- chatbot ----------
+Route::match(['get', 'post'], '/botman', ChatbotController::class);
