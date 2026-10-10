@@ -1,15 +1,9 @@
 # syntax=docker/dockerfile:1
 
-# ---- 1. PHP dependencies (no dev packages) -----------------------------------
-FROM composer:2 AS vendor
-WORKDIR /app
-COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-interaction --no-progress --prefer-dist --no-scripts --no-autoloader
-COPY . .
-RUN composer dump-autoload --no-dev --classmap-authoritative --no-scripts
-
-# ---- 2. Runtime image ---------------------------------------------------------
-FROM php:8.3-apache
+# ---- 1. Base: the PHP version and extensions the app really runs on -----------
+# Composer runs in THIS image too (not in the stock composer image), so dependencies are
+# resolved against the same PHP and extensions that serve requests.
+FROM php:8.3-apache AS base
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends libpng-dev libjpeg-dev libfreetype6-dev libzip-dev libicu-dev \
@@ -17,6 +11,28 @@ RUN apt-get update \
     && docker-php-ext-install -j"$(nproc)" pdo_mysql gd zip intl bcmath opcache pcntl \
     && a2enmod rewrite headers \
     && rm -rf /var/lib/apt/lists/*
+
+# ---- 2. PHP dependencies (no dev packages) -----------------------------------
+FROM base AS vendor
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends git unzip \
+    && rm -rf /var/lib/apt/lists/*
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+ENV COMPOSER_ALLOW_SUPERUSER=1 COMPOSER_NO_INTERACTION=1
+WORKDIR /app
+
+# dependency layer: only re-runs when the lock file changes
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-progress --prefer-dist --no-scripts --no-autoloader
+
+# application code, then the optimized class map
+COPY . .
+RUN composer dump-autoload --no-dev --classmap-authoritative --no-scripts
+
+# ---- 3. Runtime image ---------------------------------------------------------
+FROM base AS runtime
 
 # serve /public, never the project root
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
