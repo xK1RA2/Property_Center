@@ -1,0 +1,23 @@
+.git
+.github
+.idea
+.vscode
+.claude
+
+# never bake secrets or local data into an image
+.env
+.env.*
+!.env.example
+database/*.sqlite*
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+public/storage
+
+node_modules
+vendor
+mobile
+tests
+docker-compose.yml
+*.md

@@ -13,13 +13,15 @@ Errors: `401` unauthenticated, `403` forbidden, `404` not found, `422` validatio
 | POST | `/auth/login` | `email`, `password` → `{user, token}` |
 | POST | `/auth/logout` | revokes the current token |
 | GET | `/me` | current user |
+| PUT | `/me` | `name`, `username`, `phone` (all optional) |
+| POST | `/me/photo` | multipart `photo` (image, max 2 MB) |
 | PUT | `/me/password` | `current_password`, `password`, `password_confirmation` |
 
 ## Public
 | Method | Path | Notes |
 |---|---|---|
 | GET | `/properties` | filters: `city_id`, `property_type_id`, `purchase_type` (Sell/Rent), `min_price`, `max_price`, `search`, `sort` (newest/price_asc/price_desc), `per_page` |
-| GET | `/properties/{id}` | full detail: city, type, dealer, features, images, location, rating |
+| GET | `/properties/{id}` | full detail: city, type, dealer, features, images, location, rating. With a token also `is_favorite` and `my_rating` |
 | GET | `/properties/{id}/comments` | anonymous comments never expose the author |
 | GET | `/states`, `/cities`, `/property-types`, `/dealers` | lookups |
 
@@ -34,13 +36,15 @@ Errors: `401` unauthenticated, `403` forbidden, `404` not found, `422` validatio
 | GET | `/bookings` | users: their own · dealers: on their properties · admins: all |
 | POST | `/properties/{id}/bookings` | `date` (future), optional `description`; re-posting updates your booking |
 | POST | `/trader-requests` | users ask to become a dealer |
+| POST | `/devices` | register this phone's Expo push token `{token, platform?}` (idempotent; moves the token if another user signs in on it) |
+| DELETE | `/devices` | `{token}`: stop pushes to this phone (call on sign-out) |
 
 ## Dealer
 | Method | Path | Notes |
 |---|---|---|
 | GET | `/my/properties` | own listings, any status |
-| POST | `/properties` | `purchase_type`, `property_type_id`, `city_id`, `price`, `year`, `address`, optional `description`, `status`, `published_at`, `features{Bedrooms,Bathrooms,Kitchen,Rooms,Area,Heating,Air_Conditioner,Parking}`, `images[]` (multipart) |
-| PUT / PATCH | `/properties/{id}` | own property (or admin); every field optional |
+| POST | `/properties` | (JSON or multipart) `purchase_type`, `property_type_id`, `city_id`, `price`, `year`, `address`, optional `description`, `status`, `published_at`, `features{Bedrooms,Bathrooms,Kitchen,Rooms,Area,Heating,Air_Conditioner,Parking}`, `location{name,lat,lng}`, `images[]` (multipart) |
+| PUT / PATCH | `/properties/{id}` | own property (or admin); every field optional. For multipart (photos) use `POST` with `_method=PATCH` |
 | DELETE | `/properties/{id}` | own property (or admin) |
 | PATCH | `/bookings/{id}` | `status`: Approved / Rejected, only for bookings on own properties |
 
@@ -51,3 +55,14 @@ Errors: `401` unauthenticated, `403` forbidden, `404` not found, `422` validatio
 | DELETE | `/admin/users/{id}` | admins and yourself can't be deleted |
 | GET | `/admin/trader-requests` | |
 | PATCH | `/admin/trader-requests/{id}` | `action`: approve / reject |
+
+## Push notifications
+
+Sent through Expo's push service after the HTTP response is returned, so they never slow a request down:
+
+| Event | Recipient | Title |
+|---|---|---|
+| Someone books a visit | the property's dealer | New visit request |
+| Dealer approves / rejects | the person who asked | Visit approved / Visit declined |
+
+Payload `data`: `{screen: "bookings", booking_id}`.

@@ -1,0 +1,17 @@
+# DDEV: local development environment (Docker under the hood). NOT used for production.
+#   https://docs.ddev.com/en/stable/
+#
+#   ddev start          # https://property-center.ddev.site
+#   ddev launch         # open it in the browser
+#
+# MySQL 8.0 on purpose: it is what docker-compose.yml runs in production,
+# so problems that only appear on MySQL show up here, not on the server.
+name: property-center
+type: laravel
+docroot: public
+php_version: "8.3"
+webserver_type: nginx-fpm
+database:
+  type: mysql
+  version: "8.0"
+nodejs_version: "22"

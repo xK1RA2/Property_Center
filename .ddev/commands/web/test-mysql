@@ -1,0 +1,14 @@
+#!/bin/bash
+
+## Description: Run the PHPUnit suite against MySQL (the default run uses in-memory SQLite)
+## Usage: test-mysql [phpunit/artisan test arguments]
+## Example: ddev test-mysql --filter=PropertyTest
+
+set -e
+
+# a separate schema, so RefreshDatabase never wipes the development data
+mysql -h db -uroot -proot -e "CREATE DATABASE IF NOT EXISTS test_db"
+
+# environment variables set here win over the <env> defaults in phpunit.xml
+DB_CONNECTION=mysql DB_HOST=db DB_PORT=3306 DB_DATABASE=test_db DB_USERNAME=root DB_PASSWORD=root \
+    php artisan test "$@"

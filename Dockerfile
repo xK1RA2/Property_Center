@@ -1,44 +1,42 @@
-# Use the official PHP 8.1 Apache image
-FROM php:8.1-apache
+# syntax=docker/dockerfile:1
 
-# Install system dependencies and PHP extensions required by Laravel
-RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
-    libzip-dev \
-    zip \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    && docker-php-ext-install pdo_mysql zip mbstring exif pcntl bcmath gd
-
-# Enable Apache mod_rewrite for Laravel routing
-RUN a2enmod rewrite
-
-# Set working directory
-WORKDIR /var/www/html
-
-# Copy composer.lock and composer.json first to cache dependencies
+# ---- 1. PHP dependencies (no dev packages) -----------------------------------
+FROM composer:2 AS vendor
+WORKDIR /app
 COPY composer.json composer.lock ./
-
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
-
-# Copy the rest of the application code
+RUN composer install --no-dev --no-interaction --no-progress --prefer-dist --no-scripts --no-autoloader
 COPY . .
+RUN composer dump-autoload --no-dev --classmap-authoritative --no-scripts
 
-# Ensure storage and bootstrap/cache are writable by Apache
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
-    && chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache
+# ---- 2. Runtime image ---------------------------------------------------------
+FROM php:8.3-apache
 
-# Set Apache DocumentRoot to Laravel public folder
-RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libpng-dev libjpeg-dev libfreetype6-dev libzip-dev libicu-dev \
+    && docker-php-ext-configure gd --with-jpeg --with-freetype \
+    && docker-php-ext-install -j"$(nproc)" pdo_mysql gd zip intl bcmath opcache pcntl \
+    && a2enmod rewrite headers \
+    && rm -rf /var/lib/apt/lists/*
 
-# Expose port 80
-EXPOSE 80
+# serve /public, never the project root
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
+    && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Start Apache in the foreground
+COPY docker/php.ini "$PHP_INI_DIR/conf.d/zz-app.ini"
+COPY docker/apache-laravel.conf /etc/apache2/conf-available/laravel.conf
+RUN a2enconf laravel
+
+WORKDIR /var/www/html
+COPY --from=vendor /app .
+
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint
+RUN chmod +x /usr/local/bin/entrypoint \
+    && mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs storage/app/public bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
+    CMD curl -fsS http://127.0.0.1/up || exit 1
+
+ENTRYPOINT ["entrypoint"]
 CMD ["apache2-foreground"]

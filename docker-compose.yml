@@ -1,0 +1,74 @@
+# Production stack: Laravel (Apache) + queue worker + scheduler + MySQL + Caddy (automatic HTTPS).
+#
+#   cp .env.production.example .env      # then edit it
+#   docker compose up -d --build
+#   docker compose exec app php artisan db:seed --class=ReferenceDataSeeder --force
+#   docker compose exec app php artisan app:create-admin you@example.com --name="Your Name"
+#
+# See DEPLOY.md.
+
+x-app: &app
+  build: .
+  image: property-center:latest
+  env_file: .env
+  restart: unless-stopped
+  volumes:
+    - storage:/var/www/html/storage
+  depends_on:
+    db:
+      condition: service_healthy
+
+services:
+  app:
+    <<: *app
+    environment:
+      RUN_MIGRATIONS: "true"
+
+  worker:
+    <<: *app
+    command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+    depends_on:
+      - app
+
+  scheduler:
+    <<: *app
+    command: php artisan schedule:work
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:-localhost}
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+
+volumes:
+  storage:
+  dbdata:
+  caddy_data:
+  caddy_config:
