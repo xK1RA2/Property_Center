@@ -98,7 +98,7 @@
                 <div class="row g-4">
             
                 @foreach($dealers as $dealer)
-    <x-Dealers :$dealer />
+    <x-dealers :$dealer />
                 @endforeach
               </div>
               </div>
@@ -107,5 +107,5 @@
  
               <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
 
-        <x-Layouts.footer/>
+        <x-layouts.footer/>
 </x-app-layout>

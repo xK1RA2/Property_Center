@@ -3,7 +3,7 @@
 
 
 <x-base-layout :$title :$Tailwind  >
-    <x-Layouts.header/>
+    <x-layouts.header/>
         {{$slot}}
   
 </x-base-layout>

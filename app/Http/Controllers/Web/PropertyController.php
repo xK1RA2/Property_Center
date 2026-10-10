@@ -30,7 +30,7 @@ class PropertyController extends Controller
 
     public function show(Property $property)
     {
-        return view('property.details', ['Property' => $property]);
+        return redirect()->route('property.details', $property);
     }
 
     // ---------- dealer ----------

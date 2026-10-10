@@ -21,6 +21,6 @@ class BaseLayout extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('Layout.base');
+        return view('layout.base');
     }
 }

@@ -15,7 +15,7 @@
                 class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-[#00B98E] lg:translate-x-0 lg:static lg:inset-0">
              
 
-                <x-Layouts.admin-header :$active />
+                <x-layouts.admin-header :$active />
             </div>
             <div class="flex flex-col flex-1 overflow-hidden">
                 <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-[#00B98E]">
